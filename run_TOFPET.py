@@ -536,8 +536,9 @@ commandOutputDir = "mkdir -p "+output_dir
 print commandOutputDir
 os.system(commandOutputDir)
 
-#integration gate in ns (min_intg_time=max_intg_time)
-#integration_gate = int(min_intg_time) * 4 units of clock * 5 ns tdc clock 
+#integration gate (min_intg_time=max_intg_time)
+#integration_gate = int(min_intg_time) * 4 units of clock * 5 ns tdc clock ##OLD TOFPET2B
+#integration_gate = (int(min_intg_time) x 4 - 78) x 5 ns = (integration gate in ns.), for values between 32 and 127. For more details, see TOFPET2C AISC guide.
 integration_gate = int(min_intg_time)
 print integration_gate 
 
