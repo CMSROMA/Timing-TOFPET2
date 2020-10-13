@@ -8,9 +8,9 @@ CHANNEL_MAP /home/cmsdaq/Workspace/TOFPET/Timing-TOFPET2/data/map_channel.tsv
 TRIGGER_MAP /home/cmsdaq/Workspace/TOFPET/Timing-TOFPET2/data/map_trigger.tsv
 LSB_T1 60
 LSB_T2 60
-MIN_INTG_TIME 15
-MAX_INTG_TIME 15
-# MIN_INTG_TIME/MAX_INTG_TIME 15 = 15 x 4 x 5 ns = 300ns
+MIN_INTG_TIME 34
+MAX_INTG_TIME 34
+# MIN_INTG_TIME/MAX_INTG_TIME 34 = (34 x 4 - 78) x 5 ns = 290ns
 
 #Calibration
 RUN_CALIB 0
@@ -37,16 +37,16 @@ CONVERTCOINCIDENCESCRIPT analysis/find_coincidences.py
 #CONVERTCOINCIDENCESCRIPT convert_raw_to_coincidence
 TEMPERATUREFILE arduino/temperature/temperature_tmp.txt
 MODE qdc
-TIME 1
+TIME 0.3
 #TIME 1
-OUTPUT_DIR test/pippo3
+OUTPUT_DIR data/LYSOTEST
 #OUTPUT_DIR output/Pedestal
-OUTPUT_LABEL test_pippo3
+OUTPUT_LABEL Run000006_2020-10-13-12-32-12_TEST_NOSOURCE_POS0_X-1.0_Y-1.0_CH0-1_ETHR0-0_T1THR10-10
 #OUTPUT_LABEL PedestalTest13_2ch_100000delay
 
 #Channels
-OVERWRITE_OV_REF -1
-OVERWRITE_OV -1
+OVERWRITE_OV_REF 3
+OVERWRITE_OV 3
 #If OVERWRITE_OV -1 (same for OVERWRITE_OV_REF), use the OV values in the table below. If OVERWRITE_OV > 0 set all channels to this OV value.
 #REF are always CH0 and CH1 (reference bar)
 ## TO BE CHECKED: position of pixels and NHV ##
