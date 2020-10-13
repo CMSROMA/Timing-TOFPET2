@@ -42,7 +42,8 @@ os.system(commandOutputDir)
 #############################
 ## Daq setup
 #############################
-def RUN(runtype,time,ov,ovref,gate,label,enabledCh="",thresholds="",thresholdsT1=""):
+#def RUN(runtype,time,ov,ovref,gate,label,enabledCh="",thresholds="",thresholdsT1="",nloops,sleep):
+def RUN(runtype,time,ov,ovref,gate,label,enabledCh,thresholds,thresholdsT1,nloops,sleep):
 
     ###############
     ## Current time
@@ -78,7 +79,7 @@ def RUN(runtype,time,ov,ovref,gate,label,enabledCh="",thresholds="",thresholdsT1
 
     
     if(runtype == "PED"):
-        commandRun = "python run_TOFPET.py -c "+ opt.configFile+" --runType PED -d acquire_pedestal_data " + "-t "+ str(time)+" -v "+str(ov)+" --ovref "+str(ovref)+" -l "+str(newlabel)+" -g "+str(gate)+" -o "+opt.outputFolder+" --pedAllChannels " + str(opt.pedAllChannels)
+        commandRun = "python run_TOFPET.py -c "+ opt.configFile+" --runType PED -d acquire_pedestal_data " + "-t "+ str(time)+" -v "+str(ov)+" --ovref "+str(ovref)+" -l "+str(newlabel)+" -g "+str(gate)+" -o "+opt.outputFolder+" --pedAllChannels " + str(opt.pedAllChannels) + " --nloops " + str(nloops) + " --sleep " + str(sleep)  
         if (enabledCh!=""):
             commandRun = commandRun +" --enabledChannels " + str(enabledCh) 
     if(runtype == "PHYS"):
@@ -140,6 +141,8 @@ ov_values = [3] #V
 ovref_values = [3] #V
 gate_values = [34] # # MIN_INTG_TIME/MAX_INTG_TIME 34 = (34 x 4 - 78) x 5 ns = 290ns (for values in range 32...127). Check TOFPET2C ASIC guide.
 name = opt.nameLabel
+nloops = 1
+sleep = 0
 
 #--------------------------------------------------------------------
 
@@ -163,7 +166,7 @@ posFirstBarY = -1
 
 dict_Scan = {
     #DEFAULT
-    0: (round(posFirstBarX,1),round(posFirstBarY,1),"0_1","0_0","10_10"),
+    0: (round(posFirstBarX,1),round(posFirstBarY,1),"0_1","0_0","10_10",nloops,sleep),
 }
 print "Scan" , dict_Scan
 
@@ -199,7 +202,7 @@ for seq in range(0,nseq):
                     #print(thisname)
 
                     #============================================
-                    RUN("PED",t_ped,ov,ovref,gate,thisname,kInfo[2],"","")
-                    #RUN("PHYS",t_phys,ov,ovref,gate,thisname,kInfo[2],kInfo[3],kInfo[4]) 
-                    #RUN("PED",t_ped,ov,ovref,gate,thisname,kInfo[2],"","")
+                    RUN("PED",t_ped,ov,ovref,gate,thisname,kInfo[2],"","",kInfo[5],kInfo[6])
+                    #RUN("PHYS",t_phys,ov,ovref,gate,thisname,kInfo[2],kInfo[3],kInfo[4],kInfo[5],kInfo[6]) 
+                    #RUN("PED",t_ped,ov,ovref,gate,thisname,kInfo[2],"","",kInfo[5],kInfo[6])
                     #============================================

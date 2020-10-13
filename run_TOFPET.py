@@ -57,6 +57,10 @@ parser.add_option("--energyThr", dest="energyThr", default="",
 parser.add_option("--energyThrT1", dest="energyThrT1", default="", 
                   help="List of energy thresholds for triggering. The string format is 0_10_5_3 to set the absolute value of t1 thresholds for channels CH0, CH1, CH2, CH3. For pedestal run: ignored.")
 
+parser.add_option("--nloops", dest="nloops", type=int, default=1, help="Acquisition loops (integer)")
+
+parser.add_option("--sleep", dest="sleep", type=float, default=0, help="Sleep time between loops (seconds)")
+
 (opt, args) = parser.parse_args()
 
 if not opt.configFile:   
@@ -566,7 +570,7 @@ print "Starting run..."
 commandRun = ""
 print daqscript
 if (daqscript == "acquire_pedestal_data"):
-    commandRun = "./"+daqscript+" --config "+ config_current +" --mode "+ mode +" --time "+ runtime +" -o "+newname+" --cfgChannels "+opt.configFile+" --pedAllChannels " + str(opt.pedAllChannels)
+    commandRun = "./"+daqscript+" --config "+ config_current +" --mode "+ mode +" --time "+ runtime +" -o "+newname+" --cfgChannels "+opt.configFile+" --pedAllChannels " + str(opt.pedAllChannels) + " --nloops " + str(opt.nloops) + " --sleep " + str(opt.sleep) 
     if (opt.enabledChannels != ""):
         commandRun = commandRun +" --enabledChannels " + str(opt.enabledChannels)         
 else:

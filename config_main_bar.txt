@@ -14,7 +14,7 @@ MAX_INTG_TIME 34
 
 #Calibration
 RUN_CALIB 0
-CALIB_DIR /home/cmsdaq/Workspace/TOFPET/Timing-TOFPET2/data/calib/test_2pixels_09_10_2020
+CALIB_DIR /home/cmsdaq/Workspace/TOFPET/Timing-TOFPET2/data/calib/test_2pixels_13_10_2020
 DISC_CALIB disc_calibration.tsv
 TDC_CALIB tdc_calibration.tsv
 QDC_CALIB qdc_calibration.tsv
@@ -41,7 +41,7 @@ TIME 0.3
 #TIME 1
 OUTPUT_DIR data/LYSOTEST
 #OUTPUT_DIR output/Pedestal
-OUTPUT_LABEL Run000006_2020-10-13-12-32-12_TEST_NOSOURCE_POS0_X-1.0_Y-1.0_CH0-1_ETHR0-0_T1THR10-10
+OUTPUT_LABEL Run000016_2020-10-13-15-18-12_TEST_NOSOURCE_POS0_X-1.0_Y-1.0_CH0-1_ETHR0-0_T1THR10-10
 #OUTPUT_LABEL PedestalTest13_2ch_100000delay
 
 #Channels
