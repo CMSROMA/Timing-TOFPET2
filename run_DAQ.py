@@ -134,11 +134,11 @@ def RUN(runtype,time,ov,ovref,gate,label,enabledCh,thresholds,thresholdsT1,nloop
 n_ch = 2 #number of channels in config file (2 for 2 pixels, 3 for 1 pixel and 1 bar, ..)
 n_chip = 1 #number of active TOFPET2 chips
 t_ped = 0.3 #s
-t_phys = 300 #s
-t_tot = 320 #s this is approximate (it is 20-30% less of true value due to cpu processing time to make root files)
+t_phys = 20 #s
+#t_tot = 320 #s this is approximate (it is 20-30% less of true value due to cpu processing time to make root files)
 #ov_values = [-1] #V
-ov_values = [3] #V
-ovref_values = [3] #V
+ov_values = [7] #V
+ovref_values = [7] #V
 gate_values = [34] # # MIN_INTG_TIME/MAX_INTG_TIME 34 = (34 x 4 - 78) x 5 ns = 290ns (for values in range 32...127). Check TOFPET2C ASIC guide.
 name = opt.nameLabel
 nloops = 1
@@ -166,7 +166,7 @@ posFirstBarY = -1
 
 dict_Scan = {
     #DEFAULT
-    0: (round(posFirstBarX,1),round(posFirstBarY,1),"0_1","0_0","10_10",nloops,sleep),
+    0: (round(posFirstBarX,1),round(posFirstBarY,1),"0_1","15_15","15_15",nloops,sleep),
 }
 print "Scan" , dict_Scan
 
@@ -203,6 +203,6 @@ for seq in range(0,nseq):
 
                     #============================================
                     RUN("PED",t_ped,ov,ovref,gate,thisname,kInfo[2],"","",kInfo[5],kInfo[6])
-                    #RUN("PHYS",t_phys,ov,ovref,gate,thisname,kInfo[2],kInfo[3],kInfo[4],kInfo[5],kInfo[6]) 
+                    RUN("PHYS",t_phys,ov,ovref,gate,thisname,kInfo[2],kInfo[3],kInfo[4],kInfo[5],kInfo[6]) 
                     #RUN("PED",t_ped,ov,ovref,gate,thisname,kInfo[2],"","",kInfo[5],kInfo[6])
                     #============================================
