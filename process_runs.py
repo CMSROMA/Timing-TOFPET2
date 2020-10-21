@@ -143,28 +143,25 @@ for irun in run_list:
     print "File created."
     print "\n"
 
-'''
-    ## Add branches to root tree (singles)
-    print "Update root file with tree (singles)..."
-    inputfilename = fileNameNoExtension+"_singles.root"
-    gROOT.ProcessLine('o = TString(gSystem->GetMakeSharedLib()); o = o.ReplaceAll(" -c ", " -std=c++11 -c "); gSystem->SetMakeSharedLib(o.Data());')
-    gROOT.ProcessLine(".L /home/cmsdaq/Workspace/TOFPET/Timing-TOFPET/analysis/addTemperature.C+")
-    gROOT.ProcessLine('TFile* f = new TFile("%s","UPDATE");f->cd();'%inputfilename)
-    gROOT.ProcessLine('TTree* tree; f->GetObject("data",tree);')
-    gROOT.ProcessLine("addTemperature* addT= new addTemperature(tree);")
-    gROOT.ProcessLine('addT->out=f');
-    gROOT.ProcessLine('addT->unixtimeStart=%d;'%unixTimeStart)
-    gROOT.ProcessLine('addT->tempFile="%s";'%(input_filename_temp))
-    gBenchmark.Start( 'addTemperature_run%d'%int(irun))
-    gROOT.ProcessLine("addT->Loop();")
-    gBenchmark.Show( 'addTemperature_run%d'%int(irun))
-    gROOT.ProcessLine('f->Close();')
-    gROOT.ProcessLine('delete addT;delete f;')
-    print "File updated."
-    print "\n"
-'''
+#    ## Add branches to root tree (singles)
+#    print "Update root file with tree (singles)..."
+#    inputfilename = fileNameNoExtension+"_singles.root"
+#    gROOT.ProcessLine('o = TString(gSystem->GetMakeSharedLib()); o = o.ReplaceAll(" -c ", " -std=c++11 -c "); gSystem->SetMakeSharedLib(o.Data());')
+#    gROOT.ProcessLine(".L /home/cmsdaq/Workspace/TOFPET/Timing-TOFPET/analysis/addTemperature.C+")
+#    gROOT.ProcessLine('TFile* f = new TFile("%s","UPDATE");f->cd();'%inputfilename)
+#    gROOT.ProcessLine('TTree* tree; f->GetObject("data",tree);')
+#    gROOT.ProcessLine("addTemperature* addT= new addTemperature(tree);")
+#    gROOT.ProcessLine('addT->out=f');
+#    gROOT.ProcessLine('addT->unixtimeStart=%d;'%unixTimeStart)
+#    gROOT.ProcessLine('addT->tempFile="%s";'%(input_filename_temp))
+#    gBenchmark.Start( 'addTemperature_run%d'%int(irun))
+#    gROOT.ProcessLine("addT->Loop();")
+#    gBenchmark.Show( 'addTemperature_run%d'%int(irun))
+#    gROOT.ProcessLine('f->Close();')
+#    gROOT.ProcessLine('delete addT;delete f;')
+#    print "File updated."
+#    print "\n"
 
-'''
     ####################################
     ### 3) Create file with coincidences
     ####################################
@@ -175,4 +172,3 @@ for irun in run_list:
     os.system(commandConvertCoincidences)
     print "File created."
     print "\n"
-'''
