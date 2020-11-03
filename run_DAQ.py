@@ -43,7 +43,7 @@ os.system(commandOutputDir)
 ## Daq setup
 #############################
 #def RUN(runtype,time,ov,ovref,gate,label,enabledCh="",thresholds="",thresholdsT1="",nloops,sleep):
-def RUN(runtype,time,ov,ovref,gate,label,enabledCh,thresholds,thresholdsT1,nloops,sleep):
+def RUN(runtype,time,ov,ovref,gate,label,enabledCh,thresholds,thresholdsT1,nloops,sleep,timePed):
 
     ###############
     ## Current time
@@ -83,7 +83,7 @@ def RUN(runtype,time,ov,ovref,gate,label,enabledCh,thresholds,thresholdsT1,nloop
         if (enabledCh!=""):
             commandRun = commandRun +" --enabledChannels " + str(enabledCh) 
     if(runtype == "PHYS"):
-        commandRun = "python run_TOFPET.py -c "+ opt.configFile+" --runType PHYS -d my_acquire_sipm_data " + "-t "+ str(time)+" -v "+str(ov)+" --ovref "+str(ovref)+" -l "+str(newlabel)+" -g "+str(gate)+" -o "+opt.outputFolder
+        commandRun = "python run_TOFPET.py -c "+ opt.configFile+" --runType PHYS -d my_acquire_sipm_data " + "-t "+ str(time)+" -v "+str(ov)+" --ovref "+str(ovref)+" -l "+str(newlabel)+" -g "+str(gate)+" -o "+opt.outputFolder + " --nloops " + str(nloops) + " --sleep " + str(sleep) + " --timePed " + str(timePed)
         if (enabledCh!=""):
             commandRun = commandRun +" --enabledChannels " + str(enabledCh) 
             if (thresholds!=""):
@@ -134,14 +134,14 @@ def RUN(runtype,time,ov,ovref,gate,label,enabledCh,thresholds,thresholdsT1,nloop
 n_ch = 2 #number of channels in config file (2 for 2 pixels, 3 for 1 pixel and 1 bar, ..)
 n_chip = 1 #number of active TOFPET2 chips
 t_ped = 0.3 #s
-t_phys = 20 #s
-#t_tot = 320 #s this is approximate (it is 20-30% less of true value due to cpu processing time to make root files)
+t_phys = 60 #s
 #ov_values = [-1] #V
 ov_values = [7] #V
 ovref_values = [7] #V
 gate_values = [34] # # MIN_INTG_TIME/MAX_INTG_TIME 34 = (34 x 4 - 78) x 5 ns = 290ns (for values in range 32...127). Check TOFPET2C ASIC guide.
 name = opt.nameLabel
 nloops = 1
+t_ped_in_phys = 1. #s
 sleep = 0
 
 #--------------------------------------------------------------------
@@ -166,7 +166,7 @@ posFirstBarY = -1
 
 dict_Scan = {
     #DEFAULT
-    0: (round(posFirstBarX,1),round(posFirstBarY,1),"0_1","15_15","15_15",nloops,sleep),
+    0: (round(posFirstBarX,1),round(posFirstBarY,1),"0_1","25_25","15_15",nloops,sleep),
 }
 print "Scan" , dict_Scan
 
@@ -202,7 +202,7 @@ for seq in range(0,nseq):
                     #print(thisname)
 
                     #============================================
-                    RUN("PED",t_ped,ov,ovref,gate,thisname,kInfo[2],"","",kInfo[5],kInfo[6])
-                    RUN("PHYS",t_phys,ov,ovref,gate,thisname,kInfo[2],kInfo[3],kInfo[4],kInfo[5],kInfo[6]) 
-                    RUN("PED",t_ped,ov,ovref,gate,thisname,kInfo[2],"","",kInfo[5],kInfo[6])
+                    RUN("PED",t_ped,ov,ovref,gate,thisname,kInfo[2],"","",kInfo[5],kInfo[6],0.)
+                    RUN("PHYS",t_phys,ov,ovref,gate,thisname,kInfo[2],kInfo[3],kInfo[4],kInfo[5],kInfo[6],t_ped_in_phys) 
+                    RUN("PED",t_ped,ov,ovref,gate,thisname,kInfo[2],"","",kInfo[5],kInfo[6],0.)
                     #============================================

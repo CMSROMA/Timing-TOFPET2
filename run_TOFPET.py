@@ -33,6 +33,9 @@ parser.add_option("-g", "--gate", dest="gate",
 parser.add_option("-t", "--time", dest="duration",
                   help="run duration")
 
+parser.add_option("--timePed", dest="timePed", default=0,
+                  help="duration of ped run during a phys run for a single channel (only used in PHYS+PED mode). Note the total time should be multiplied by the number of phases.")
+
 parser.add_option("-d", "--daq", dest="daqType",
                   help="data acquisition type (i.e. pedestal or SiPM data)")
 
@@ -574,7 +577,7 @@ if (daqscript == "acquire_pedestal_data"):
     if (opt.enabledChannels != ""):
         commandRun = commandRun +" --enabledChannels " + str(opt.enabledChannels)         
 else:
-    commandRun = "./"+daqscript+" --config "+ config_current +" --mode "+ mode +" --time "+ runtime +" -o "+newname+" --cfgChannels "+opt.configFile
+    commandRun = "./"+daqscript+" --config "+ config_current +" --mode "+ mode +" --time "+ runtime +" -o "+newname+" --cfgChannels "+opt.configFile + " --nloops " + str(opt.nloops) + " --sleep " + str(opt.sleep) + " --timePed " + str(opt.timePed) 
     if (opt.enabledChannels != ""):
         commandRun = commandRun +" --enabledChannels " + str(opt.enabledChannels)         
         if (opt.energyThr != ""):
