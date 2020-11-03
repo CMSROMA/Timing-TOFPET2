@@ -89,10 +89,10 @@ for ac in asicsConfig.values():
                 cc.setValue("trigger_mode_1", 0b11)
 
                 # Set simplest trigger_mode_2_* setting
-                cc.setValue("trigger_mode_2_t", 0b00)
-                cc.setValue("trigger_mode_2_e", 0b000)
-                cc.setValue("trigger_mode_2_q", 0b00)
-                cc.setValue("trigger_mode_2_b", 0b000)
+                #cc.setValue("trigger_mode_2_t", 0b00)
+                #cc.setValue("trigger_mode_2_e", 0b000)
+                #cc.setValue("trigger_mode_2_q", 0b00)
+                #cc.setValue("trigger_mode_2_b", 0b000)
                 
                 # Allow full range integration time
                 # cc.setValue("min_intg_time", 0)
