@@ -63,6 +63,9 @@ struct treeStructData
   unsigned int tacID[MAX_EVENT_HITS];
   double  energy[MAX_EVENT_HITS];
   double  time[MAX_EVENT_HITS];
+  double  tot[MAX_EVENT_HITS];
+  double  tqT[MAX_EVENT_HITS];
+  double  tqE[MAX_EVENT_HITS];
 };
 
 struct hit
@@ -71,6 +74,9 @@ struct hit
   unsigned int tacID;
   double energy;
   double time;
+  double tot;
+  double tqT;
+  double tqE;
 } ;
 
 struct eventProperties
@@ -135,7 +141,11 @@ void Event::createOutBranches (TTree* tree,treeStructData& treeData)
   tree->Branch( "chId", treeData.chID, "chId[nch]/I" );
   tree->Branch( "energy", treeData.energy, "energy[nch]/D" );
   tree->Branch( "time", treeData.time, "time[nch]/D" );
+  tree->Branch( "tot", treeData.time, "tot[nch]/D" );
+  tree->Branch( "tqT", treeData.time, "tqT[nch]/D" );
+  tree->Branch( "tqE", treeData.time, "tqE[nch]/D" );
   tree->Branch( "tacID", treeData.tacID, "tacID[nch]/I" );
+
 //  tree->Branch( "unixTime", &treeData.unixTime, "unixTime/L" );
 //  tree->Branch( "tempInt", &treeData.tempInt, "tempInt/D" );
 //  tree->Branch( "tempExt", &treeData.tempExt, "tempExt/D" );
@@ -166,6 +176,9 @@ void Event::createOutBranches (TTree* tree,treeStructData& treeData)
        treeData.tacID[i] = -9;
        treeData.energy[i] = -9;
        treeData.time[i] = -9;
+       treeData.tot[i] = -9;
+       treeData.tqT[i] = -9;
+       treeData.tqE[i] = -9;
      }
 
    for (unsigned int i = 0 ;i<hits.size();++i)
@@ -174,6 +187,9 @@ void Event::createOutBranches (TTree* tree,treeStructData& treeData)
        treeData.tacID[chMap[hits[i].chID]] = hits[i].tacID;
        treeData.energy[chMap[hits[i].chID]] = hits[i].energy;
        treeData.time[chMap[hits[i].chID]] = hits[i].time;
+       treeData.tot[chMap[hits[i].chID]] = hits[i].tot;
+       treeData.tqT[chMap[hits[i].chID]] = hits[i].tqT;
+       treeData.tqE[chMap[hits[i].chID]] = hits[i].tqE;
      }
 
    return ;
@@ -284,6 +300,9 @@ void findCoincidences::Loop()
 	       aHit.tacID = tacID;
 	       aHit.energy = energy;
 	       aHit.time = time;
+	       aHit.tot = tot;
+	       aHit.tqT = tqT;
+	       aHit.tqE = tqE;
 	       event->hits.push_back(aHit);
 	     }
  	 }
