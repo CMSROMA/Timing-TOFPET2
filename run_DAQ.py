@@ -131,18 +131,35 @@ def RUN(runtype,time,ov,ovref,gate,label,enabledCh,thresholds,thresholdsT1,nloop
 ###################
 
 #Main sequence (test bar)
-n_ch = 2 #number of channels in config file (2 for 2 pixels, 3 for 1 pixel and 1 bar, ..)
+n_ch = 4 #number of channels in config file (2 for 2 pixels, 3 for 1 pixel and 1 bar, 4 for 2 bars, ...)
+n_chip = 2 #number of active TOFPET2 chips
+t_ped = 0.3 #s
+t_phys = 300 #s
+#ov_values = [-1] #V
+ov_values = [4,6,8] #V
+ovref_values = [7] #V
+gate_values = [34] # # MIN_INTG_TIME/MAX_INTG_TIME 34 = (34 x 4 - 78) x 5 ns = 290ns (for values in range 32...127). Check TOFPET2C ASIC guide.
+name = opt.nameLabel
+nloops = 10
+t_ped_in_phys = 0.15 #s
+sleep = 0
+
+
+'''
+#Main sequence (test array)
+n_ch = 32 #number of channels in config file (2 for 2 pixels, 3 for 1 pixel and 1 bar, ..)
 n_chip = 1 #number of active TOFPET2 chips
 t_ped = 0.3 #s
-t_phys = 60 #s
+t_phys = 300 #s
 #ov_values = [-1] #V
 ov_values = [7] #V
 ovref_values = [7] #V
 gate_values = [34] # # MIN_INTG_TIME/MAX_INTG_TIME 34 = (34 x 4 - 78) x 5 ns = 290ns (for values in range 32...127). Check TOFPET2C ASIC guide.
 name = opt.nameLabel
-nloops = 1
-t_ped_in_phys = 1. #s
+nloops = 5
+t_ped_in_phys = 0.1 #s
 sleep = 0
+'''
 
 #--------------------------------------------------------------------
 
@@ -165,10 +182,38 @@ posFirstBarX = -1
 posFirstBarY = -1
 
 dict_Scan = {
+
     #DEFAULT
-    0: (round(posFirstBarX,1),round(posFirstBarY,1),"0_1","25_25","15_15",nloops,sleep),
+    #0: (round(posFirstBarX,1),round(posFirstBarY,1),"0_1_2_3","20_20_20_20","5_5_5_5",nloops,sleep),
+    0: (round(posFirstBarX,1),round(posFirstBarY,1),"0_1_2_3","20_20_20_20","10_10_10_10",nloops,sleep),
+    #2: (round(posFirstBarX,1),round(posFirstBarY,1),"0_1_2_3","20_20_20_20","15_15_15_15",nloops,sleep),
+    1: (round(posFirstBarX,1),round(posFirstBarY,1),"0_1_2_3","20_20_20_20","20_20_20_20",nloops,sleep),
+    #4: (round(posFirstBarX,1),round(posFirstBarY,1),"0_1_2_3","20_20_20_20","25_25_25_25",nloops,sleep),
+    2: (round(posFirstBarX,1),round(posFirstBarY,1),"0_1_2_3","20_20_20_20","30_30_30_30",nloops,sleep),
+    #6: (round(posFirstBarX,1),round(posFirstBarY,1),"0_1_2_3","20_20_20_20","35_35_35_35",nloops,sleep),
+    3: (round(posFirstBarX,1),round(posFirstBarY,1),"0_1_2_3","20_20_20_20","40_40_40_40",nloops,sleep),
+    #8: (round(posFirstBarX,1),round(posFirstBarY,1),"0_1_2_3","20_20_20_20","45_45_45_45",nloops,sleep),
+    4: (round(posFirstBarX,1),round(posFirstBarY,1),"0_1_2_3","20_20_20_20","50_50_50_50",nloops,sleep),
 }
 print "Scan" , dict_Scan
+
+
+'''
+########################
+#Scan for test array
+########################
+
+posFirstBarX = -1
+posFirstBarY = -1
+
+dict_Scan = {
+
+    #DEFAULT TEST ARRAY
+    0: (round(posFirstBarX,1),round(posFirstBarY,1),"0_1_2_3_4_5_6_7_8_9_10_11_12_13_14_15","20_20_20_20_20_20_20_20_20_20_20_20_20_20_20_20","15_15_15_15_15_15_15_15_15_15_15_15_15_15_15_15",nloops,sleep),
+}
+print "Scan" , dict_Scan
+'''
+
 
 ###################################################################
 ########################### Run DAQ ############################### 
@@ -202,7 +247,14 @@ for seq in range(0,nseq):
                     #print(thisname)
 
                     #============================================
-                    RUN("PED",t_ped,ov,ovref,gate,thisname,kInfo[2],"","",kInfo[5],kInfo[6],0.)
-                    RUN("PHYS",t_phys,ov,ovref,gate,thisname,kInfo[2],kInfo[3],kInfo[4],kInfo[5],kInfo[6],t_ped_in_phys) 
-                    RUN("PED",t_ped,ov,ovref,gate,thisname,kInfo[2],"","",kInfo[5],kInfo[6],0.)
+                    #RUN("PED",t_ped,ov,ovref,gate,thisname,kInfo[2],"","",kInfo[5],kInfo[6],0.)
+                    #RUN("PHYS",t_phys,ov,ovref,gate,thisname,kInfo[2],kInfo[3],kInfo[4],kInfo[5],kInfo[6],t_ped_in_phys) 
+                    #RUN("PED",t_ped,ov,ovref,gate,thisname,kInfo[2],"","",kInfo[5],kInfo[6],0.)
+                    #============================================
+
+                    #same OV for all
+                    #============================================
+                    RUN("PED",t_ped,ov,ov,gate,thisname,kInfo[2],"","",kInfo[5],kInfo[6],0.)
+                    RUN("PHYS",t_phys,ov,ov,gate,thisname,kInfo[2],kInfo[3],kInfo[4],kInfo[5],kInfo[6],t_ped_in_phys) 
+                    RUN("PED",t_ped,ov,ov,gate,thisname,kInfo[2],"","",kInfo[5],kInfo[6],0.)
                     #============================================
