@@ -136,7 +136,7 @@ n_chip = 2 #number of active TOFPET2 chips
 t_ped = 0.3 #s
 t_phys = 300 #s
 #ov_values = [-1] #V
-ov_values = [4,6,8] #V
+ov_values = [7,8] #V
 ovref_values = [7] #V
 gate_values = [34] # # MIN_INTG_TIME/MAX_INTG_TIME 34 = (34 x 4 - 78) x 5 ns = 290ns (for values in range 32...127). Check TOFPET2C ASIC guide.
 name = opt.nameLabel
@@ -184,16 +184,16 @@ posFirstBarY = -1
 dict_Scan = {
 
     #DEFAULT
-    #0: (round(posFirstBarX,1),round(posFirstBarY,1),"0_1_2_3","20_20_20_20","5_5_5_5",nloops,sleep),
-    0: (round(posFirstBarX,1),round(posFirstBarY,1),"0_1_2_3","20_20_20_20","10_10_10_10",nloops,sleep),
-    #2: (round(posFirstBarX,1),round(posFirstBarY,1),"0_1_2_3","20_20_20_20","15_15_15_15",nloops,sleep),
-    1: (round(posFirstBarX,1),round(posFirstBarY,1),"0_1_2_3","20_20_20_20","20_20_20_20",nloops,sleep),
-    #4: (round(posFirstBarX,1),round(posFirstBarY,1),"0_1_2_3","20_20_20_20","25_25_25_25",nloops,sleep),
-    2: (round(posFirstBarX,1),round(posFirstBarY,1),"0_1_2_3","20_20_20_20","30_30_30_30",nloops,sleep),
-    #6: (round(posFirstBarX,1),round(posFirstBarY,1),"0_1_2_3","20_20_20_20","35_35_35_35",nloops,sleep),
-    3: (round(posFirstBarX,1),round(posFirstBarY,1),"0_1_2_3","20_20_20_20","40_40_40_40",nloops,sleep),
-    #8: (round(posFirstBarX,1),round(posFirstBarY,1),"0_1_2_3","20_20_20_20","45_45_45_45",nloops,sleep),
-    4: (round(posFirstBarX,1),round(posFirstBarY,1),"0_1_2_3","20_20_20_20","50_50_50_50",nloops,sleep),
+    0: (round(posFirstBarX,1),round(posFirstBarY,1),"0_1_2_3","20_20_20_20","5_5_5_5",nloops,sleep),
+    1: (round(posFirstBarX,1),round(posFirstBarY,1),"0_1_2_3","20_20_20_20","10_10_10_10",nloops,sleep),
+    2: (round(posFirstBarX,1),round(posFirstBarY,1),"0_1_2_3","20_20_20_20","15_15_15_15",nloops,sleep),
+    3: (round(posFirstBarX,1),round(posFirstBarY,1),"0_1_2_3","20_20_20_20","20_20_20_20",nloops,sleep),
+    4: (round(posFirstBarX,1),round(posFirstBarY,1),"0_1_2_3","20_20_20_20","25_25_25_25",nloops,sleep),
+    5: (round(posFirstBarX,1),round(posFirstBarY,1),"0_1_2_3","20_20_20_20","30_30_30_30",nloops,sleep),
+    6: (round(posFirstBarX,1),round(posFirstBarY,1),"0_1_2_3","20_20_20_20","35_35_35_35",nloops,sleep),
+    7: (round(posFirstBarX,1),round(posFirstBarY,1),"0_1_2_3","20_20_20_20","40_40_40_40",nloops,sleep),
+    8: (round(posFirstBarX,1),round(posFirstBarY,1),"0_1_2_3","20_20_20_20","45_45_45_45",nloops,sleep),
+    9: (round(posFirstBarX,1),round(posFirstBarY,1),"0_1_2_3","20_20_20_20","50_50_50_50",nloops,sleep),
 }
 print "Scan" , dict_Scan
 
