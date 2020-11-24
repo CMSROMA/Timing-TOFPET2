@@ -229,7 +229,7 @@ for i in range(args.nloops):
                         daqd.setAsicsConfig(cfgCopy)
 
                         #start daq
-                        daqd.acquire(args.timePed, 0, 0);
+                        daqd.acquire(args.timePed, 1, 0);
 
                         #update config (disable again the current channel)
                         ac.channelConfig[thischannel].setValue("trigger_mode_1", 0b11)
