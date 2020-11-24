@@ -141,9 +141,9 @@ void Event::createOutBranches (TTree* tree,treeStructData& treeData)
   tree->Branch( "chId", treeData.chID, "chId[nch]/I" );
   tree->Branch( "energy", treeData.energy, "energy[nch]/D" );
   tree->Branch( "time", treeData.time, "time[nch]/D" );
-  tree->Branch( "tot", treeData.time, "tot[nch]/D" );
-  tree->Branch( "tqT", treeData.time, "tqT[nch]/D" );
-  tree->Branch( "tqE", treeData.time, "tqE[nch]/D" );
+  tree->Branch( "tot", treeData.tot, "tot[nch]/D" );
+  tree->Branch( "tqT", treeData.tqT, "tqT[nch]/D" );
+  tree->Branch( "tqE", treeData.tqE, "tqE[nch]/D" );
   tree->Branch( "tacID", treeData.tacID, "tacID[nch]/I" );
 
 //  tree->Branch( "unixTime", &treeData.unixTime, "unixTime/L" );
