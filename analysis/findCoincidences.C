@@ -51,13 +51,21 @@ struct treeStructData
   unsigned int n_channels;
   unsigned int n_coincidences;
 
-//  ULong64_t unixTime;
-//  double tempInt;
-//  double tempExt;
-//  double tempBoardTest;
-//  double tempBoardRef;
-//  double tempSiPMTest;
-//  double tempSiPMRef;
+   ULong64_t        unixTime;
+   double        tempChipBar;
+   double        tempHoldBar;
+   double        tempChipArray1;
+   double        tempHoldArray1;
+   double        tempChipArray2;
+   double        tempHoldArray2;
+   double        tempChipArray3;
+   double        tempHoldArray3;
+   double        tempChipArray4;
+   double        tempHoldArray4;
+   double        tempAir;
+   double        tempAirRef;
+   double        humidityRef;
+   double        dewPointRef;
 
   unsigned int chID[MAX_EVENT_HITS];
   unsigned int tacID[MAX_EVENT_HITS];
@@ -84,25 +92,45 @@ struct eventProperties
   unsigned int nChannels;
   unsigned int nHits;
   
-//  ULong64_t unixTime;
-//
-//  double tempInt;
-//  double tempExt;
-//  double tempBoardTest;
-//  double tempBoardRef;
-//  double tempSiPMTest;
-//  double tempSiPMRef;
+  ULong64_t unixTime;
+
+  double        tempChipBar;
+  double        tempHoldBar;
+  double        tempChipArray1;
+  double        tempHoldArray1;
+  double        tempChipArray2;
+  double        tempHoldArray2;
+  double        tempChipArray3;
+  double        tempHoldArray3;
+  double        tempChipArray4;
+  double        tempHoldArray4;
+  double        tempAir;
+  double        tempAirRef;
+  double        humidityRef;
+  double        dewPointRef;
 
   void clear()
   {
     nChannels=0;
     nHits=0;
-//    unixTime=0;
-//    tempInt=0;
-//    tempExt=0;
-//    tempBoardTest=0;
-//    tempSiPMTest=0;
-//    tempSiPMRef=0;
+
+    unixTime=0;
+
+    tempChipBar=0.;
+    tempHoldBar=0.;
+    tempChipArray1=0.;
+    tempHoldArray1=0.;
+    tempChipArray2=0.;
+    tempHoldArray2=0.;
+    tempChipArray3=0.;
+    tempHoldArray3=0.;
+    tempChipArray4=0.;
+    tempHoldArray4=0.;
+    tempAir=0.;
+    tempAirRef=0.;
+    humidityRef=0.;
+    dewPointRef=0.;
+
   };
 } ;
 
@@ -146,13 +174,21 @@ void Event::createOutBranches (TTree* tree,treeStructData& treeData)
   tree->Branch( "tqE", treeData.tqE, "tqE[nch]/D" );
   tree->Branch( "tacID", treeData.tacID, "tacID[nch]/I" );
 
-//  tree->Branch( "unixTime", &treeData.unixTime, "unixTime/L" );
-//  tree->Branch( "tempInt", &treeData.tempInt, "tempInt/D" );
-//  tree->Branch( "tempExt", &treeData.tempExt, "tempExt/D" );
-//  tree->Branch( "tempBoardTest", &treeData.tempBoardTest, "tmpBoardTest/D" );
-//  tree->Branch( "tempBoardRef", &treeData.tempBoardRef, "tempBoardRef/D" );
-//  tree->Branch( "tempSiPMTest", &treeData.tempSiPMTest, "tempSiPMTest/D" );
-//  tree->Branch( "tempSiPMRef", &treeData.tempSiPMRef, "tempSiPMRef/D" );
+  tree->Branch( "unixTime", &treeData.unixTime, "unixTime/L" );
+  tree->Branch( "tempChipBar", &treeData.tempChipBar, "tempChipBar/D" );
+  tree->Branch( "tempHoldBar", &treeData.tempHoldBar, "tempHoldBar/D" );
+  tree->Branch( "tempChipArray1", &treeData.tempChipArray1, "tempChipArray1/D" );
+  tree->Branch( "tempHoldArray1", &treeData.tempHoldArray1, "tempHoldArray1/D" );
+  tree->Branch( "tempChipArray2", &treeData.tempChipArray2, "tempChipArray2/D" );
+  tree->Branch( "tempHoldArray2", &treeData.tempHoldArray2, "tempHoldArray2/D" );
+  tree->Branch( "tempChipArray3", &treeData.tempChipArray3, "tempChipArray3/D" );
+  tree->Branch( "tempHoldArray3", &treeData.tempHoldArray3, "tempHoldArray3/D" );
+  tree->Branch( "tempChipArray4", &treeData.tempChipArray4, "tempChipArray4/D" );
+  tree->Branch( "tempHoldArray4", &treeData.tempHoldArray4, "tempHoldArray4/D" );
+  tree->Branch( "tempAir", &treeData.tempAir, "tempAir/D" );
+  tree->Branch( "tempAirRef", &treeData.tempAirRef, "tempAirRef/D" );
+  tree->Branch( "humidityRef", &treeData.humidityRef, "humidityRef/D" );
+  tree->Branch( "dewPointRef", &treeData.dewPointRef, "dewPointRef/D" );
 
   return ;
  } 
@@ -162,13 +198,21 @@ void Event::createOutBranches (TTree* tree,treeStructData& treeData)
    treeData.n_channels = id.nChannels ;
    treeData.n_coincidences = id.nHits ;
 
-//   treeData.unixTime = id.unixTime ;
-//   treeData.tempInt = id.tempInt;
-//   treeData.tempExt = id.tempExt;
-//   treeData.tempBoardTest = id.tempBoardTest;
-//   treeData.tempBoardRef = id.tempBoardRef;
-//   treeData.tempSiPMTest = id.tempSiPMTest;
-//   treeData.tempSiPMRef = id.tempSiPMRef;
+   treeData.unixTime = id.unixTime ;
+   treeData.tempChipBar = id.tempChipBar;
+   treeData.tempHoldBar = id.tempHoldBar;
+   treeData.tempChipArray1 = id.tempChipArray1;
+   treeData.tempHoldArray1 = id.tempHoldArray1;
+   treeData.tempChipArray2 = id.tempChipArray2;
+   treeData.tempHoldArray2 = id.tempHoldArray2;
+   treeData.tempChipArray3 = id.tempChipArray3;
+   treeData.tempHoldArray3 = id.tempHoldArray3;
+   treeData.tempChipArray4 = id.tempChipArray4;
+   treeData.tempHoldArray4 = id.tempHoldArray4;
+   treeData.tempAir = id.tempAir;
+   treeData.tempAirRef = id.tempAirRef;
+   treeData.humidityRef = id.humidityRef;
+   treeData.dewPointRef = id.dewPointRef;
 
    for (unsigned int i = 0 ;i<fmin (MAX_EVENT_HITS, chMap.size()) ;++i)
      {
@@ -280,13 +324,21 @@ void findCoincidences::Loop()
 	       tRef = time;
 	       event->id.nChannels = chMap.size();
 
-//	       event->id.unixTime = unixTime;
-//	       event->id.tempInt = tempInt;
-//	       event->id.tempExt = tempExt;
-//	       event->id.tempBoardTest = tempBoardTest;
-//	       event->id.tempBoardRef = tempBoardRef;
-//	       event->id.tempSiPMTest = tempSiPMTest;
-//	       event->id.tempSiPMRef = tempSiPMRef;
+	       event->id.unixTime = unixTime;
+	       event->id.tempChipBar = tempChipBar;
+	       event->id.tempHoldBar = tempHoldBar;
+	       event->id.tempChipArray1 = tempChipArray1;
+	       event->id.tempHoldArray1 = tempHoldArray1;
+	       event->id.tempChipArray2 = tempChipArray2;
+	       event->id.tempHoldArray2 = tempHoldArray2;
+	       event->id.tempChipArray3 = tempChipArray3;
+	       event->id.tempHoldArray3 = tempHoldArray3;
+	       event->id.tempChipArray4 = tempChipArray4;
+	       event->id.tempHoldArray4 = tempHoldArray4;
+	       event->id.tempAir = tempAir;
+	       event->id.tempAirRef = tempAirRef;
+	       event->id.humidityRef = humidityRef;
+	       event->id.dewPointRef = dewPointRef;
 	     }
 	   else
 	       tDiff = time - tRef;

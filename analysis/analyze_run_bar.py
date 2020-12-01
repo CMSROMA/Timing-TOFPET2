@@ -909,7 +909,8 @@ print "xtal:{0} RUN:{1} ly_bar:{2:.2f} Eres_bar:{3:.1f}% ctr_sigma:({4:.2f}+/-{5
 
 Temp_ref = histos['h1_temp_ref'].GetMean()
 Temp_bar = histos['h1_temp_bar'].GetMean()
-Temp_internal = histos['h1_temp_int'].GetMean()
+Temp_internal_ref = histos['h1_temp_chip_ref'].GetMean()
+Temp_internal_bar = histos['h1_temp_chip_bar'].GetMean()
 
 tfileoutput.Close()
 tfilePed1.cd()
@@ -972,7 +973,8 @@ err_TDIFF_noise_barCoinc = array( 'd', [ -999. ] )
 #
 temp_ref = array( 'd', [ -999. ] )
 temp_bar = array( 'd', [ -999. ] )
-temp_int = array( 'd', [ -999. ] )
+temp_int_ref = array( 'd', [ -999. ] )
+temp_int_bar = array( 'd', [ -999. ] )
 pos_X = array( 'd', [ -999. ] )
 pos_Y = array( 'd', [ -999. ] )
 #
@@ -1025,7 +1027,8 @@ treeOutput.Branch( 'err_TDIFF_noise_barCoinc', err_TDIFF_noise_barCoinc, 'err_TD
 #
 treeOutput.Branch( 'temp_ref', temp_ref, 'temp_ref/D' )
 treeOutput.Branch( 'temp_bar', temp_bar, 'temp_bar/D' )
-treeOutput.Branch( 'temp_int', temp_int, 'temp_int/D' )
+treeOutput.Branch( 'temp_int_ref', temp_int_ref, 'temp_int_ref/D' )
+treeOutput.Branch( 'temp_int_bar', temp_int_bar, 'temp_int_bar/D' )
 treeOutput.Branch( 'pos_X', pos_X, 'pos_X/D' )
 treeOutput.Branch( 'pos_Y', pos_Y, 'pos_Y/D' )
 #
@@ -1078,7 +1081,8 @@ err_TDIFF_noise_barCoinc[0] = fitResults[('barCoinc',"TDIFF","noise","sigma")]
 #
 temp_ref[0] = Temp_ref
 temp_bar[0] = Temp_bar
-temp_int[0] = Temp_internal
+temp_int_ref[0] = Temp_internal_ref
+temp_int_bar[0] = Temp_internal_bar
 pos_X[0] = posX
 pos_Y[0] = posY
 #

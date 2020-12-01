@@ -58,16 +58,20 @@ void ctrAnalysisBar_new::Loop()
    TH1F* h1_CTR = new TH1F("h1_CTR", "", 800, -10000, 10000);
    TH1F* h1_tDiff = new TH1F("h1_tDiff", "", 1000, -5000, 5000);
    TH2F* h2_tDiffVsBarEnergy = new TH2F("h2_tDiffVsBarEnergy", "", 10,50,600,100, -1000, 1000);
+   TH2F* h2_tDiffVsBarEnergyRatio = new TH2F("h2_tDiffVsBarEnergyRatio", "", 100,0,2,100, -1000, 1000);
    TH2F* h2_tDiffVsTime = new TH2F("h2_tDiffVsTime", "", 100,0,300,100, -1000, 1000);
    TH1F* h1_tDiffRef = new TH1F("h1_tDiffRef", "", 1000, -5000, 5000);
    TH2F* h2_tDiffRefVsRefEnergy = new TH2F("h2_tDiffRefVsRefEnergy", "", 10,50,600,100, -1000, 1000);
+   TH2F* h2_tDiffRefVsRefEnergyRatio = new TH2F("h2_tDiffRefVsRefEnergyRatio", "", 10,0,2,100, -1000, 1000);
    TH2F* h2_tDiffRefVsTime = new TH2F("h2_tDiffRefVsTime", "", 100,0,300,100, -1000, 1000);
    objectsToStore.push_back(h1_CTR);
    objectsToStore.push_back(h1_tDiff);
    objectsToStore.push_back(h2_tDiffVsBarEnergy);
+   objectsToStore.push_back(h2_tDiffVsBarEnergyRatio);
    objectsToStore.push_back(h2_tDiffVsTime);
    objectsToStore.push_back(h1_tDiffRef);
    objectsToStore.push_back(h2_tDiffRefVsRefEnergy);
+   objectsToStore.push_back(h2_tDiffRefVsRefEnergyRatio);
    objectsToStore.push_back(h2_tDiffRefVsTime);
 
 
@@ -140,12 +144,14 @@ void ctrAnalysisBar_new::Loop()
 	    {
 	      h1_tDiff->Fill(tDiff);
 	      h2_tDiffVsBarEnergy->Fill(calibEnergyBar,tDiff);
+	      h2_tDiffVsBarEnergyRatio->Fill(energy1/energy2,tDiff);
 	      h2_tDiffVsTime->Fill(timeBar/1E12,tDiff);
 	    }
 	  if (calibEnergyBar>50. && calibEnergyBar<600.)//no linearity corrections
 	    {
 	      h1_tDiffRef->Fill(tDiffRef);
 	      h2_tDiffRefVsRefEnergy->Fill(calibEnergyRef,tDiffRef);
+	      h2_tDiffRefVsRefEnergyRatio->Fill(energyRef1/energyRef2,tDiffRef);
 	      h2_tDiffRefVsTime->Fill(timeRef/1E12,tDiffRef);
 	    }
 	}

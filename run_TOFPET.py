@@ -520,16 +520,17 @@ if run_calib=="1":
 ### 6) Run daq
 ###############################
 
-'''
 #copy content and clear temporary file with temperatures
-commandCopyTemp = "cat "+temperaturefile+" >> arduino/temperature/temperature_all.txt"
+temperature_dir = os.path.dirname(temperaturefile)
+commandCopyTemp = "cat "+temperaturefile+" >> "+ temperature_dir + "/temperature_all.txt"
 print commandCopyTemp
 os.system(commandCopyTemp)
-commandRmTemp = "rm -f "+temperaturefile
+#commandRmTemp = "rm -f "+temperaturefile
+commandRmTemp = "> "+temperaturefile
 print commandRmTemp
 os.system(commandRmTemp)
-time.sleep(3) #wait until 1 line of the temporary temperature file is recreated
-'''
+print ".... Waiting 10 sec., until at least 1 line of the temporary temperature file is recreated"
+time.sleep(10) #wait until 1 line of the temporary temperature file is recreated
 
 ###########################################
 
@@ -590,129 +591,7 @@ os.system(commandRun)
 print "End run"
 print "\n"
 
-'''
-###############################
-### 7) Convert output to ROOT trees
-###############################
-print "Creating root file with tree (singles)..."
-commandConvertSingles = "./"+convertsinglescript+" --config "+ config_current +" -i "+newname+" -o "+newname+"_singles.root"+" --writeRoot"
-print commandConvertSingles
-os.system(commandConvertSingles)
-print "File created."
-print "\n"
 
-## Add branches to root tree (singles)
-print "Update root file with tree (singles)..."
-inputfilename = newname+"_singles.root"
-tfileinput = TFile.Open(inputfilename,"update")
-treeInput = tfileinput.Get("data")
-unixTime = array( 'l' , [0])
-tempInt = array( 'd' , [-999.])
-tempExt = array( 'd' , [-999.])
-tempBoardTest = array( 'd' , [-999.])
-tempBoardRef = array( 'd' , [-999.])
-tempSiPMTest = array( 'd' , [-999.])
-tempSiPMRef = array( 'd' , [-999.])
-
-unixTimeBranch = treeInput.Branch( 'unixTime', unixTime, 'unixTime/L' )
-tempIntBranch = treeInput.Branch( 'tempInt', tempInt, 'tempInt/D' )
-tempExtBranch = treeInput.Branch( 'tempExt', tempExt, 'tempExt/D' )
-tempBoardTestBranch = treeInput.Branch( 'tempBoardTest', tempBoardTest, 'tempBoardTest/D' )
-tempBoardRefBranch = treeInput.Branch( 'tempBoardRef', tempBoardRef, 'tempBoardRef/D' )
-tempSiPMTestBranch = treeInput.Branch( 'tempSiPMTest', tempSiPMTest, 'tempSiPMTest/D' )
-tempSiPMRefBranch = treeInput.Branch( 'tempSiPMRef', tempSiPMRef, 'tempSiPMRef/D' )
-
-ReadNewTemperature = 0 
-TInt = -999. 
-TExt = -999.
-TBoardTest = -999. 
-TBoardRef = -999. 
-TSiPMTest = -999.
-TSiPMRef = -999.
-
-previousTime = 0
-for event in treeInput:
-    unixTime[0] = long(event.time * 10**-12) + unixTimeStart #unix time in seconds of the current event
-
-    ## Read temperatures from file every fixed DeltaT (10^12 ps = 1 s by default)
-    if previousTime==0:
-        ReadNewTemperature=1 
-        previousTime = event.time
-    elif (event.time - previousTime) <= 10**12:
-        tempInt[0] = TInt
-        tempExt[0] = TExt
-        tempBoardTest[0] = TBoardTest
-        tempBoardRef[0] = TBoardRef
-        tempSiPMTest[0] = TSiPMTest
-        tempSiPMRef[0] = TSiPMRef
-    elif (event.time - previousTime) > 10**12:
-        ReadNewTemperature=1
-        previousTime = event.time
-
-    if ReadNewTemperature==1:
-        tempFile = open(temperaturefile, "r")    
-        for line in tempFile:
-            #skip commented out lines or empty lines
-            if (line.startswith("#")):
-                continue
-            if line in ['\n','\r\n']:
-                continue
-        
-            line = line.rstrip('\n')
-            splitline = line.split()
-
-            linesize = len(splitline)
-            if (linesize==7):
-                # find match within 2 seconds
-                if( abs(long(unixTime[0])-long(splitline[0])) < 2):
-                    TInt = float(splitline[2])+0.16
-                    TExt = float(splitline[3])-0.03
-                    TBoardTest = float(splitline[4])-0.88
-                    TBoardRef = float(splitline[1])-0.75
-                    TSiPMTest = float(splitline[6])+0.09
-                    TSiPMRef = float(splitline[5])+0.22
-                    tempInt[0] = TInt
-                    tempExt[0] = TExt
-                    tempBoardTest[0] = TBoardTest
-                    tempBoardRef[0] = TBoardRef
-                    tempSiPMTest[0] = TSiPMTest
-                    tempSiPMRef[0] = TSiPMRef
-                    break
-        ReadNewTemperature=0
-        tempFile.close()
-        
-    unixTimeBranch.Fill()
-    tempIntBranch.Fill()
-    tempExtBranch.Fill()
-    tempBoardTestBranch.Fill()
-    tempBoardRefBranch.Fill()
-    tempSiPMTestBranch.Fill()
-    tempSiPMRefBranch.Fill()
-
-treeInput.Write("",TFile.kOverwrite)
-tfileinput.Close()
-print "File updated."
-print "\n"
-
-#print "Creating root file with tree (coincidences)..."
-#commandConvertCoincidences = "./"+convertcoincidencescript+" --config "+ config_current +" -i "+newname+" -o "+newname+"_coincidences.root"+" --writeRoot"
-#print commandConvertCoincidences
-#os.system(commandConvertCoincidences)
-#print "File created."
-#print "\n"
-
-if( len(channels)<2 ):
-    sys.exit()
-
-print "Creating root file with tree (N-coincidences) from singles..."
-commandConvertCoincidences = "python "+convertcoincidencescript+" -c "+ opt.configFile +" -i "+ newname+"_singles.root" +" -n "+str(len(channels))+" -o "+newname+"_coincidences.root"
-print commandConvertCoincidences
-os.system(commandConvertCoincidences)
-print "File created."
-print "\n"
-'''
-
-'''
 ## Copy content and clear temporary file with temperatures
 
 #copy in output dir
@@ -726,5 +605,3 @@ os.system(commandCopyTemp)
 #rm file
 print commandRmTemp
 os.system(commandRmTemp)
-'''
-

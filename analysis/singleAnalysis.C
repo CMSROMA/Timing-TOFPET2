@@ -66,19 +66,35 @@ void singleAnalysis::Loop()
   // TH1F* h1_energy_ref = new TH1F("h1_energy_ref", "", 250, 0, 250);
   // objectsToStore.push_back(h1_energy_ref);
 
-  TH1F* h1_temp_ref = new TH1F("h1_temp_ref", "", 1000, 15, 50);
+  TH1F* h1_temp_ref = new TH1F("h1_temp_ref", "", 1000, -50, 50);
   objectsToStore.push_back(h1_temp_ref);
-  TH1F* h1_temp_bar = new TH1F("h1_temp_bar", "", 1000, 15, 50);
+  TH1F* h1_temp_bar = new TH1F("h1_temp_bar", "", 1000, -50, 50);
   objectsToStore.push_back(h1_temp_bar);
-  TH1F* h1_temp_int = new TH1F("h1_temp_int", "", 1000, 15, 50);
-  objectsToStore.push_back(h1_temp_int);
+
+  TProfile* h1_temp_ref_VsTime = new TProfile("h1_temp_ref_VsTime", "", 1200, 0, 360);
+  objectsToStore.push_back(h1_temp_ref_VsTime);
+  TProfile* h1_temp_bar_VsTime = new TProfile("h1_temp_bar_VsTime", "", 1200, 0, 360);
+  objectsToStore.push_back(h1_temp_bar_VsTime);
+
+  TH1F* h1_temp_chip_ref = new TH1F("h1_temp_chip_ref", "", 1000, -50, 50);
+  objectsToStore.push_back(h1_temp_chip_ref);
+  TH1F* h1_temp_chip_bar = new TH1F("h1_temp_chip_bar", "", 1000, -50, 50);
+  objectsToStore.push_back(h1_temp_chip_bar);
+
+  TProfile* h1_temp_chip_ref_VsTime = new TProfile("h1_temp_chip_ref_VsTime", "", 1200, 0, 360);
+  objectsToStore.push_back(h1_temp_chip_ref_VsTime);
+  TProfile* h1_temp_chip_bar_VsTime = new TProfile("h1_temp_chip_bar_VsTime", "", 1200, 0, 360);
+  objectsToStore.push_back(h1_temp_chip_bar_VsTime);
 
   TProfile* h1_pedVsTime[16];
+  TProfile* h1_pedVsTemp[16];
   for (int ch=0; ch<4; ++ch)
     for (int tac=0; tac<4; ++tac)
       {
 	h1_pedVsTime[ch*4+tac] = new TProfile(Form("h1_pedVsTime_ch%d_tac%d",ch,tac), Form("h1_pedVsTime_ch%d_tac%d",ch,tac), 120,0,3600);
 	objectsToStore.push_back(h1_pedVsTime[ch*4+tac]);
+	h1_pedVsTemp[ch*4+tac] = new TProfile(Form("h1_pedVsTemp_ch%d_tac%d",ch,tac), Form("h1_pedVsTemp_ch%d_tac%d",ch,tac), 1000,-50,50);
+	objectsToStore.push_back(h1_pedVsTemp[ch*4+tac]);
       }
 
    if (fChain == 0) return;
@@ -98,9 +114,15 @@ void singleAnalysis::Loop()
       // 	continue;
 
       // h1_energy_ref->Fill(energy-pedMean->GetBinContent(channelID*4+tacID+1));
-      h1_temp_ref->Fill(tempSiPMRef);
-      h1_temp_bar->Fill(tempSiPMTest);
-      h1_temp_int->Fill(tempInt);
+      h1_temp_ref->Fill(tempHoldBar);
+      h1_temp_bar->Fill(tempHoldArray1);
+      h1_temp_chip_ref->Fill(tempChipBar);
+      h1_temp_chip_bar->Fill(tempChipArray1);
+
+      h1_temp_ref_VsTime->Fill(time/1E12,tempHoldBar);
+      h1_temp_bar_VsTime->Fill(time/1E12,tempHoldArray1);
+      h1_temp_chip_ref_VsTime->Fill(time/1E12,tempChipBar);
+      h1_temp_chip_bar_VsTime->Fill(time/1E12,tempChipArray1);
 
       if (step1!=1)
 	continue;
@@ -109,6 +131,10 @@ void singleAnalysis::Loop()
       float en=energy-ped;
 
       h1_pedVsTime[chMap[channelID]*4+tacID]->Fill(time/1E12,en);
+      if (chMap[channelID]<2)
+	h1_pedVsTemp[chMap[channelID]*4+tacID]->Fill(tempChipBar,energy-pedSlope->GetBinContent(channelID*4+tacID+1)*(tot/1000-305)/5);
+      else
+	h1_pedVsTemp[chMap[channelID]*4+tacID]->Fill(tempChipArray1,energy-pedSlope->GetBinContent(channelID*4+tacID+1)*(tot/1000-305)/5);
    }
 
    TFile *fOut=new TFile(outputFile,"RECREATE");

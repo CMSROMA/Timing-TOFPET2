@@ -136,11 +136,11 @@ n_chip = 2 #number of active TOFPET2 chips
 t_ped = 0.3 #s
 t_phys = 300 #s
 #ov_values = [-1] #V
-ov_values = [7,8] #V
+ov_values = [7] #V
 ovref_values = [7] #V
 gate_values = [34] # # MIN_INTG_TIME/MAX_INTG_TIME 34 = (34 x 4 - 78) x 5 ns = 290ns (for values in range 32...127). Check TOFPET2C ASIC guide.
 name = opt.nameLabel
-nloops = 10
+nloops = 10# 10
 t_ped_in_phys = 0.15 #s
 sleep = 0
 
@@ -194,6 +194,8 @@ dict_Scan = {
     7: (round(posFirstBarX,1),round(posFirstBarY,1),"0_1_2_3","20_20_20_20","40_40_40_40",nloops,sleep),
     8: (round(posFirstBarX,1),round(posFirstBarY,1),"0_1_2_3","20_20_20_20","45_45_45_45",nloops,sleep),
     9: (round(posFirstBarX,1),round(posFirstBarY,1),"0_1_2_3","20_20_20_20","50_50_50_50",nloops,sleep),
+    10: (round(posFirstBarX,1),round(posFirstBarY,1),"0_1_2_3","20_20_20_20","55_55_55_55",nloops,sleep),
+    11: (round(posFirstBarX,1),round(posFirstBarY,1),"0_1_2_3","20_20_20_20","60_60_60_60",nloops,sleep)
 }
 print "Scan" , dict_Scan
 

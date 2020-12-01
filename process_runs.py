@@ -63,7 +63,7 @@ for irun in run_list:
     input_filename_rawf = ""
     input_filename_ini = ""
     input_filename_txt = ""
-#    input_filename_temp = ""
+    input_filename_temp = ""
 
     list_allfiles = os.listdir(opt.directory)
     #print list_allfiles                                                                                                                                                                  
@@ -78,9 +78,9 @@ for irun in run_list:
         if (run in thisfile and ".txt" in thisfile):
             input_filename_txt = opt.directory + "/" + thisfile
             print input_filename_txt
-#        if (run in thisfile and ".temp" in thisfile):
-#            input_filename_temp = opt.directory + "/" + thisfile
-#            print input_filename_temp
+        if (run in thisfile and ".temp" in thisfile):
+            input_filename_temp = opt.directory + "/" + thisfile
+            print input_filename_temp
 
     if (input_filename_rawf==""):
         parser.error('missing rawf file for '+run)
@@ -88,8 +88,8 @@ for irun in run_list:
         parser.error('missing ini file for '+run)
     if (input_filename_txt==""):
         parser.error('missing txt file for '+run)
-#    if (input_filename_temp==""):
-#        parser.error('missing temp file for '+run)
+    if (input_filename_temp==""):
+        parser.error('missing temp file for '+run)
 
     fileNameNoExtension = input_filename_rawf.split(".rawf")[0]
     #print fileNameNoExtension
@@ -103,8 +103,8 @@ for irun in run_list:
     minutes = startTime.split("-")[4]
     seconds = startTime.split("-")[5]
     #print startTime, year, month, day, hours, minutes, seconds
-    unixTimeStart = long(time.mktime(datetime.datetime.strptime(startTime, "%Y-%m-%d-%H-%M-%S").timetuple())) + 3
-    #+3 to account for the 3-seconds "sleep" in run_TOF.py
+    unixTimeStart = long(time.mktime(datetime.datetime.strptime(startTime, "%Y-%m-%d-%H-%M-%S").timetuple())) + 10
+    #+10 to account for the 10-seconds "sleep" in run_TOF.py
     #print unixTimeStart
 
     ###############################
@@ -143,24 +143,24 @@ for irun in run_list:
     print "File created."
     print "\n"
 
-#    ## Add branches to root tree (singles)
-#    print "Update root file with tree (singles)..."
-#    inputfilename = fileNameNoExtension+"_singles.root"
-#    gROOT.ProcessLine('o = TString(gSystem->GetMakeSharedLib()); o = o.ReplaceAll(" -c ", " -std=c++11 -c "); gSystem->SetMakeSharedLib(o.Data());')
-#    gROOT.ProcessLine(".L /home/cmsdaq/Workspace/TOFPET/Timing-TOFPET/analysis/addTemperature.C+")
-#    gROOT.ProcessLine('TFile* f = new TFile("%s","UPDATE");f->cd();'%inputfilename)
-#    gROOT.ProcessLine('TTree* tree; f->GetObject("data",tree);')
-#    gROOT.ProcessLine("addTemperature* addT= new addTemperature(tree);")
-#    gROOT.ProcessLine('addT->out=f');
-#    gROOT.ProcessLine('addT->unixtimeStart=%d;'%unixTimeStart)
-#    gROOT.ProcessLine('addT->tempFile="%s";'%(input_filename_temp))
-#    gBenchmark.Start( 'addTemperature_run%d'%int(irun))
-#    gROOT.ProcessLine("addT->Loop();")
-#    gBenchmark.Show( 'addTemperature_run%d'%int(irun))
-#    gROOT.ProcessLine('f->Close();')
-#    gROOT.ProcessLine('delete addT;delete f;')
-#    print "File updated."
-#    print "\n"
+    ## Add branches to root tree (singles)
+    print "Update root file with tree (singles)..."
+    inputfilename = fileNameNoExtension+"_singles.root"
+    gROOT.ProcessLine('o = TString(gSystem->GetMakeSharedLib()); o = o.ReplaceAll(" -c ", " -std=c++11 -c "); gSystem->SetMakeSharedLib(o.Data());')
+    gROOT.ProcessLine(".L /home/cmsdaq/Workspace/TOFPET/Timing-TOFPET2/analysis/addTemperature.C+")
+    gROOT.ProcessLine('TFile* f = new TFile("%s","UPDATE");f->cd();'%inputfilename)
+    gROOT.ProcessLine('TTree* tree; f->GetObject("data",tree);')
+    gROOT.ProcessLine("addTemperature* addT= new addTemperature(tree);")
+    gROOT.ProcessLine('addT->out=f');
+    gROOT.ProcessLine('addT->unixtimeStart=%d;'%unixTimeStart)
+    gROOT.ProcessLine('addT->tempFile="%s";'%(input_filename_temp))
+    gBenchmark.Start( 'addTemperature_run%d'%int(irun))
+    gROOT.ProcessLine("addT->Loop();")
+    gBenchmark.Show( 'addTemperature_run%d'%int(irun))
+    gROOT.ProcessLine('f->Close();')
+    gROOT.ProcessLine('delete addT;delete f;')
+    print "File updated."
+    print "\n"
 
     ####################################
     ### 3) Create file with coincidences

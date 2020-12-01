@@ -41,13 +41,21 @@ public :
    Float_t         z;
    Float_t         tqT;
    Float_t         tqE;
-//   Long64_t        unixTime;
-//   Double_t        tempInt;
-//   Double_t        tempExt;
-//   Double_t        tempBoardTest;
-//   Double_t        tempBoardRef;
-//   Double_t        tempSiPMTest;
-//   Double_t        tempSiPMRef;
+   Long64_t        unixTime;
+   Double_t        tempChipBar;
+   Double_t        tempHoldBar;
+   Double_t        tempChipArray1;
+   Double_t        tempHoldArray1;
+   Double_t        tempChipArray2;
+   Double_t        tempHoldArray2;
+   Double_t        tempChipArray3;
+   Double_t        tempHoldArray3;
+   Double_t        tempChipArray4;
+   Double_t        tempHoldArray4;
+   Double_t        tempAir;
+   Double_t        tempAirRef;
+   Double_t        humidityRef;
+   Double_t        dewPointRef;
 
    TString       configFile;
    TString       outputFile;
@@ -67,13 +75,21 @@ public :
    TBranch        *b_z;   //!
    TBranch        *b_tqT;   //!
    TBranch        *b_tqE;   //!
-//   TBranch        *b_unixTime;   //!
-//   TBranch        *b_tempInt;   //!
-//   TBranch        *b_tempExt;   //!
-//   TBranch        *b_tempBoardTest;   //!
-//   TBranch        *b_tempBoardRef;   //!
-//   TBranch        *b_tempSiPMTest;   //!
-//   TBranch        *b_tempSiPMRef;   //!
+   TBranch        *b_unixTime;   //!
+   TBranch        *b_tempChipBar;   //!
+   TBranch        *b_tempHoldBar;   //!
+   TBranch        *b_tempChipArray1;   //!
+   TBranch        *b_tempHoldArray1;   //!
+   TBranch        *b_tempChipArray2;   //!
+   TBranch        *b_tempHoldArray2;   //!
+   TBranch        *b_tempChipArray3;   //!
+   TBranch        *b_tempHoldArray3;   //!
+   TBranch        *b_tempChipArray4;   //!
+   TBranch        *b_tempHoldArray4;   //!
+   TBranch        *b_tempAir;   //!
+   TBranch        *b_tempAirRef;   //!
+   TBranch        *b_humidityRef;   //!
+   TBranch        *b_dewPointRef;   //!
 
    findCoincidences(TTree *tree=0);
    virtual ~findCoincidences();
@@ -160,13 +176,22 @@ void findCoincidences::Init(TTree *tree)
    fChain->SetBranchAddress("z", &z, &b_z);
    fChain->SetBranchAddress("tqT", &tqT, &b_tqT);
    fChain->SetBranchAddress("tqE", &tqE, &b_tqE);
-//   fChain->SetBranchAddress("unixTime", &unixTime, &b_unixTime);
-//   fChain->SetBranchAddress("tempInt", &tempInt, &b_tempInt);
-//   fChain->SetBranchAddress("tempExt", &tempExt, &b_tempExt);
-//   fChain->SetBranchAddress("tempBoardTest", &tempBoardTest, &b_tempBoardTest);
-//   fChain->SetBranchAddress("tempBoardRef", &tempBoardRef, &b_tempBoardRef);
-//   fChain->SetBranchAddress("tempSiPMTest", &tempSiPMTest, &b_tempSiPMTest);
-//   fChain->SetBranchAddress("tempSiPMRef", &tempSiPMRef, &b_tempSiPMRef);
+   fChain->SetBranchAddress("unixTime", &unixTime, &b_unixTime);
+   fChain->SetBranchAddress("tempChipBar", &tempChipBar, &b_tempChipBar);
+   fChain->SetBranchAddress("tempHoldBar", &tempHoldBar, &b_tempHoldBar);
+   fChain->SetBranchAddress("tempChipArray1", &tempChipArray1, &b_tempChipArray1);
+   fChain->SetBranchAddress("tempHoldArray1", &tempHoldArray1, &b_tempHoldArray1);
+   fChain->SetBranchAddress("tempChipArray2", &tempChipArray2, &b_tempChipArray2);
+   fChain->SetBranchAddress("tempHoldArray2", &tempHoldArray2, &b_tempHoldArray2);
+   fChain->SetBranchAddress("tempChipArray3", &tempChipArray3, &b_tempChipArray3);
+   fChain->SetBranchAddress("tempHoldArray3", &tempHoldArray3, &b_tempHoldArray3);
+   fChain->SetBranchAddress("tempChipArray4", &tempChipArray4, &b_tempChipArray4);
+   fChain->SetBranchAddress("tempHoldArray4", &tempHoldArray4, &b_tempHoldArray4);
+   fChain->SetBranchAddress("tempAir", &tempAir, &b_tempAir);
+   fChain->SetBranchAddress("tempAirRef", &tempAirRef, &b_tempAirRef);
+   fChain->SetBranchAddress("humidityRef", &humidityRef, &b_humidityRef);
+   fChain->SetBranchAddress("dewPointRef", &dewPointRef, &b_dewPointRef);
+
    Notify();
 }
 
