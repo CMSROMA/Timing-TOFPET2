@@ -14,7 +14,8 @@ MAX_INTG_TIME 34
 
 #Calibration
 RUN_CALIB 0
-CALIB_DIR /home/cmsdaq/Workspace/TOFPET/Timing-TOFPET2/data/calib/test_2bars_5degree_2020_11_19
+CALIB_DIR /home/cmsdaq/Workspace/TOFPET/Timing-TOFPET2/data/calib/test_2bars_5degree_2020_12_01
+#CALIB_DIR /home/cmsdaq/Workspace/TOFPET/Timing-TOFPET2/data/calib/test_2bars_5degree_2020_11_19
 #CALIB_DIR /home/cmsdaq/Workspace/TOFPET/Timing-TOFPET2/dataTEST/calibTest/bar_m5p0_20201016
 DISC_CALIB disc_calibration.tsv
 TDC_CALIB tdc_calibration.tsv
@@ -43,7 +44,7 @@ TIME 0.3
 #TIME 1
 OUTPUT_DIR data/LYSO2BARSTEST/
 #OUTPUT_DIR output/Pedestal
-OUTPUT_LABEL Run000335_2020-11-27-19-21-58_TEST_LYSOBAR_5DEGREE_TH1SCANWITHTEMP_POS11_X-1.0_Y-1.0_CH0-1-2-3_ETHR20-20-20-20_T1THR60-60-60-60
+OUTPUT_LABEL Run000368_2020-12-02-09-05-11_TEST_LYSOBAR_DONTUSE_POS0_X-1.0_Y-1.0_CH0-1-2-3_ETHR20-20-20-20_T1THR35-35-35-35
 #OUTPUT_LABEL PedestalTest13_2ch_100000delay
 
 #Channels
