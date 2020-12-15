@@ -38,7 +38,7 @@ CONVERTSINGLESCRIPT convert_raw_to_singles
 CONVERTCOINCIDENCESCRIPT analysis/find_coincidences.py
 #CONVERTCOINCIDENCESCRIPT convert_raw_to_coincidence
 #TEMPERATUREFILE arduino/temperature/temperature_tmp.txt
-TEMPERATUREFILE /home/cmsdaq/Workspace/Arduino/Temp/test/temperature_tmp.txt
+TEMPERATUREFILE /home/cmsdaq/Workspace/TOFPET/Timing-TOFPET2/arduino/temperature/temperature_tmp.txt
 MODE qdc
 TIME 0.3
 #TIME 1
