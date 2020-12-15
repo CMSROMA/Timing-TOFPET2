@@ -24,18 +24,18 @@ void parseConfig(std::ifstream *input)
 
   while(!input->eof()) {
     line.ReadLine(*input);
+    //cout << line.Data() << endl;
 
     if(line.BeginsWith("#")) continue;
     if(!line.BeginsWith("CH ")) continue;
 
     TObjArray* tokens=line.Tokenize(" ");
     if (tokens->GetEntries()!=15) continue;
-    
+
     int chId= ((TObjString *)(tokens->At(1)))->String().Atoi();
     int iChip = ((TObjString *)(tokens->At(4)))->String().Atoi();
     int iChannel = ((TObjString *)(tokens->At(5)))->String().Atoi();
     int channelId = 64*iChip + iChannel;
-
 
     chMap[channelId]=chId;
 
