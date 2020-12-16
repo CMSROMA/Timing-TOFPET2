@@ -8,24 +8,6 @@ cmake .
 make
 ```
 
-# Temperature sensors
-Open a new terminal
-```
-cd /home/cmsdaq/Workspace/TOFPET/Timing-TOFPET2/arduino/temperature
-python2 serial_monitor.py -d /dev/ttyACM0 -l temperature_tmp.txt &
-```
-keep terminal open
-
-
-# Motors
-Open a new terminal
-```
-cd /home/cmsdaq/Workspace/TOFPET/Timing-TOFPET2/arduino/motors
-python3 grblServer.py --usb /dev/ttyUSB0 -l /tmp/test.log --port=8820
-```
-keep terminal open
-
-
 # Run DAQ
 Edit config_main_bar.txt, config_main_array.txt and run_DAQ.py
 
