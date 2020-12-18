@@ -1,40 +1,54 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Wed Nov  6 19:13:44 2019 by ROOT version 5.34/12
+// Mon Nov 11 15:42:22 2019 by ROOT version 5.34/12
 // from TTree data/Event List
-// found on file: ../output/TestArray_06_11_2019_final/Run000002_2019-11-06-17-43-11_ARRAY000175_POS5_PHYS_qdc_Time300_Gate15_OvRef7_Ov7_singles.root
+// found on file: ../output/TestArray_10_11_2019/Run000002_2019-11-10-12-07-16_ARRAY000175_POS5_X30.0_Y23.0_CH0-5-6-7-21-22-23_ETHR0-10-0-10-10-0-10_PHYS_qdc_Time300_Gate15_OvRef7_Ov7_singles.root
 //////////////////////////////////////////////////////////
 
-#ifndef findCoincidences_h
-#define findCoincidences_h
+#ifndef singleAnalysisArray_h
+#define singleAnalysisArray_h
 
 #include <TROOT.h>
 #include <TChain.h>
 #include <TFile.h>
+#include <TString.h>
+#include <TFile.h>
 #include <TH1F.h>
-#include <map>
-#include <iostream>
-#include <fstream>
 
 // Header file for the classes stored in the TTree if any.
 
 // Fixed size dimensions of array or collections stored in the TTree if any.
-std::map<int,int> chMap;
 
-class findCoincidences {
+/* #include <map> */
+/* struct pedestals */
+/* { */
+/*   std::map<std::pair<int,int>,float> pedMean; */
+/*   std::map<std::pair<int,int>,float> pedRms; */
+/* }; */
+
+#define N_ARRAYS 4
+
+class singleAnalysisArray {
 public :
-  
+   int channels[1000];
+
+   TString         outputFile;
+   TH1F*           pedMean;
+   TH1F*           pedRms;
+   TH1F*           pedValue;
+   TH1F*           pedSlope;
+
+   /* pedestals       myPedestals;  */
+   /* int             channels[100]; */
+   
    TTree          *fChain;   //!pointer to the analyzed TTree or TChain
    Int_t           fCurrent; //!current Tree number in a TChain
-
-   TH1F* channelMap;
-
 
    // Declaration of leaf types
    Float_t         step1;
    Float_t         step2;
    Long64_t        time;
-   UShort_t        channelID;
+   UInt_t          channelID;
    Float_t         tot;
    Float_t         energy;
    UShort_t        tacID;
@@ -48,21 +62,12 @@ public :
    Long64_t        unixTime;
    Double_t        tempChipBar;
    Double_t        tempHoldBar;
-   Double_t        tempChipArray1;
-   Double_t        tempHoldArray1;
-   Double_t        tempChipArray2;
-   Double_t        tempHoldArray2;
-   Double_t        tempChipArray3;
-   Double_t        tempHoldArray3;
-   Double_t        tempChipArray4;
-   Double_t        tempHoldArray4;
+   Double_t        tempChipArray[N_ARRAYS];
+   Double_t        tempHoldArray[N_ARRAYS];
    Double_t        tempAir;
    Double_t        tempAirRef;
    Double_t        humidityRef;
    Double_t        dewPointRef;
-
-   TString       configFile;
-   TString       outputFile;
 
    // List of branches
    TBranch        *b_step1;   //!
@@ -95,31 +100,29 @@ public :
    TBranch        *b_humidityRef;   //!
    TBranch        *b_dewPointRef;   //!
 
-   findCoincidences(TTree *tree=0);
-   virtual ~findCoincidences();
+   singleAnalysisArray(TTree *tree=0);
+   virtual ~singleAnalysisArray();
    virtual Int_t    Cut(Long64_t entry);
    virtual Int_t    GetEntry(Long64_t entry);
    virtual Long64_t LoadTree(Long64_t entry);
    virtual void     Init(TTree *tree);
    virtual void     Loop();
+   virtual void     LoadPedestals(TString pedestalFile);
    virtual Bool_t   Notify();
    virtual void     Show(Long64_t entry = -1);
-
-   void parseConfig(std::ifstream *input);
 };
 
 #endif
 
-#ifdef findCoincidences_cxx
-findCoincidences::findCoincidences(TTree *tree) : fChain(0) 
+#ifdef singleAnalysisArray_cxx
+singleAnalysisArray::singleAnalysisArray(TTree *tree) : fChain(0) 
 {
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
    if (tree == 0) {
-     std::cout << "Passing a NULL tree. Reverting to default" << std::endl;
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("../output/TestArray_06_11_2019_final/Run000002_2019-11-06-17-43-11_ARRAY000175_POS5_PHYS_qdc_Time300_Gate15_OvRef7_Ov7_singles.root");
+      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("../output/TestArray_10_11_2019/Run000002_2019-11-10-12-07-16_ARRAY000175_POS5_X30.0_Y23.0_CH0-5-6-7-21-22-23_ETHR0-10-0-10-10-0-10_PHYS_qdc_Time300_Gate15_OvRef7_Ov7_singles.root");
       if (!f || !f->IsOpen()) {
-         f = new TFile("../output/TestArray_06_11_2019_final/Run000002_2019-11-06-17-43-11_ARRAY000175_POS5_PHYS_qdc_Time300_Gate15_OvRef7_Ov7_singles.root");
+         f = new TFile("../output/TestArray_10_11_2019/Run000002_2019-11-10-12-07-16_ARRAY000175_POS5_X30.0_Y23.0_CH0-5-6-7-21-22-23_ETHR0-10-0-10-10-0-10_PHYS_qdc_Time300_Gate15_OvRef7_Ov7_singles.root");
       }
       f->GetObject("data",tree);
 
@@ -127,19 +130,19 @@ findCoincidences::findCoincidences(TTree *tree) : fChain(0)
    Init(tree);
 }
 
-findCoincidences::~findCoincidences()
+singleAnalysisArray::~singleAnalysisArray()
 {
    if (!fChain) return;
    delete fChain->GetCurrentFile();
 }
 
-Int_t findCoincidences::GetEntry(Long64_t entry)
+Int_t singleAnalysisArray::GetEntry(Long64_t entry)
 {
 // Read contents of entry.
    if (!fChain) return 0;
    return fChain->GetEntry(entry);
 }
-Long64_t findCoincidences::LoadTree(Long64_t entry)
+Long64_t singleAnalysisArray::LoadTree(Long64_t entry)
 {
 // Set the environment to read one entry
    if (!fChain) return -5;
@@ -152,7 +155,7 @@ Long64_t findCoincidences::LoadTree(Long64_t entry)
    return centry;
 }
 
-void findCoincidences::Init(TTree *tree)
+void singleAnalysisArray::Init(TTree *tree)
 {
    // The Init() function is called when the selector needs to initialize
    // a new tree or chain. Typically here the branch addresses and branch
@@ -185,23 +188,22 @@ void findCoincidences::Init(TTree *tree)
    fChain->SetBranchAddress("unixTime", &unixTime, &b_unixTime);
    fChain->SetBranchAddress("tempChipBar", &tempChipBar, &b_tempChipBar);
    fChain->SetBranchAddress("tempHoldBar", &tempHoldBar, &b_tempHoldBar);
-   fChain->SetBranchAddress("tempChipArray1", &tempChipArray1, &b_tempChipArray1);
-   fChain->SetBranchAddress("tempHoldArray1", &tempHoldArray1, &b_tempHoldArray1);
-   fChain->SetBranchAddress("tempChipArray2", &tempChipArray2, &b_tempChipArray2);
-   fChain->SetBranchAddress("tempHoldArray2", &tempHoldArray2, &b_tempHoldArray2);
-   fChain->SetBranchAddress("tempChipArray3", &tempChipArray3, &b_tempChipArray3);
-   fChain->SetBranchAddress("tempHoldArray3", &tempHoldArray3, &b_tempHoldArray3);
-   fChain->SetBranchAddress("tempChipArray4", &tempChipArray4, &b_tempChipArray4);
-   fChain->SetBranchAddress("tempHoldArray4", &tempHoldArray4, &b_tempHoldArray4);
+   fChain->SetBranchAddress("tempChipArray1", &tempChipArray[0], &b_tempChipArray1);
+   fChain->SetBranchAddress("tempHoldArray1", &tempHoldArray[0], &b_tempHoldArray1);
+   fChain->SetBranchAddress("tempChipArray2", &tempChipArray[1], &b_tempChipArray2);
+   fChain->SetBranchAddress("tempHoldArray2", &tempHoldArray[1], &b_tempHoldArray2);
+   fChain->SetBranchAddress("tempChipArray3", &tempChipArray[2], &b_tempChipArray3);
+   fChain->SetBranchAddress("tempHoldArray3", &tempHoldArray[2], &b_tempHoldArray3);
+   fChain->SetBranchAddress("tempChipArray4", &tempChipArray[3], &b_tempChipArray4);
+   fChain->SetBranchAddress("tempHoldArray4", &tempHoldArray[3], &b_tempHoldArray4);
    fChain->SetBranchAddress("tempAir", &tempAir, &b_tempAir);
    fChain->SetBranchAddress("tempAirRef", &tempAirRef, &b_tempAirRef);
    fChain->SetBranchAddress("humidityRef", &humidityRef, &b_humidityRef);
    fChain->SetBranchAddress("dewPointRef", &dewPointRef, &b_dewPointRef);
-
    Notify();
 }
 
-Bool_t findCoincidences::Notify()
+Bool_t singleAnalysisArray::Notify()
 {
    // The Notify() function is called when a new file is opened. This
    // can be either for a new TTree in a TChain or when when a new TTree
@@ -212,18 +214,18 @@ Bool_t findCoincidences::Notify()
    return kTRUE;
 }
 
-void findCoincidences::Show(Long64_t entry)
+void singleAnalysisArray::Show(Long64_t entry)
 {
 // Print contents of entry.
 // If entry is not specified, print current entry
    if (!fChain) return;
    fChain->Show(entry);
 }
-Int_t findCoincidences::Cut(Long64_t entry)
+Int_t singleAnalysisArray::Cut(Long64_t entry)
 {
 // This function may be called from Loop.
 // returns  1 if entry is accepted.
 // returns -1 otherwise.
    return 1;
 }
-#endif // #ifdef findCoincidences_cxx
+#endif // #ifdef singleAnalysisArray_cxx

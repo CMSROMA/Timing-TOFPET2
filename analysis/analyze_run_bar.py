@@ -330,7 +330,11 @@ def fitSaturation(function,xmin,xmax,canvas,fitres,label):
 ###############
 ## RefBar+Bar ##
 ###############
-channels = [3,27,899,923]
+#channels = [3,27,899,923]
+###############
+## Test1 Array ##
+###############
+channels = [3,27,140,139]
 #[59,315,291]
 ###############
 

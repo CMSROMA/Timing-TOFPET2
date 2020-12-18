@@ -17,7 +17,7 @@
 
 using namespace std ;
 
-void parseConfig(std::ifstream *input)
+void findCoincidences::parseConfig(std::ifstream *input)
 {
 
   TString line;
@@ -38,9 +38,12 @@ void parseConfig(std::ifstream *input)
     int channelId = 64*iChip + iChannel;
 
     chMap[channelId]=chId;
-
     std::cout << "TOFPET Channel:" << channelId << "->CH" << chId << std::endl;
   }
+
+  channelMap=new TH1F("channelMap","channelMap",chMap.size(),-0.5,chMap.size()-0.5);
+  for(auto& item: chMap)
+    channelMap->SetBinContent(item.second+1,item.first);
 
   std::cout << "Found #" << chMap.size() << " channels in config" << std::endl;
 }
@@ -367,6 +370,7 @@ void findCoincidences::Loop()
        jentry-=1; //replay the last hit for next search window
      }
 
+   channelMap->Write();
    outTree->Write();
    outFile->Close();
    std::cout << "Processed: " << nentries << " hits\nFound " << goodEvents << " events with coincidences" << std::endl;
