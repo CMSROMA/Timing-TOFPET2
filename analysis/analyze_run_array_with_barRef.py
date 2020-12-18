@@ -784,32 +784,33 @@ for barId in range(0,16):
         print "== No time resolution plots of bar%d"%barId
         continue
 
-    histos[("h1_deltaT12_bar%d"%barId)].Draw("PE")
-    f_gaus = TF1("f_gaus","gaus",
-                 histos[("h1_deltaT12_bar%d"%barId)].GetBinCenter(histos[("h1_deltaT12_bar%d"%barId)].GetMaximumBin())-1000.,
-                 histos[("h1_deltaT12_bar%d"%barId)].GetBinCenter(histos[("h1_deltaT12_bar%d"%barId)].GetMaximumBin())+1000.)
-    histos[("h1_deltaT12_bar%d"%barId)].Fit(f_gaus,"R+0N","",histos[("h1_deltaT12_bar%d"%barId)].GetBinCenter(histos[("h1_deltaT12_bar%d"%barId)].GetMaximumBin())-2.5*histos[("h1_deltaT12_bar%d"%barId)].GetRMS(),histos[("h1_deltaT12_bar%d"%barId)].GetBinCenter(histos[("h1_deltaT12_bar%d"%barId)].GetMaximumBin())+2.5*histos[("h1_deltaT12_bar%d"%barId)].GetRMS())
-    histos[("h1_deltaT12_bar%d"%barId)].Fit(f_gaus,"R+","",f_gaus.GetParameter(1)-2.5*f_gaus.GetParameter(2),f_gaus.GetParameter(1)+2.5*f_gaus.GetParameter(2))
-    histos[("h1_deltaT12_bar%d"%barId)].GetXaxis().SetRangeUser(f_gaus.GetParameter(1)-1000.,f_gaus.GetParameter(1)+1000.)
-    histos[("h1_deltaT12_bar%d"%barId)].GetXaxis().SetTitle(("(t_{1} - t_{2}) bar%d [ps]"%barId))
-    histos[("h1_deltaT12_bar%d"%barId)].GetYaxis().SetTitle("Events")
-    histos[("h1_deltaT12_bar%d"%barId)].GetYaxis().SetTitleOffset(1.6)
+    for h in ['h1_deltaT12_bar','h1_CTR_bar']:
+        histos[("%s%d"%(h,barId))].Draw("PE")
+        f_gaus = TF1("f_gaus","gaus",
+                     histos[("%s%d"%(h,barId))].GetBinCenter(histos[("%s%d"%(h,barId))].GetMaximumBin())-1000.,
+                     histos[("%s%d"%(h,barId))].GetBinCenter(histos[("%s%d"%(h,barId))].GetMaximumBin())+1000.)
+        histos[("%s%d"%(h,barId))].Fit(f_gaus,"R+0N","",histos[("%s%d"%(h,barId))].GetBinCenter(histos[("%s%d"%(h,barId))].GetMaximumBin())-2.5*histos[("%s%d"%(h,barId))].GetRMS(),histos[("%s%d"%(h,barId))].GetBinCenter(histos[("%s%d"%(h,barId))].GetMaximumBin())+2.5*histos[("%s%d"%(h,barId))].GetRMS())
+        histos[("%s%d"%(h,barId))].Fit(f_gaus,"R+","",f_gaus.GetParameter(1)-2.5*f_gaus.GetParameter(2),f_gaus.GetParameter(1)+2.5*f_gaus.GetParameter(2))
+        histos[("%s%d"%(h,barId))].GetXaxis().SetRangeUser(f_gaus.GetParameter(1)-1000.,f_gaus.GetParameter(1)+1000.)
+        histos[("%s%d"%(h,barId))].GetXaxis().SetTitle(("(t_{1} - t_{2}) bar%d [ps]"%(barId)))
+        histos[("%s%d"%(h,barId))].GetYaxis().SetTitle("Events")
+        histos[("%s%d"%(h,barId))].GetYaxis().SetTitleOffset(1.6)
 
-    fitResults[('barCoinc%d'%barId,"deltaT12_bar","mean","value")]=f_gaus.GetParameter(1)
-    fitResults[('barCoinc%d'%barId,"deltaT12_bar","mean","sigma")]=f_gaus.GetParError(1)
-    fitResults[('barCoinc%d'%barId,"deltaT12_bar","sigma","value")]=f_gaus.GetParameter(2)
-    fitResults[('barCoinc%d'%barId,"deltaT12_bar","sigma","sigma")]=f_gaus.GetParError(2)
+        fitResults[('barCoinc%d'%(barId),h.split('h1_')[1],"mean","value")]=f_gaus.GetParameter(1)
+        fitResults[('barCoinc%d'%(barId),h.split('h1_')[1],"mean","sigma")]=f_gaus.GetParError(1)
+        fitResults[('barCoinc%d'%(barId),h.split('h1_')[1],"sigma","value")]=f_gaus.GetParameter(2)
+        fitResults[('barCoinc%d'%(barId),h.split('h1_')[1],"sigma","sigma")]=f_gaus.GetParError(2)
 
-    pt3 = TPaveText(0.100223,0.915556,0.613586,0.967407,"brNDC")
-    text3 = pt3.AddText( "Run" + str(opt.run.zfill(6)) + " ARRAY" + str(opt.arrayCode.zfill(6)) + " BAR"+str(barId))
-    pt3.SetFillColor(0)
-    pt3.Draw()
-    c1_energy.cd()
-    c1_energy.Update()
-    c1_energy.SaveAs(opt.outputDir+"/"+"Run"+str(opt.run.zfill(6))+"_ARRAY"+str(opt.arrayCode.zfill(6))+"_BAR"+str(barId)+"_deltaT12_bar"+".pdf")
-    c1_energy.SaveAs(opt.outputDir+"/"+"Run"+str(opt.run.zfill(6))+"_ARRAY"+str(opt.arrayCode.zfill(6))+"_BAR"+str(barId)+"_deltaT12_bar"+".png")
-    c1_energy.Write()
-    histos[("h1_deltaT12_bar%d"%barId)].Write()
+        pt3 = TPaveText(0.100223,0.915556,0.613586,0.967407,"brNDC")
+        text3 = pt3.AddText( "Run" + str(opt.run.zfill(6)) + " ARRAY" + str(opt.arrayCode.zfill(6)) + " BAR"+str(barId))
+        pt3.SetFillColor(0)
+        pt3.Draw()
+        c1_energy.cd()
+        c1_energy.Update()
+        c1_energy.SaveAs(opt.outputDir+"/"+"Run"+str(opt.run.zfill(6))+"_ARRAY"+str(opt.arrayCode.zfill(6))+"_BAR"+str(barId)+"_%s"%h.split('h1_')[1]+".pdf")
+        c1_energy.SaveAs(opt.outputDir+"/"+"Run"+str(opt.run.zfill(6))+"_ARRAY"+str(opt.arrayCode.zfill(6))+"_BAR"+str(barId)+"_%s"%h.split('h1_')[1]+".png")
+        c1_energy.Write()
+        histos[("%s%d"%(h,barId))].Write()
 
 
 ### Cross talk ###
