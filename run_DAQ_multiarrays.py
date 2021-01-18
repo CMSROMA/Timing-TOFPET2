@@ -166,9 +166,9 @@ nloops = 10
 t_ped_in_phys = 0.15 #s
 sleep = 0
 # 
-# xyz position of the center of the arrays
+# xyz position of the center of the arrays (for example, position of bar 8 [counting from 0])
 dict_array_x_y_z = {
-    0: np.array([1., 2., 3.]),
+    0: np.array([71.2, 39.8, 25.]),
     1: np.array([4., 5., 6.]),
     2: np.array([7., 8., 9.]),
     3: np.array([10., 11., 12.]),
@@ -249,3 +249,8 @@ for iarr,arr in enumerate(cfileNames):
                     RUN(arr,"PHYS",t_phys,ov,ovref,gate,thisname,kInfo[1],kInfo[2],kInfo[3],kInfo[4],kInfo[5],t_ped_in_phys) 
                     RUN(arr,"PED",t_ped,ov,ovref,gate,thisname,kInfo[1],"","",kInfo[4],kInfo[5],0.)
                     #============================================
+
+print "Moving back to home..."
+aMover.home()
+print aMover.estimatedPosition()
+print "++++ Run completed +++++"                    
