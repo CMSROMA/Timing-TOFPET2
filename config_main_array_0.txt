@@ -31,18 +31,18 @@ QDC_CALIB qdc_calibration.tsv
 
 #Run settings
 #DAQSCRIPT my_acquire_sipm_data PHYS
-DAQSCRIPT acquire_pedestal_data PED
+DAQSCRIPT my_acquire_sipm_data PHYS
 #DAQSCRIPT my_acquire_sipm_data PHYS
 CONVERTSINGLESCRIPT convert_raw_to_singles
 CONVERTCOINCIDENCESCRIPT analysis/find_coincidences.py
 #CONVERTCOINCIDENCESCRIPT convert_raw_to_coincidence
 TEMPERATUREFILE /home/cmsdaq/Workspace/TemperatureMonitor/temperature_tmp.txt
 MODE qdc
-TIME 0.3
+TIME 10
 #TIME 1
-OUTPUT_DIR data/LYSOARRAYTEST/
+OUTPUT_DIR data/LYSOMULTIARRAYALIGNTEST5DEGREE_18_01_2021_FULLSCANBAR8
 #OUTPUT_DIR output/Pedestal
-OUTPUT_LABEL Run000400_2020-12-10-20-07-58_TEST_LYSO1BAR1ARRAY_5DEGREE_TEMP_TH1_35_SHORTSEQUENCE_POS2_X-1.0_Y-1.0
+OUTPUT_LABEL Run000034_2021-01-18-13-12-23_TEST_ANUM0_POS33_X70.0_Y55.0_Z25.0
 #OUTPUT_LABEL PedestalTest13_2ch_100000delay
 
 #Channels
@@ -52,40 +52,41 @@ OVERWRITE_OV 7
 #REF are always CH0 and CH1 (reference bar)
 ## TO BE CHECKED: position of pixels and NHV ##
 #  ID	NHV    VBR    OV    NCHIP    NCH    VTH_1    VTH_2    VTH_E    SIPM_CODE    SIPM_TYPE     X    Y    Z    CRYSTAL	
-CH 0	7     50.60  7.00  0	     3	    15	     15	      15       11040	    S13360-3025CS -1   -1   -1    LYSO_bar
-CH 1	7     50.60  7.00  0	     27	    15	     15	      15       11041	    S13360-3025CS -1   -1   -1    LYSO_bar
-CH 2	4     51.40  7.00  2	     11	    15	     15	      15       xx	    xx            -1   -1   -1    LYSO_bar0
-CH 3	4     51.40  7.00  2	     13	    15	     15	      15       xx	    xx            -1   -1   -1    LYSO_bar1
-CH 4	4     51.40  7.00  2	     15	    15	     15	      15       xx	    xx            -1   -1   -1    LYSO_bar2
-CH 5	4     51.40  7.00  2	     4	    15	     15	      15       xx	    xx            -1   -1   -1    LYSO_bar3
-CH 6	4     51.40  7.00  2	     10	    15	     15	      15       xx	    xx            -1   -1   -1    LYSO_bar4
-CH 7	4     51.40  7.00  2	     1	    15	     15	      15       xx	    xx            -1   -1   -1    LYSO_bar5
-CH 8	4     51.40  7.00  2	     14	    15	     15	      15       xx	    xx            -1   -1   -1    LYSO_bar6
-CH 9	4     51.40  7.00  2	     12	    15	     15	      15       xx	    xx            -1   -1   -1    LYSO_bar7
-CH 10	4     51.40  7.00  2	     20	    15	     15	      15       xx	    xx            -1   -1   -1    LYSO_bar8
-CH 11	4     51.40  7.00  2	     22	    15	     15	      15       xx	    xx            -1   -1   -1    LYSO_bar9
-CH 12	4     51.40  7.00  2	     18	    15	     15	      15       xx	    xx            -1   -1   -1    LYSO_bar10
-CH 13	4     51.40  7.00  2	     19	    15	     15	      15       xx	    xx            -1   -1   -1    LYSO_bar11
-CH 14	4     51.40  7.00  2	     24	    15	     15	      15       xx	    xx            -1   -1   -1    LYSO_bar12
-CH 15	4     51.40  7.00  2	     28	    15	     15	      15       xx	    xx            -1   -1   -1    LYSO_bar13
-CH 16	4     51.40  7.00  2	     30	    15	     15	      15       xx	    xx            -1   -1   -1    LYSO_bar14
-CH 17	4     51.40  7.00  2	     32	    15	     15	      15       xx	    xx            -1   -1   -1    LYSO_bar15
-CH 18   5     51.40  7.00  2  	     38	    15	     15	      15       xx	    xx		  -1   -1   -1	  LYSO_bar0
-CH 19   5     51.40  7.00  2  	     62	    15	     15	      15       xx	    xx		  -1   -1   -1	  LYSO_bar1
-CH 20   5     51.40  7.00  2  	     61	    15	     15	      15       xx	    xx		  -1   -1   -1	  LYSO_bar2
-CH 21   5     51.40  7.00  2  	     50	    15	     15	      15       xx	    xx		  -1   -1   -1	  LYSO_bar3
-CH 22   5     51.40  7.00  2  	     63	    15	     15	      15       xx	    xx		  -1   -1   -1	  LYSO_bar4
-CH 23   5     51.40  7.00  2  	     55	    15	     15	      15       xx	    xx		  -1   -1   -1	  LYSO_bar5
-CH 24   5     51.40  7.00  2  	     53	    15	     15	      15       xx	    xx		  -1   -1   -1	  LYSO_bar6
-CH 25   5     51.40  7.00  2  	     51	    15	     15	      15       xx	    xx		  -1   -1   -1	  LYSO_bar7
-CH 26   5     51.40  7.00  2  	     43	    15	     15	      15       xx	    xx		  -1   -1   -1	  LYSO_bar8
-CH 27   5     51.40  7.00  2  	     44	    15	     15	      15       xx	    xx		  -1   -1   -1	  LYSO_bar9
-CH 28   5     51.40  7.00  2  	     45	    15	     15	      15       xx	    xx		  -1   -1   -1	  LYSO_bar10
-CH 29   5     51.40  7.00  2  	     48	    15	     15	      15       xx	    xx		  -1   -1   -1	  LYSO_bar11
-CH 30   5     51.40  7.00  2  	     40	    15	     15	      15       xx	    xx		  -1   -1   -1	  LYSO_bar12
-CH 31   5     51.40  7.00  2  	     39	    15	     15	      15       xx	    xx		  -1   -1   -1	  LYSO_bar13
-CH 32   5     51.40  7.00  2  	     35	    15	     15	      15       xx	    xx		  -1   -1   -1	  LYSO_bar14
-CH 33   5     51.40  7.00  2  	     33	    15	     15	      15       xx	    xx		  -1   -1   -1	  LYSO_bar15
+CH 0    7     50.60  7.00  0         3      15       15       15       11040        S13360-3025CS -1   -1   -1    LYSO_bar
+CH 1    7     50.60  7.00  0         27     15       15       15       11041        S13360-3025CS -1   -1   -1    LYSO_bar
+CH 2    4     51.40  7.00  2         11     15       15       15       xx           xx            -1   -1   -1    LYSO_bar0
+CH 3    4     51.40  7.00  2         13     15       15       15       xx           xx            -1   -1   -1    LYSO_bar1
+CH 4    4     51.40  7.00  2         15     15       15       15       xx           xx            -1   -1   -1    LYSO_bar2
+CH 5    4     51.40  7.00  2         4      15       15       15       xx           xx            -1   -1   -1    LYSO_bar3
+CH 6    4     51.40  7.00  2         10     15       15       15       xx           xx            -1   -1   -1    LYSO_bar4
+CH 7    4     51.40  7.00  2         1      15       15       15       xx           xx            -1   -1   -1    LYSO_bar5
+CH 8    4     51.40  7.00  2         14     15       15       15       xx           xx            -1   -1   -1    LYSO_bar6
+CH 9    4     51.40  7.00  2         12     15       15       15       xx           xx            -1   -1   -1    LYSO_bar7
+CH 10   4     51.40  7.00  2         20     15       15       15       xx           xx            -1   -1   -1    LYSO_bar8
+CH 11   4     51.40  7.00  2         22     15       15       15       xx           xx            -1   -1   -1    LYSO_bar9
+CH 12   4     51.40  7.00  2         18     15       15       15       xx           xx            -1   -1   -1    LYSO_bar10
+CH 13   4     51.40  7.00  2         19     15       15       15       xx           xx            -1   -1   -1    LYSO_bar11
+CH 14   4     51.40  7.00  2         24     15       15       15       xx           xx            -1   -1   -1    LYSO_bar12
+CH 15   4     51.40  7.00  2         28     15       15       15       xx           xx            -1   -1   -1    LYSO_bar13
+CH 16   4     51.40  7.00  2         30     15       15       15       xx           xx            -1   -1   -1    LYSO_bar14
+CH 17   4     51.40  7.00  2         32     15       15       15       xx           xx            -1   -1   -1    LYSO_bar15
+CH 18   5     51.40  7.00  2         38     15       15       15       xx           xx            -1   -1   -1    LYSO_bar0
+CH 19   5     51.40  7.00  2         62     15       15       15       xx           xx            -1   -1   -1    LYSO_bar1
+CH 20   5     51.40  7.00  2         61     15       15       15       xx           xx            -1   -1   -1    LYSO_bar2
+CH 21   5     51.40  7.00  2         50     15       15       15       xx           xx            -1   -1   -1    LYSO_bar3
+CH 22   5     51.40  7.00  2         63     15       15       15       xx           xx            -1   -1   -1    LYSO_bar4
+CH 23   5     51.40  7.00  2         55     15       15       15       xx           xx            -1   -1   -1    LYSO_bar5
+CH 24   5     51.40  7.00  2         53     15       15       15       xx           xx            -1   -1   -1    LYSO_bar6
+CH 25   5     51.40  7.00  2         51     15       15       15       xx           xx            -1   -1   -1    LYSO_bar7
+CH 26   5     51.40  7.00  2         43     15       15       15       xx           xx            -1   -1   -1    LYSO_bar8
+CH 27   5     51.40  7.00  2         44     15       15       15       xx           xx            -1   -1   -1    LYSO_bar9
+CH 28   5     51.40  7.00  2         45     15       15       15       xx           xx            -1   -1   -1    LYSO_bar10
+CH 29   5     51.40  7.00  2         48     15       15       15       xx           xx            -1   -1   -1    LYSO_bar11
+CH 30   5     51.40  7.00  2         40     15       15       15       xx           xx            -1   -1   -1    LYSO_bar12
+CH 31   5     51.40  7.00  2         39     15       15       15       xx           xx            -1   -1   -1    LYSO_bar13
+CH 32   5     51.40  7.00  2         35     15       15       15       xx           xx            -1   -1   -1    LYSO_bar14
+CH 32   5     51.40  7.00  2         35     15       15       15       xx           xx            -1   -1   -1    LYSO_bar14
+CH 33   5     51.40  7.00  2         33     15       15       15       xx           xx            -1   -1   -1    LYSO_bar15
 # Note on VBR: Different CHs can be connected to the same NHV. If different values of VBR are provided only the first one is set for a given NHV. 
 #Note: Source position -
 

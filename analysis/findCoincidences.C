@@ -30,12 +30,20 @@ void findCoincidences::parseConfig(std::ifstream *input)
     if(!line.BeginsWith("CH ")) continue;
 
     TObjArray* tokens=line.Tokenize(" ");
-    if (tokens->GetEntries()!=15) continue;
+    //cout << tokens->GetEntries() << endl;
+    //for (int xx=0; xx<tokens->GetEntries(); xx++)
+    //  {
+    //	cout << ((TObjString *)(tokens->At(xx)))->String() ;
+    //  }
+    //cout << endl;
+    if (tokens->GetEntries()!=16) continue;
 
     int chId= ((TObjString *)(tokens->At(1)))->String().Atoi();
-    int iChip = ((TObjString *)(tokens->At(4)))->String().Atoi();
-    int iChannel = ((TObjString *)(tokens->At(5)))->String().Atoi();
+    int iChip = ((TObjString *)(tokens->At(5)))->String().Atoi();
+    int iChannel = ((TObjString *)(tokens->At(6)))->String().Atoi();
     int channelId = 64*iChip + iChannel;
+
+    //cout << chId << " " << iChip << " " << iChannel << " " << channelId << endl;
 
     chMap[channelId]=chId;
     std::cout << "TOFPET Channel:" << channelId << "->CH" << chId << std::endl;

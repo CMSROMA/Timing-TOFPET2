@@ -68,6 +68,9 @@ for irun in run_list:
     list_allfiles = os.listdir(opt.directory)
     #print list_allfiles                                                                                                                                                                  
     for thisfile in list_allfiles:
+
+        if ("~" in thisfile):
+            continue
         
         if (run in thisfile and ".rawf" in thisfile):
             input_filename_rawf = opt.directory + "/" + thisfile
