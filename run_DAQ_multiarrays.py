@@ -14,7 +14,7 @@ import re
 import numpy as np
 import copy
 
-runNumberFileName="/home/cmsdaq/Workspace/TOFPET/Timing-TOFPET2/data/RunNumbersTest.txt"
+runNumberFileName="/home/cmsdaq/Workspace/TOFPET/Timing-TOFPET2/data/RunNumbersMultiArray.txt"
 
 sys.path.insert(1, os.path.join(sys.path[0], '../../CNCMotor/'))
 from xyzMover import XYZMover
@@ -37,6 +37,8 @@ if not opt.outputFolder:
 if not opt.nameLabel:   
     parser.error('label for output files not provided')
 
+if "_" in opt.nameLabel:
+    parser.error('do not include the symbol _ in the nameLabel option (-n or --name)')
 
 #############################
 ## Input and output
@@ -107,7 +109,7 @@ def RUN(configArray,runtype,time,ov,ovref,gate,label,enabledCh,thresholds,thresh
     print commandRun
 
 ## without Airtable
-    #os.system(commandRun)
+    os.system(commandRun)
     return;
 
 ### with Airtable
@@ -162,8 +164,8 @@ ov_values = [7] #V
 ovref_values = [7] #V
 gate_values = [34] # # MIN_INTG_TIME/MAX_INTG_TIME 34 = (34 x 4 - 78) x 5 ns = 290ns (for values in range 32...127). Check TOFPET2C ASIC guide.
 name = opt.nameLabel
+t_ped_in_phys = 0.015 #s
 nloops = 10
-t_ped_in_phys = 0.15 #s
 sleep = 0
 # 
 # xyz position of the center of the arrays (for example, position of bar 8 [counting from 0])
@@ -181,7 +183,7 @@ dict_array_x_y_z = {
 dict_Scan = {
 
     #DEFAULT SINGLE RUN
-    0: [np.array([0, 0, 0]),channelList,energyThrList,t1ThrList,nloops,sleep],
+    #0: [np.array([0, 0, 0]),channelList,energyThrList,t1ThrList,nloops,sleep],
 
     #T1 THRESHOLD SCAN
     #0: [np.array([0, 0, 0]),channelList,energyThrList,"35_35_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5",nloops,sleep],
@@ -198,9 +200,9 @@ dict_Scan = {
     #11: [np.array([0, 0, 0]),channelList,energyThrList,"35_35_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60",nloops,sleep],
 
     #POSITION SCAN
-    #0: [np.array([0, -3., 0]),channelList,energyThrList,t1ThrList,nloops,sleep],
-    #1: [np.array([0, 0, 0]),channelList,energyThrList,t1ThrList,nloops,sleep],
-    #2: [np.array([0, +3., 0]),channelList,energyThrList,t1ThrList,nloops,sleep],
+    0: [np.array([0, -3., 0]),channelList,energyThrList,t1ThrList,nloops,sleep],
+    1: [np.array([0, 0, 0]),channelList,energyThrList,t1ThrList,nloops,sleep],
+    2: [np.array([0, +3., 0]),channelList,energyThrList,t1ThrList,nloops,sleep],
 
 }
 #print "Scan" , dict_Scan
@@ -210,13 +212,15 @@ dict_Scan = {
 ###################################################################
 
 #
-#aMover=XYZMover(8820)
-#print (aMover.estimatedPosition())
+aMover=XYZMover(8820)
+print (aMover.estimatedPosition())
 
 for iarr,arr in enumerate(cfileNames):
     print ""
     print "=== Run daq for array ", iarr
     print arr
+    if iarr != 0:
+        continue
 
     # edit dictionary with position of current array
     dict_Scan_current = copy.deepcopy(dict_Scan) 
@@ -232,22 +236,23 @@ for iarr,arr in enumerate(cfileNames):
             for gate in gate_values:
                 for kStep, kInfo in dict_Scan_current.items():
 
+
                     print "++++ Centering Bar: "+str(kStep)+": X="+str(kInfo[0][0])+" Y="+str(kInfo[0][1])+" Z="+str(kInfo[0][2])+" Channels="+str(kInfo[1])+" +++++"
-#                    print aMover.moveAbsoluteXYZ(kInfo[0][0],kInfo[0][1],kInfo[0][2])
-#                    if ( aMover.moveAbsoluteXYZ(kInfo[0][0],kInfo[0][1],kInfo[0][2]) is "error"):
-#                        print "== Out of range: skipping this position =="
-#                        continue
-#                    print aMover.estimatedPosition()
-#                    print "++++ Done +++++"                    
-#
+                    print aMover.moveAbsoluteXYZ(kInfo[0][0],kInfo[0][1],kInfo[0][2])
+                    if ( aMover.moveAbsoluteXYZ(kInfo[0][0],kInfo[0][1],kInfo[0][2]) is "error"):
+                        print "== Out of range: skipping this position =="
+                        continue
+                    print aMover.estimatedPosition()
+                    print "++++ Done +++++"                    
+
                     #=== file name
                     thisname = name+"_POS"+str(kStep)+"_X"+str(kInfo[0][0])+"_Y"+str(kInfo[0][1])+"_Z"+str(kInfo[0][2])
                     print(thisname)
 
                     #============================================
-                    RUN(arr,"PED",t_ped,ov,ovref,gate,thisname,kInfo[1],"","",kInfo[4],kInfo[5],0.)
+                    RUN(arr,"PED",t_ped,ov,ovref,gate,thisname,kInfo[1],"","",1,0,0.)
                     RUN(arr,"PHYS",t_phys,ov,ovref,gate,thisname,kInfo[1],kInfo[2],kInfo[3],kInfo[4],kInfo[5],t_ped_in_phys) 
-                    RUN(arr,"PED",t_ped,ov,ovref,gate,thisname,kInfo[1],"","",kInfo[4],kInfo[5],0.)
+                    RUN(arr,"PED",t_ped,ov,ovref,gate,thisname,kInfo[1],"","",1,0,0.)
                     #============================================
 
 print "Moving back to home..."

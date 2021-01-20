@@ -223,7 +223,7 @@ for i in range(args.nloops):
 
                         #Set Test Pulse 2000000 ~ 100 Hz, 200000 ~ 1 kHz 
                         print "TestPulse PLL phase: ", phase
-                        daqd.setTestPulsePLL(200, 200000, phase, False)
+                        daqd.setTestPulsePLL(200, 10000, phase, False)
 
                         #update config
                         daqd.setAsicsConfig(cfgCopy)
