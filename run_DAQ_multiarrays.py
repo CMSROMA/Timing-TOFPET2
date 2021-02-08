@@ -152,16 +152,16 @@ nch = len(channelList.split("_"))
 #
 #energyThrValue = 20
 #energyThrList = '_'.join([str(energyThrValue)] * nch)
-energyThrList = "20_20_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5"
+energyThrList = "20_20_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10"
 #
 #t1ThrValue = 35
 #t1ThrList = '_'.join([str(t1ThrValue)] * nch)
-t1ThrList = "35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35"
+t1ThrList = "35_35_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40"
 #
 t_ped = 0.3 #s
 t_phys = 300 #s
-ov_values = [7] #V
-ovref_values = [7] #V
+ov_values = [8] #V
+ovref_values = [8] #V
 gate_values = [34] # # MIN_INTG_TIME/MAX_INTG_TIME 34 = (34 x 4 - 78) x 5 ns = 290ns (for values in range 32...127). Check TOFPET2C ASIC guide.
 name = opt.nameLabel
 t_ped_in_phys = 0.015 #s
@@ -170,7 +170,7 @@ sleep = 0
 # 
 # xyz position of the center of the arrays (for example, position of bar 8 [counting from 0])
 dict_array_x_y_z = {
-    0: np.array([71.2, 39.8, 25.]),
+    0: np.array([71.2, 39.8, 23.]),
     1: np.array([4., 5., 6.]),
     2: np.array([7., 8., 9.]),
     3: np.array([10., 11., 12.]),
@@ -183,26 +183,26 @@ dict_array_x_y_z = {
 dict_Scan = {
 
     #DEFAULT SINGLE RUN
-    #0: [np.array([0, 0, 0]),channelList,energyThrList,t1ThrList,nloops,sleep],
+    0: [np.array([0, 0, 0]),channelList,energyThrList,t1ThrList,nloops,sleep],
 
     #T1 THRESHOLD SCAN
     #0: [np.array([0, 0, 0]),channelList,energyThrList,"35_35_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5_5",nloops,sleep],
     #1: [np.array([0, 0, 0]),channelList,energyThrList,"35_35_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10",nloops,sleep],
     #2: [np.array([0, 0, 0]),channelList,energyThrList,"35_35_15_15_15_15_15_15_15_15_15_15_15_15_15_15_15_15_15_15_15_15_15_15_15_15_15_15_15_15_15_15_15_15",nloops,sleep],
     #3: [np.array([0, 0, 0]),channelList,energyThrList,"35_35_20_20_20_20_20_20_20_20_20_20_20_20_20_20_20_20_20_20_20_20_20_20_20_20_20_20_20_20_20_20_20_20",nloops,sleep],
-    #4: [np.array([0, 0, 0]),channelList,energyThrList,"35_35_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25",nloops,sleep],
-    #5: [np.array([0, 0, 0]),channelList,energyThrList,"35_35_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30",nloops,sleep],
+#    4: [np.array([0, 0, 0]),channelList,energyThrList,"35_35_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25",nloops,sleep],
+#    5: [np.array([0, 0, 0]),channelList,energyThrList,"35_35_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30",nloops,sleep],
     #6: [np.array([0, 0, 0]),channelList,energyThrList,"35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35",nloops,sleep],
-    #7: [np.array([0, 0, 0]),channelList,energyThrList,"35_35_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40",nloops,sleep],
-    #8: [np.array([0, 0, 0]),channelList,energyThrList,"35_35_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45",nloops,sleep],
-    #9: [np.array([0, 0, 0]),channelList,energyThrList,"35_35_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50",nloops,sleep],
+#    7: [np.array([0, 0, 0]),channelList,energyThrList,"35_35_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40",nloops,sleep],
+#    8: [np.array([0, 0, 0]),channelList,energyThrList,"35_35_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45",nloops,sleep],
+#    9: [np.array([0, 0, 0]),channelList,energyThrList,"35_35_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50",nloops,sleep],
     #10: [np.array([0, 0, 0]),channelList,energyThrList,"35_35_55_55_55_55_55_55_55_55_55_55_55_55_55_55_55_55_55_55_55_55_55_55_55_55_55_55_55_55_55_55_55_55",nloops,sleep],
     #11: [np.array([0, 0, 0]),channelList,energyThrList,"35_35_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60",nloops,sleep],
 
     #POSITION SCAN
-    0: [np.array([0, -3., 0]),channelList,energyThrList,t1ThrList,nloops,sleep],
-    1: [np.array([0, 0, 0]),channelList,energyThrList,t1ThrList,nloops,sleep],
-    2: [np.array([0, +3., 0]),channelList,energyThrList,t1ThrList,nloops,sleep],
+    #0: [np.array([0, -3., 0]),channelList,energyThrList,t1ThrList,nloops,sleep],
+    #1: [np.array([0, 0, 0]),channelList,energyThrList,t1ThrList,nloops,sleep],
+    #2: [np.array([0, +3., 0]),channelList,energyThrList,t1ThrList,nloops,sleep],
 
 }
 #print "Scan" , dict_Scan
