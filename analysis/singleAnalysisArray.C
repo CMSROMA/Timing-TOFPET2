@@ -125,7 +125,7 @@ void singleAnalysisArray::Loop()
   for (int ch=0; ch<nchannels; ++ch)
     for (int tac=0; tac<4; ++tac)
       {
-	h1_pedVsTime[ch*4+tac] = new TProfile(Form("h1_pedVsTime_ch%d_tac%d",ch,tac), Form("h1_pedVsTime_ch%d_tac%d",ch,tac), 120,0,3600);
+	h1_pedVsTime[ch*4+tac] = new TProfile(Form("h1_pedVsTime_ch%d_tac%d",ch,tac), Form("h1_pedVsTime_ch%d_tac%d",ch,tac), 100,0,3900);
 	objectsToStore.push_back(h1_pedVsTime[ch*4+tac]);
 	h1_pedVsTemp[ch*4+tac] = new TProfile(Form("h1_pedVsTemp_ch%d_tac%d",ch,tac), Form("h1_pedVsTemp_ch%d_tac%d",ch,tac), 1000,-50,50);
 	objectsToStore.push_back(h1_pedVsTemp[ch*4+tac]);

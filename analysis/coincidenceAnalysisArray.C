@@ -7,7 +7,7 @@
 
 #define N_BARS 16
 #define N_ARRAYS 4
-#define TEST_1_ARRAY
+//#define TEST_1_ARRAY
 
 void coincidenceAnalysisArray::LoadPedestals(TString pedestalFile)
 {
@@ -198,16 +198,18 @@ void coincidenceAnalysisArray::Loop()
 	  float ped1=pedValue->GetBinContent(channels[0]*4+tacID[0]+1)+pedSlope->GetBinContent(channels[0]*4+tacID[0]+1)*(tot[0]/1000-305)/5.;
 	  float ped2=pedValue->GetBinContent(channels[1]*4+tacID[1]+1)+pedSlope->GetBinContent(channels[1]*4+tacID[1]+1)*(tot[1]/1000-305)/5.;
 #ifdef TEST_1_ARRAY
-	  float pedTime1=0.;
-	  float pedTime2=0.;
+	  float pedTime1=h1_pedVsTime[0*4+tacID[0]]->Interpolate(time[0]/1E12);
+	  float pedTime2=h1_pedVsTime[1*4+tacID[1]]->Interpolate(time[1]/1E12);
 #else
 	  float pedTime1=h1_pedVsTime[0*4+tacID[0]]->Interpolate(time[0]/1E12);
 	  float pedTime2=h1_pedVsTime[1*4+tacID[1]]->Interpolate(time[1]/1E12);
 #endif	  
 	  float refTemp=h1_temp_ref_VsTime->Interpolate((time[0]+time[1])/2/1E12);
 	  
-	  energyRef1 = (energy[0]-ped1-pedTime1)*(1 + (refTemp-4)*0.033);
-	  energyRef2 = (energy[1]-ped2-pedTime2)*(1 + (refTemp-4)*0.033);
+	  // energyRef1 = (energy[0]-ped1-pedTime1)*(1 + (refTemp-4)*0.033);
+	  // energyRef2 = (energy[1]-ped2-pedTime2)*(1 + (refTemp-4)*0.033);
+	  energyRef1 = (energy[0]-ped1-pedTime1);
+	  energyRef2 = (energy[1]-ped2-pedTime2);
 	  energyRef=energyRef1+energyRef2;
 
 	  h1_energy_ref->Fill(energyRef);
@@ -240,18 +242,21 @@ void coincidenceAnalysisArray::Loop()
 #ifdef TEST_1_ARRAY
 	  float barTemp=h1_temp_array_VsTime[i_array]->Interpolate((time[ibar+2])/1E12);
 	  float ped1=pedValue->GetBinContent(channels[ibar+2]*4+tacID[ibar+2]+1)+pedSlope->GetBinContent(channels[ibar+2]*4+tacID[ibar+2]+1)*(tot[ibar+2]/1000-305)/5.;
-	  float pedTime1=0.;
-	  energy1 = (energy[ibar+2]-ped1-pedTime1)*(1 + (barTemp-4)*0.018); 
+	  float pedTime1=h1_pedVsTime[(ibar+2)*4+tacID[ibar+2]]->Interpolate(time[ibar+2]/1E12);
+	  //	  energy1 = (energy[ibar+2]-ped1-pedTime1)*(1 + (barTemp-4)*0.018); 
+	  energy1 = (energy[ibar+2]-ped1-pedTime1);
 	  float pedTime2=0;
 #else
 	  float barTemp=h1_temp_array_VsTime[i_array]->Interpolate((time[ibar+2]+time[ibar+2+N_BARS])/2/1E12);
 	  float ped1=pedValue->GetBinContent(channels[ibar+2]*4+tacID[ibar+2]+1)+pedSlope->GetBinContent(channels[ibar+2]*4+tacID[ibar+2]+1)*(tot[ibar+2]/1000-305)/5.;
 	  float pedTime1=h1_pedVsTime[(ibar+2)*4+tacID[ibar+2]]->Interpolate(time[ibar+2]/1E12);
-	  energy1 = (energy[ibar+2]-ped1-pedTime1)*(1 + (barTemp-4)*0.018); //temp calibration to be optimised
+	  //energy1 = (energy[ibar+2]-ped1-pedTime1)*(1 + (barTemp-4)*0.018); //temp calibration to be optimised
+	  energy1 = (energy[ibar+2]-ped1-pedTime1);
 
 	  float ped2=pedValue->GetBinContent(channels[ibar+2+N_BARS]*4+tacID[ibar+2+N_BARS]+1)+pedSlope->GetBinContent(channels[ibar+2+N_BARS]*4+tacID[ibar+2+N_BARS]+1)*(tot[ibar+2+N_BARS]/1000-305)/5.;
 	  float pedTime2=h1_pedVsTime[(ibar+2+N_BARS)*4+tacID[ibar+2+N_BARS]]->Interpolate(time[ibar+2+N_BARS]/1E12);
-	  energy2 = (energy[ibar+2+N_BARS]-ped2-pedTime2)*(1 + (barTemp-4)*0.018);
+	  //	  energy2 = (energy[ibar+2+N_BARS]-ped2-pedTime2)*(1 + (barTemp-4)*0.018);
+	  energy2 = (energy[ibar+2+N_BARS]-ped2-pedTime2);
 #endif
 	  energyBar =  energy1 + energy2;
 	  h1_energyTot_bar[ibar]->Fill(energyBar);

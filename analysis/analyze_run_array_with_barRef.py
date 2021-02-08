@@ -425,19 +425,19 @@ for file in list_allfiles:
 
     if ("Run"+str(int(opt.run)-1).zfill(6) in file and "_singles.root" in file):
         input_filename_ped1 = opt.inputDir + "/" + file
-        print input_filename_ped1
-
-    if ("Run"+str(int(opt.run)+1).zfill(6) in file and "_singles.root" in file):
-        input_filename_ped2 = opt.inputDir + "/" + file
-        print input_filename_ped2
+        print "Ped1 "+input_filename_ped1
 
     if ("Run"+run in file and "_singles.root" in file):
         input_filename_singles = opt.inputDir + "/" + file
-        print input_filename_singles
+        print "Singles "+input_filename_singles
 
     if ("Run"+run in file and "_coincidences.root" in file):
         input_filename_coinc = opt.inputDir + "/" + file
-        print input_filename_coinc
+        print "Coinc "+input_filename_coinc
+
+    if ("Run"+str(int(opt.run)+1).zfill(6) in file and "_singles.root" in file):
+        input_filename_ped2 = opt.inputDir + "/" + file
+        print "Ped2 "+input_filename_ped2
     
 if (input_filename_ped1==""):
     parser.error('missing pedestal1 file')
@@ -542,8 +542,11 @@ for ch in channels:
         slope_PedTot[(ch,tac)]=-9 
 
 tfilePed1.cd()
+totP1=treePed1.GetEntries()
 for event in range (0,treePed1.GetEntries()):
     treePed1.GetEntry(event)
+    if (event%100000==0):
+        print "Ped1 %d/%d"%(event,totP1)
     for ch in channels:
         if( treePed1.channelID==ch):
             histos_Ped1[ch].Fill(treePed1.tacID,treePed1.energy)
@@ -552,8 +555,11 @@ for event in range (0,treePed1.GetEntries()):
             histosVsTot_PedTot[(ch,treePed1.tacID)].Fill((treePed1.tot/1000-305)/5,treePed1.energy)
 
 tfilePed2.cd()
+totP2=treePed2.GetEntries()
 for event in range (0,treePed2.GetEntries()):
     treePed2.GetEntry(event)
+    if (event%100000==0):
+        print "Ped2 %d/%d"%(event,totP2)
     for ch in channels:
         if( treePed2.channelID==ch):
             histos_Ped2[ch].Fill(treePed2.tacID,treePed2.energy)
@@ -891,6 +897,8 @@ for barId in range(0,16):
 #Pedestals
 h1_pedTotMean.Write()
 h1_pedTotRms.Write()
+h1_pedTotSlope.Write()
+h1_pedTotValue.Write()
 
 for ch in channels:
 
