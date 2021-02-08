@@ -14,7 +14,8 @@ MAX_INTG_TIME 34
 
 #Calibration
 RUN_CALIB 0
-CALIB_DIR /home/cmsdaq/Workspace/TOFPET/Timing-TOFPET2/data/calib/test_1bar_1array_5degree_2020_12_10
+CALIB_DIR /home/cmsdaq/Workspace/TOFPET/Timing-TOFPET2/data/calib/test_1bar_1array_5degree_2021_26_01
+#CALIB_DIR /home/cmsdaq/Workspace/TOFPET/Timing-TOFPET2/data/calib/test_1bar_1array_5degree_2020_12_10
 #CALIB_DIR /home/cmsdaq/Workspace/TOFPET/Timing-TOFPET2/dataTEST/calibTest/bar_m5p0_20201016
 DISC_CALIB disc_calibration.tsv
 TDC_CALIB tdc_calibration.tsv
