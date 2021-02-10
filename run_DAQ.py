@@ -130,7 +130,7 @@ def RUN(runtype,time,ov,ovref,gate,label,enabledCh,thresholds,thresholdsT1,nloop
 ## Run daq sequence
 ###################
 
-'''
+
 #Main sequence (test bar)
 n_ch = 4 #number of channels in config file (2 for 2 pixels, 3 for 1 pixel and 1 bar, 4 for 2 bars, ...)
 n_chip = 2 #number of active TOFPET2 chips
@@ -141,11 +141,12 @@ ov_values = [7] #V
 ovref_values = [7] #V
 gate_values = [34] # # MIN_INTG_TIME/MAX_INTG_TIME 34 = (34 x 4 - 78) x 5 ns = 290ns (for values in range 32...127). Check TOFPET2C ASIC guide.
 name = opt.nameLabel
-nloops = 1# 10
+nloops = 10# 10
 t_ped_in_phys = 0.15 #s
 sleep = 0
-'''
 
+
+'''
 #Main sequence (test array)
 n_ch = 18 #number of channels in config file (2 for 2 pixels, 3 for 1 pixel and 1 bar, ..)
 n_chip = 2 #number of active TOFPET2 chips
@@ -159,6 +160,7 @@ name = opt.nameLabel
 nloops = 10
 t_ped_in_phys = 0.15 #s
 sleep = 0
+'''
 
 #--------------------------------------------------------------------
 
@@ -173,7 +175,6 @@ nseq = 1
 
 #--------------------------------------------------------------------
 
-'''
 ########################
 #Scan for test bar
 ########################
@@ -210,12 +211,13 @@ dict_Scan = {
 
 }
 print "Scan" , dict_Scan
-'''
+
 
 ########################
 #Scan for test array
 ########################
 
+'''
 posFirstBarX = -1
 posFirstBarY = -1
 
@@ -230,7 +232,7 @@ dict_Scan = {
 
 }
 print "Scan" , dict_Scan
-
+'''
 
 ###################################################################
 ########################### Run DAQ ############################### 

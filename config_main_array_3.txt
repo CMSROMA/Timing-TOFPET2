@@ -33,23 +33,23 @@ QDC_CALIB qdc_calibration.tsv
 
 #Run settings
 #DAQSCRIPT my_acquire_sipm_data PHYS
-DAQSCRIPT my_acquire_sipm_data PHYS
+DAQSCRIPT acquire_pedestal_data PED
 #DAQSCRIPT my_acquire_sipm_data PHYS
 CONVERTSINGLESCRIPT convert_raw_to_singles
 CONVERTCOINCIDENCESCRIPT analysis/find_coincidences.py
 #CONVERTCOINCIDENCESCRIPT convert_raw_to_coincidence
 TEMPERATUREFILE /home/cmsdaq/Workspace/TemperatureMonitor/temperature_tmp.txt
 MODE qdc
-TIME 10
+TIME 0.3
 #TIME 1
-OUTPUT_DIR data/LYSOMULTIARRAYALIGN-2021-02-09-V5
+OUTPUT_DIR data/LYSOMULTIARRAYNEWLAB4ARRAYS/
 #OUTPUT_DIR output/Pedestal
-OUTPUT_LABEL Run000136_2021-02-09-17-25-15_ALIGN4ARRAYS_ANUM3_POS33_X215.0_Y59.5_Z23.0
+OUTPUT_LABEL Run000162_2021-02-10-22-38-26_ARRAY-00001_IARR3_POS0_X215.1_Y42.5_Z23.0
 #OUTPUT_LABEL PedestalTest13_2ch_100000delay
 
 #Channels
-OVERWRITE_OV_REF 7
-OVERWRITE_OV 7
+OVERWRITE_OV_REF 8
+OVERWRITE_OV 8
 #If OVERWRITE_OV -1 (same for OVERWRITE_OV_REF), use the OV values in the table below. If OVERWRITE_OV > 0 set all channels to this OV value.
 #REF are always CH0 and CH1 (reference bar)
 ## TO BE CHECKED: position of pixels and NHV ##

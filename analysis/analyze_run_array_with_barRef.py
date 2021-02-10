@@ -547,12 +547,10 @@ for event in range (0,treePed1.GetEntries()):
     treePed1.GetEntry(event)
     if (event%100000==0):
         print "Ped1 %d/%d"%(event,totP1)
-    for ch in channels:
-        if( treePed1.channelID==ch):
-            histos_Ped1[ch].Fill(treePed1.tacID,treePed1.energy)
-            histos_PedTot[ch].Fill(treePed1.tacID,treePed1.energy)
-            histosVsTot_Ped1[(ch,treePed1.tacID)].Fill((treePed1.tot/1000-305)/5,treePed1.energy)
-            histosVsTot_PedTot[(ch,treePed1.tacID)].Fill((treePed1.tot/1000-305)/5,treePed1.energy)
+    histos_Ped1[treePed1.channelID].Fill(treePed1.tacID,treePed1.energy)
+    histos_PedTot[treePed1.channelID].Fill(treePed1.tacID,treePed1.energy)
+    histosVsTot_Ped1[(treePed1.channelID,treePed1.tacID)].Fill((treePed1.tot/1000-305)/5,treePed1.energy)
+    histosVsTot_PedTot[(treePed1.channelID,treePed1.tacID)].Fill((treePed1.tot/1000-305)/5,treePed1.energy)
 
 tfilePed2.cd()
 totP2=treePed2.GetEntries()
@@ -560,12 +558,10 @@ for event in range (0,treePed2.GetEntries()):
     treePed2.GetEntry(event)
     if (event%100000==0):
         print "Ped2 %d/%d"%(event,totP2)
-    for ch in channels:
-        if( treePed2.channelID==ch):
-            histos_Ped2[ch].Fill(treePed2.tacID,treePed2.energy)
-            histos_PedTot[ch].Fill(treePed2.tacID,treePed2.energy)
-            histosVsTot_Ped2[(ch,treePed2.tacID)].Fill((treePed2.tot/1000-305)/5,treePed2.energy)
-            histosVsTot_PedTot[(ch,treePed2.tacID)].Fill((treePed2.tot/1000-305)/5,treePed2.energy)
+    histos_Ped2[treePed2.channelID].Fill(treePed2.tacID,treePed2.energy)
+    histos_PedTot[treePed2.channelID].Fill(treePed2.tacID,treePed2.energy)
+    histosVsTot_Ped2[(treePed2.channelID,treePed2.tacID)].Fill((treePed2.tot/1000-305)/5,treePed2.energy)
+    histosVsTot_PedTot[(treePed2.channelID,treePed2.tacID)].Fill((treePed2.tot/1000-305)/5,treePed2.energy)
 
 h1_pedTotMean=TH1F("h1_pedTotMean","",10000,-0.5,9999.5)
 h1_pedTotRms=TH1F("h1_pedTotRms","",10000,-0.5,9999.5)

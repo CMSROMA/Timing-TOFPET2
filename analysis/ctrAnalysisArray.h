@@ -31,11 +31,11 @@ class ctrAnalysisArray
     int chipId=chId/64;
     if (chipId==2)
       return 0;
-    if (chipId==3)
-      return 1;
     if (chipId==4)
+      return 1;
+    if (chipId==10)
       return 2;
-    if (chipId==5)
+    if (chipId==12)
       return 3;
     
     return -1;

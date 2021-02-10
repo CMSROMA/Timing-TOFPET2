@@ -91,7 +91,6 @@ def RUN(configArray,runtype,time,ov,ovref,gate,label,enabledCh,thresholds,thresh
     ## Write commands
     #################
     newlabel = "Run"+str(currentRun).zfill(6)+"_"+simpletimeMarker+"_"+label
-
     
     if(runtype == "PED"):
         commandRun = "python run_TOFPET.py -c "+ configArray+" --runType PED -d acquire_pedestal_data " + "-t "+ str(time)+" -v "+str(ov)+" --ovref "+str(ovref)+" -l "+str(newlabel)+" -g "+str(gate)+" -o "+opt.outputFolder+" --pedAllChannels " + str(opt.pedAllChannels) + " --nloops " + str(nloops) + " --sleep " + str(sleep)  
@@ -108,38 +107,33 @@ def RUN(configArray,runtype,time,ov,ovref,gate,label,enabledCh,thresholds,thresh
 
     print commandRun
 
-## without Airtable
-    os.system(commandRun)
+### with Airtable
+    tags=newlabel.split('_')
+    print(tags)
+    posX=float(tags[5].replace('X',''))
+    posY=float(tags[6].replace('Y',''))
+    dbCommand = ". ~/AutoProcess/setup.sh; python3 ~/AutoProcess/insertRun.py --id=%s --type=%s --tag=%s --ov=%1.f --posx=%.1f --posy=%.1f "%(tags[0],runtype,newlabel,ov,posX,posY)
+    if (runtype == 'PHYS'):
+        dbCommand += ' --xtal=%s'%tags[2]
+    print(dbCommand)
+    insertDBStatus=os.WEXITSTATUS(os.system(dbCommand))
+    if (not insertDBStatus==0):
+        print('Error writing %s to runDB. Giving up'%tags[0])
+        return
+
+    exitStatus=os.WEXITSTATUS(os.system(commandRun))
+
+    dbCommandCompleted = ". ~/AutoProcess/setup.sh; python3 ~/AutoProcess/updateRun.py --id=%s --status='%s'"%(tags[0],'DAQ COMPLETED' if exitStatus==0 else 'FAILED')
+    print(dbCommandCompleted)
+    insertDBStatus=os.WEXITSTATUS(os.system(dbCommandCompleted))
+    if (not insertDBStatus==0):
+        print('Error writing %s to runDB. Giving up'%tags[0])
+        return
+    else:
+        print('%s successfully inserted into RunDB'%tags[0])
+
     return;
 
-### with Airtable
-#    tags=newlabel.split('_')
-#    print(tags)
-#    posX=float(tags[4].replace('X',''))
-#    posY=float(tags[5].replace('Y',''))
-#    dbCommand = ". ~/AutoProcess/setup.sh; python3 ~/AutoProcess/insertRun.py --id=%s --type=%s --tag=%s --ov=%1.f --posx=%.1f --posy=%.1f "%(tags[0],runtype,newlabel,ov,posX,posY)
-#    if (runtype == 'PHYS'):
-#        dbCommand += ' --xtal=%s'%tags[2]
-#    print(dbCommand)
-#    insertDBStatus=os.WEXITSTATUS(os.system(dbCommand))
-#    if (not insertDBStatus==0):
-#        print('Error writing %s to runDB. Giving up'%tags[0])
-#        return
-#
-##    commandRun='sleep 5'
-#    exitStatus=os.WEXITSTATUS(os.system(commandRun))
-#
-#    if (exitStatus==0):
-#        dbCommandCompleted = ". ~/AutoProcess/setup.sh; python3 ~/AutoProcess/updateRun.py --id=%s --status='%s'"%(tags[0],'DAQ COMPLETED')
-#        print(dbCommandCompleted)
-#        os.system(dbCommandCompleted)
-#        if (not insertDBStatus==0):
-#            print('Error writing %s to runDB. Giving up'%tags[0])
-#            return
-#        else:
-#            print('%s successfully inserted into RunDB'%tags[0])
-#    return;
-###
 
 ###################
 ## Daq settings
@@ -163,7 +157,7 @@ t_phys = 300 #s
 ov_values = [8] #V
 ovref_values = [8] #V
 gate_values = [34] # # MIN_INTG_TIME/MAX_INTG_TIME 34 = (34 x 4 - 78) x 5 ns = 290ns (for values in range 32...127). Check TOFPET2C ASIC guide.
-name = opt.nameLabel
+names = opt.nameLabel.split(',')
 t_ped_in_phys = 0.015 #s
 nloops = 10
 sleep = 0
@@ -215,11 +209,15 @@ dict_Scan = {
 aMover=XYZMover(8820)
 print (aMover.estimatedPosition())
 
+if len(cfileNames) != len(names):
+    print("Mismatch in number of arrays. Please check that you have specified the correct number of arrays in the config")
+    exit(-1)
+
 for iarr,arr in enumerate(cfileNames):
     print ""
     print "=== Run daq for array ", iarr
     print arr
-    if iarr != 0:
+    if int(names[iarr])==-1:
         continue
 
     # edit dictionary with position of current array
@@ -246,7 +244,7 @@ for iarr,arr in enumerate(cfileNames):
                     print "++++ Done +++++"                    
 
                     #=== file name
-                    thisname = name+"_POS"+str(kStep)+"_X"+str(kInfo[0][0])+"_Y"+str(kInfo[0][1])+"_Z"+str(kInfo[0][2])
+                    thisname = 'ARRAY'+str(names[iarr]).zfill(6)+"_IARR"+str(iarr)+"_POS"+str(kStep)+"_X"+str(kInfo[0][0])+"_Y"+str(kInfo[0][1])+"_Z"+str(kInfo[0][2])
                     print(thisname)
 
                     #============================================

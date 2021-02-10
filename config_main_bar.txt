@@ -42,9 +42,9 @@ TEMPERATUREFILE /home/cmsdaq/Workspace/TemperatureMonitor/temperature_tmp.txt
 MODE qdc
 TIME 0.3
 #TIME 1
-OUTPUT_DIR data/LYSO2BARSTEST/
+OUTPUT_DIR data/LYSOTEST
 #OUTPUT_DIR output/Pedestal
-OUTPUT_LABEL Run000368_2020-12-02-09-05-11_TEST_LYSOBAR_DONTUSE_POS0_X-1.0_Y-1.0_CH0-1-2-3_ETHR20-20-20-20_T1THR35-35-35-35
+OUTPUT_LABEL Run000403_2021-02-01-15-06-51_Na22_POS0_X-1.0_Y-1.0
 #OUTPUT_LABEL PedestalTest13_2ch_100000delay
 
 #Channels
@@ -58,8 +58,8 @@ OVERWRITE_OV 7
 #CH 1	6     51.50  3.00  0	     25	    10	     10	      10       12381	    S13360-3050CS -1   -1   -1  LYSO_pixel	
 CH 0	7     50.60  7.00  0	     3	    15	     15	      15       11040	    S13360-3025CS -1   -1   -1     LYSO_bar
 CH 1	7     50.60  7.00  0	     27	    15	     15	      15       11041	    S13360-3025CS -1   -1   -1     LYSO_bar
-CH 2	9     50.60  7.00  14	     3	    15	     15	      15       11042	    S13360-3025CS -1   -1   -1     LYSO_bar
-CH 3	9     50.60  7.00  14	     27	    15	     15	      15       11044	    S13360-3025CS -1   -1   -1     LYSO_bar
+CH 2	9     50.60  7.00  2	     3	    15	     15	      15       11042	    S13360-3025CS -1   -1   -1     LYSO_bar
+CH 3	9     50.60  7.00  2	     27	    15	     15	      15       11044	    S13360-3025CS -1   -1   -1     LYSO_bar
 # Note on VBR: Different CHs can be connected to the same NHV. If different values of VBR are provided only the first one is set for a given NHV. 
 #Note: Source position -
 
