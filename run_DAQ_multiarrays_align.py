@@ -169,10 +169,10 @@ sleep = 0
 # 
 # xyz position of the starting position of the arrays for alignment scan
 dict_array_x_y_z = {
-    0: np.array([70., 40., 25.]),
-    1: np.array([45., 140., 25.]),
-    2: np.array([195., 140., 25.]),
-    3: np.array([195., 40., 25.]),
+    0: np.array([70.7, 44.0, 23.]),
+    1: np.array([73.0, 139.4, 23.]),
+    2: np.array([216.1, 138.3, 23.]),
+    3: np.array([215.1, 42.5, 23.]),
 }
 
 ########################
@@ -234,8 +234,10 @@ for iarr,arr in enumerate(cfileNames):
     print ""
     print "=== Run daq for array ", iarr
     print arr
-    if iarr != 0:
-        continue
+    #if iarr != 0:
+    #    continue
+    #if iarr==0 or iarr==1:
+    #    continue
 
     # edit dictionary with position of current array
     dict_Scan_current = copy.deepcopy(dict_Scan) 

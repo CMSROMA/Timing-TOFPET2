@@ -170,10 +170,10 @@ sleep = 0
 # 
 # xyz position of the center of the arrays (for example, position of bar 8 [counting from 0])
 dict_array_x_y_z = {
-    0: np.array([71.2, 39.8, 23.]),
-    1: np.array([4., 5., 6.]),
-    2: np.array([7., 8., 9.]),
-    3: np.array([10., 11., 12.]),
+    0: np.array([70.7, 44.0, 23.]),
+    1: np.array([73.0, 139.4, 23.]),
+    2: np.array([216.1, 138.3, 23.]),
+    3: np.array([215.1, 42.5, 23.])
 }
 
 ########################

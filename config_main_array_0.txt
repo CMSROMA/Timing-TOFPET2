@@ -14,7 +14,8 @@ MAX_INTG_TIME 34
 
 #Calibration
 RUN_CALIB 0
-CALIB_DIR /home/cmsdaq/Workspace/TOFPET/Timing-TOFPET2/data/calib/test_1bar_1array_5degree_2021_26_01
+CALIB_DIR /home/cmsdaq/Workspace/TOFPET/Timing-TOFPET2/data/calib/1bar_4arrays_5degreeSet_2021_08_02
+#CALIB_DIR /home/cmsdaq/Workspace/TOFPET/Timing-TOFPET2/data/calib/test_1bar_1array_5degree_2021_26_01
 #CALIB_DIR /home/cmsdaq/Workspace/TOFPET/Timing-TOFPET2/data/calib/test_1bar_1array_5degree_2020_12_10
 #CALIB_DIR /home/cmsdaq/Workspace/TOFPET/Timing-TOFPET2/dataTEST/calibTest/bar_m5p0_20201016
 DISC_CALIB disc_calibration.tsv
@@ -41,9 +42,9 @@ TEMPERATUREFILE /home/cmsdaq/Workspace/TemperatureMonitor/temperature_tmp.txt
 MODE qdc
 TIME 0.3
 #TIME 1
-OUTPUT_DIR data/LYSOMULTIARRAYNEWLAB26GEN/
+OUTPUT_DIR data/LYSOMULTIARRAYNEWLAB4ARRAYS/
 #OUTPUT_DIR output/Pedestal
-OUTPUT_LABEL Run000063_2021-02-03-17-54-07_Na22_POS7_X71.2_Y39.8_Z25.0
+OUTPUT_LABEL Run000072_2021-02-10-10-42-28_Na22ARRAY0_POS0_X70.7_Y44.0_Z23.0
 #OUTPUT_LABEL PedestalTest13_2ch_100000delay
 
 #Channels

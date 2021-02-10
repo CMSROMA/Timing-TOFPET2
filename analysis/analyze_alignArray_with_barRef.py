@@ -56,11 +56,11 @@ alignBarCh2 = 26
 nbins = 3001
 minVal = -0.5
 maxVal = 300.5
-histoX = []
-histoY = []
-#histoX = TH1F("histoX","histoX",nbins,minVal,maxVal)
-#histoY = TH1F("histoY","histoY",nbins,minVal,maxVal)
-
+#histoX = []
+#histoY = []
+#listARRAY = []
+histoX = {}
+histoY = {}
 listARRAY = []
 
 for file in list_allfiles:
@@ -79,9 +79,10 @@ for file in list_allfiles:
 
         if ARRAY not in listARRAY:        
             listARRAY.append(ARRAY)
-
-        histoX.append(TH1F("histoX"+"_array_"+str(ARRAY),"histoX"+"_array_"+str(ARRAY),nbins,minVal,maxVal))
-        histoY.append(TH1F("histoY"+"_array_"+str(ARRAY),"histoY"+"_array_"+str(ARRAY),nbins,minVal,maxVal))
+            #histoX.append(TH1F("histoX"+"_array_"+str(ARRAY),"histoX"+"_array_"+str(ARRAY),nbins,minVal,maxVal))
+            #histoY.append(TH1F("histoY"+"_array_"+str(ARRAY),"histoY"+"_array_"+str(ARRAY),nbins,minVal,maxVal))
+            histoX[ARRAY]=TH1F("histoX"+"_array_"+str(ARRAY),"histoX"+"_array_"+str(ARRAY),nbins,minVal,maxVal)
+            histoY[ARRAY]=TH1F("histoY"+"_array_"+str(ARRAY),"histoY"+"_array_"+str(ARRAY),nbins,minVal,maxVal)
 
         tfile = TFile.Open(input_filename_coinc)
         tree = tfile.Get("data")
@@ -107,6 +108,8 @@ for file in list_allfiles:
             histoY[ARRAY].SetBinContent(histoY[ARRAY].GetXaxis().FindBin(Y),nhits_coinc)
             histoY[ARRAY].SetBinError(histoY[ARRAY].GetXaxis().FindBin(Y),sqrt(nhits_coinc))
 
+        tfile.Close()
+
 # available arrays
 print listARRAY
 
@@ -129,7 +132,7 @@ for iarr in listARRAY:
     print "================================="    
     print "==== ARRAY, maxX, maxY: " , iarr, max_X, max_Y
     print "================================="
-    posARRAY[ARRAY]=(round(max_X,1),round(max_Y,1))
+    posARRAY[iarr]=(round(max_X,1),round(max_Y,1))
     
     #style
     histoX[iarr].GetXaxis().SetTitle("X (array "+str(iarr)+", bar"+str(alignBarNumber)+") [mm]")

@@ -14,7 +14,8 @@ MAX_INTG_TIME 34
 
 #Calibration
 RUN_CALIB 0
-CALIB_DIR /home/cmsdaq/Workspace/TOFPET/Timing-TOFPET2/data/calib/test_1bar_1array_5degree_2021_26_01
+CALIB_DIR /home/cmsdaq/Workspace/TOFPET/Timing-TOFPET2/data/calib/1bar_4arrays_5degreeSet_2021_08_02
+#CALIB_DIR /home/cmsdaq/Workspace/TOFPET/Timing-TOFPET2/data/calib/test_1bar_1array_5degree_2021_26_01
 #CALIB_DIR /home/cmsdaq/Workspace/TOFPET/Timing-TOFPET2/data/calib/test_1bar_1array_5degree_2020_12_10
 #CALIB_DIR /home/cmsdaq/Workspace/TOFPET/Timing-TOFPET2/dataTEST/calibTest/bar_m5p0_20201016
 DISC_CALIB disc_calibration.tsv
@@ -32,18 +33,18 @@ QDC_CALIB qdc_calibration.tsv
 
 #Run settings
 #DAQSCRIPT my_acquire_sipm_data PHYS
-DAQSCRIPT acquire_pedestal_data PED
+DAQSCRIPT my_acquire_sipm_data PHYS
 #DAQSCRIPT my_acquire_sipm_data PHYS
 CONVERTSINGLESCRIPT convert_raw_to_singles
 CONVERTCOINCIDENCESCRIPT analysis/find_coincidences.py
 #CONVERTCOINCIDENCESCRIPT convert_raw_to_coincidence
 TEMPERATUREFILE /home/cmsdaq/Workspace/TemperatureMonitor/temperature_tmp.txt
 MODE qdc
-TIME 0.3
+TIME 10
 #TIME 1
-OUTPUT_DIR data/LYSOARRAYTEST/
+OUTPUT_DIR data/LYSOMULTIARRAYALIGN-2021-02-09-V5
 #OUTPUT_DIR output/Pedestal
-OUTPUT_LABEL Run000400_2020-12-10-20-07-58_TEST_LYSO1BAR1ARRAY_5DEGREE_TEMP_TH1_35_SHORTSEQUENCE_POS2_X-1.0_Y-1.0
+OUTPUT_LABEL Run000068_2021-02-09-16-56-15_ALIGN4ARRAYS_ANUM1_POS33_X72.7_Y154.5_Z23.0
 #OUTPUT_LABEL PedestalTest13_2ch_100000delay
 
 #Channels
