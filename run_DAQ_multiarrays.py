@@ -146,7 +146,7 @@ nch = len(channelList.split("_"))
 #
 #energyThrValue = 20
 #energyThrList = '_'.join([str(energyThrValue)] * nch)
-energyThrList = "20_20_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10_10"
+energyThrList = "20_20_6_6_6_6_6_6_6_6_6_6_6_6_6_6_6_6_6_6_6_6_6_6_6_6_6_6_6_6_6_6_6_6"
 #
 #t1ThrValue = 35
 #t1ThrList = '_'.join([str(t1ThrValue)] * nch)
@@ -208,6 +208,7 @@ dict_Scan = {
 #
 aMover=XYZMover(8820)
 print (aMover.estimatedPosition())
+aMover.lightsOn()
 
 if len(cfileNames) != len(names):
     print("Mismatch in number of arrays. Please check that you have specified the correct number of arrays in the config")
@@ -246,14 +247,18 @@ for iarr,arr in enumerate(cfileNames):
                     #=== file name
                     thisname = 'ARRAY'+str(names[iarr]).zfill(6)+"_IARR"+str(iarr)+"_POS"+str(kStep)+"_X"+str(kInfo[0][0])+"_Y"+str(kInfo[0][1])+"_Z"+str(kInfo[0][2])
                     print(thisname)
-
+                    aMover.lightsOff()
+                    time.sleep(5)
                     #============================================
                     RUN(arr,"PED",t_ped,ov,ovref,gate,thisname,kInfo[1],"","",1,0,0.)
                     RUN(arr,"PHYS",t_phys,ov,ovref,gate,thisname,kInfo[1],kInfo[2],kInfo[3],kInfo[4],kInfo[5],t_ped_in_phys) 
                     RUN(arr,"PED",t_ped,ov,ovref,gate,thisname,kInfo[1],"","",1,0,0.)
                     #============================================
+                    time.sleep(5)
+                    aMover.lightsOn()
 
 print "Moving back to home..."
-aMover.home()
+aMover.moveAbsoluteXYZ(0,0,0)
 print aMover.estimatedPosition()
+print (aMover.lightsOn())
 print "++++ Run completed +++++"                    
