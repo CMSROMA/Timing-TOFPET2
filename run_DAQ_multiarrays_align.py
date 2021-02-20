@@ -229,6 +229,7 @@ dict_Scan = {
 #
 aMover=XYZMover(8820)
 print (aMover.estimatedPosition())
+aMover.lightsOff()
 
 for iarr,arr in enumerate(cfileNames):
     print ""

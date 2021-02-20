@@ -5,9 +5,6 @@
 #include <TCanvas.h>
 #include <iostream>
 
-#define N_BARS 16
-#define N_ARRAYS 4
-//#define TEST_1_ARRAY
 
 void coincidenceAnalysisArray::LoadPedestals(TString pedestalFile)
 {
@@ -20,6 +17,20 @@ void coincidenceAnalysisArray::LoadPedestals(TString pedestalFile)
   
   if (!pedMean or !pedRms or !pedValue or !pedSlope)
     std::cout << "Pedestal histograms not found in " << pedestalFile << std::endl;
+
+  // return;
+}
+
+void coincidenceAnalysisArray::LoadCalibrations(TString calibFile)
+{
+  TFile* f=new TFile(calibFile);
+  f->ls();
+  for (int i=0;i<N_ARRAYS;++i)
+    {
+      calibMap[i]=(TH1F*) f->Get(Form("calibFinal_IARR%d",i));
+      if (!calibMap[i])
+	std::cout << "Calib for IARR " << i << "not found in " << calibFile << std::endl;
+    }
 
   // return;
 }
@@ -239,6 +250,7 @@ void coincidenceAnalysisArray::Loop()
 	  float energyBar =  0;
 	  
 	  int i_array=arrayId(channels[ibar+2]);
+	  float calibBar= calibMap[i_array] ? calibMap[i_array]->GetBinContent(ibar+1) : 1.;
 #ifdef TEST_1_ARRAY
 	  float barTemp=h1_temp_array_VsTime[i_array]->Interpolate((time[ibar+2])/1E12);
 	  float ped1=pedValue->GetBinContent(channels[ibar+2]*4+tacID[ibar+2]+1)+pedSlope->GetBinContent(channels[ibar+2]*4+tacID[ibar+2]+1)*(tot[ibar+2]/1000-305)/5.;
@@ -251,12 +263,12 @@ void coincidenceAnalysisArray::Loop()
 	  float ped1=pedValue->GetBinContent(channels[ibar+2]*4+tacID[ibar+2]+1)+pedSlope->GetBinContent(channels[ibar+2]*4+tacID[ibar+2]+1)*(tot[ibar+2]/1000-305)/5.;
 	  float pedTime1=h1_pedVsTime[(ibar+2)*4+tacID[ibar+2]]->Interpolate(time[ibar+2]/1E12);
 	  //energy1 = (energy[ibar+2]-ped1-pedTime1)*(1 + (barTemp-4)*0.018); //temp calibration to be optimised
-	  energy1 = (energy[ibar+2]-ped1-pedTime1);
+	  energy1 = (energy[ibar+2]-ped1-pedTime1)*calibBar;
 
 	  float ped2=pedValue->GetBinContent(channels[ibar+2+N_BARS]*4+tacID[ibar+2+N_BARS]+1)+pedSlope->GetBinContent(channels[ibar+2+N_BARS]*4+tacID[ibar+2+N_BARS]+1)*(tot[ibar+2+N_BARS]/1000-305)/5.;
 	  float pedTime2=h1_pedVsTime[(ibar+2+N_BARS)*4+tacID[ibar+2+N_BARS]]->Interpolate(time[ibar+2+N_BARS]/1E12);
 	  //	  energy2 = (energy[ibar+2+N_BARS]-ped2-pedTime2)*(1 + (barTemp-4)*0.018);
-	  energy2 = (energy[ibar+2+N_BARS]-ped2-pedTime2);
+	  energy2 = (energy[ibar+2+N_BARS]-ped2-pedTime2)*calibBar;
 #endif
 	  energyBar =  energy1 + energy2;
 	  h1_energyTot_bar[ibar]->Fill(energyBar);

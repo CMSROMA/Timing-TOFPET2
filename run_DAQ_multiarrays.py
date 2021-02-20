@@ -25,6 +25,8 @@ parser.add_option("-c", "--config", dest="configFile",
                   help="list with config file for different arrays")
 parser.add_option("-o", "--outFolder", dest="outputFolder",
                   help="output directory")
+parser.add_option("-l", "--lscan", dest="lscan",action="store_true",default=False,
+                  help="longitudinal scan")
 parser.add_option("--pedAllChannels", dest="pedAllChannels", default=0, 
                   help="Set to 1 to collect pedestals for all channels (default is 0)")
 parser.add_option("-n", "--name", dest="nameLabel",
@@ -199,6 +201,33 @@ dict_Scan = {
     #2: [np.array([0, +3., 0]),channelList,energyThrList,t1ThrList,nloops,sleep],
 
 }
+
+if (opt.lscan):
+    dict_Scan = {
+
+        #DEFAULT SINGLE RUN
+    0: [np.array([0, 0, 0]),channelList,energyThrList,t1ThrList,nloops,sleep],
+    1: [np.array([0, 4, 0]),channelList,energyThrList,t1ThrList,nloops,sleep],
+    2: [np.array([0, 8, 0]),channelList,energyThrList,t1ThrList,nloops,sleep],
+    3: [np.array([0, 12, 0]),channelList,energyThrList,t1ThrList,nloops,sleep],
+    4: [np.array([0, 16, 0]),channelList,energyThrList,t1ThrList,nloops,sleep],
+    5: [np.array([0, 20, 0]),channelList,energyThrList,t1ThrList,nloops,sleep],
+    6: [np.array([0, 20, 0]),channelList,energyThrList,t1ThrList,nloops,sleep],
+    7: [np.array([0, 28, 0]),channelList,energyThrList,t1ThrList,nloops,sleep],
+    -1: [np.array([0, -4, 0]),channelList,energyThrList,t1ThrList,nloops,sleep],
+    -2: [np.array([0, -8, 0]),channelList,energyThrList,t1ThrList,nloops,sleep],
+    -3: [np.array([0, -12, 0]),channelList,energyThrList,t1ThrList,nloops,sleep],
+    -4: [np.array([0, -16, 0]),channelList,energyThrList,t1ThrList,nloops,sleep],
+    -5: [np.array([0, -20, 0]),channelList,energyThrList,t1ThrList,nloops,sleep],
+    -6: [np.array([0, -20, 0]),channelList,energyThrList,t1ThrList,nloops,sleep],
+    -7: [np.array([0, -28, 0]),channelList,energyThrList,t1ThrList,nloops,sleep],
+
+    }
+else:
+    dict_Scan = {
+    #DEFAULT SINGLE RUN
+    0: [np.array([0, 0, 0]),channelList,energyThrList,t1ThrList,nloops,sleep],
+    }
 #print "Scan" , dict_Scan
 
 ###################################################################

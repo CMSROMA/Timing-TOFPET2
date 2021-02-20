@@ -52,6 +52,7 @@ class ctrAnalysisArray
    TH1F*           pedSlope;
 
    TH1F*           channelMap;
+   TH1F*           calibMap[N_ARRAYS];
 
    TProfile*       h1_pedVsTime[1000*4];
    TProfile*       h1_temp_array_VsTime[N_ARRAYS];
@@ -110,6 +111,7 @@ class ctrAnalysisArray
   virtual Bool_t   Notify();
   virtual void     Show(Long64_t entry = -1);
   virtual void     LoadPedestals(TString pedestalFile);
+  virtual void     LoadCalibrations(TString calibFile);
 };
 
 #endif

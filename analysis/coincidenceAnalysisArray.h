@@ -15,6 +15,10 @@
 #include <TString.h>
 #include <TProfile.h>
 
+#define N_BARS 16
+#define N_ARRAYS 4
+//#define TEST_1_ARRAY
+
 
 // Header file for the classes stored in the TTree if any.
 
@@ -47,6 +51,7 @@ public :
    TH1F*           pedSlope;
 
    TH1F*           channelMap;
+   TH1F*           calibMap[N_ARRAYS];
 
    TTree          *fChain;   //!pointer to the analyzed TTree or TChain
    Int_t           fCurrent; //!current Tree number in a TChain
@@ -95,6 +100,7 @@ public :
    virtual Bool_t   Notify();
    virtual void     Show(Long64_t entry = -1);
    virtual void     LoadPedestals(TString pedestalFile);
+   virtual void     LoadCalibrations(TString calibFile);
 };
 
 #endif

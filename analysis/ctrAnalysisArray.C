@@ -23,6 +23,20 @@ void ctrAnalysisArray::LoadPedestals(TString pedestalFile)
   // return;
 }
 
+void ctrAnalysisArray::LoadCalibrations(TString calibFile)
+{
+  TFile* f=new TFile(calibFile);
+  f->ls();
+  for (int i=0;i<N_ARRAYS;++i)
+    {
+      calibMap[i]=(TH1F*) f->Get(Form("calibFinal_IARR%d",i));
+      if (!calibMap[i])
+	std::cout << "Calib for IARR " << i << "not found in " << calibFile << std::endl;
+    }
+
+  // return;
+}
+
 void ctrAnalysisArray::getBarEnergy(int ibar,float& energy1, float& energy2)
 {
   int i_array=arrayId(channels[ibar+2]);
@@ -39,12 +53,14 @@ void ctrAnalysisArray::getBarEnergy(int ibar,float& energy1, float& energy2)
   float ped1=pedValue->GetBinContent(channels[ibar+2]*4+tacID[ibar+2]+1)+pedSlope->GetBinContent(channels[ibar+2]*4+tacID[ibar+2]+1)*(tot[ibar+2]/1000-305)/5.;
   float pedTime1=h1_pedVsTime[(ibar+2)*4+tacID[ibar+2]]->Interpolate(time[ibar+2]/1E12);
   
-  //  energy1 = (energy[ibar+2]-ped1-pedTime1)*(1 + (barTemp-4)*0.018); //temp calibration to be optimised	
-  energy1 = energy[ibar+2]>-9 ? (energy[ibar+2]-ped1-pedTime1) : 0.;
+  //  energy1 = (energy[ibar+2]-ped1-pedTime1)*(1 + (barTemp-4)*0.018); //temp calibration to be optimised
+  float calibBar= calibMap[i_array] != NULL ? calibMap[i_array]->GetBinContent(ibar+1) : 1.;
+ 
+  energy1 = energy[ibar+2]>-9 ? (energy[ibar+2]-ped1-pedTime1)*calibBar : 0.;
   float ped2=pedValue->GetBinContent(channels[ibar+2+N_BARS]*4+tacID[ibar+2+N_BARS]+1)+pedSlope->GetBinContent(channels[ibar+2+N_BARS]*4+tacID[ibar+2+N_BARS]+1)*(tot[ibar+2+N_BARS]/1000-305)/5.;
   float pedTime2=h1_pedVsTime[(ibar+2+N_BARS)*4+tacID[ibar+2+N_BARS]]->Interpolate(time[ibar+2+N_BARS]/1E12);
   //  energy2 = (energy[ibar+2+N_BARS]-ped2-pedTime2)*(1 + (barTemp-4)*0.018);
-  energy2 = energy[ibar+2+N_BARS]>-9 ? (energy[ibar+2+N_BARS]-ped2-pedTime2) : 0.;
+  energy2 = energy[ibar+2+N_BARS]>-9 ? (energy[ibar+2+N_BARS]-ped2-pedTime2)*calibBar : 0.;
 #endif
 }
 
@@ -136,6 +152,8 @@ void ctrAnalysisArray::Loop()
   TH1F* h1_energyRight_Xtalk[N_BARS];
   TH2F* h2_energyRight_vs_energyBar_Xtalk[N_BARS];
   TH1F* h1_nhits_Xtalk[N_BARS];
+  TH1F* h1_nhitsLeft_Xtalk[N_BARS];
+  TH1F* h1_nhitsRight_Xtalk[N_BARS];
   TH1F* h1_nbars_Xtalk[N_BARS];
   TH2F* h2_nbars_vs_nhits_Xtalk[N_BARS];
   TH1F* h1_energySum_Xtalk[N_BARS];
@@ -187,6 +205,10 @@ void ctrAnalysisArray::Loop()
       objectsToStore.push_back(h2_energyRight_vs_energyBar_Xtalk[ibar]);
       h1_nhits_Xtalk[ibar] = new TH1F(Form("h1_nhits_bar%d_Xtalk",ibar), "", 8, 0, 8);
       objectsToStore.push_back(h1_nhits_Xtalk[ibar]);
+      h1_nhitsLeft_Xtalk[ibar] = new TH1F(Form("h1_nhitsLeft_bar%d_Xtalk",ibar), "", 8, 0, 8);
+      objectsToStore.push_back(h1_nhitsLeft_Xtalk[ibar]);
+      h1_nhitsRight_Xtalk[ibar] = new TH1F(Form("h1_nhitsRight_bar%d_Xtalk",ibar), "", 8, 0, 8);
+      objectsToStore.push_back(h1_nhitsRight_Xtalk[ibar]);
       h1_nbars_Xtalk[ibar] = new TH1F(Form("h1_nbars_bar%d_Xtalk",ibar), "", 4, 0, 4);
       objectsToStore.push_back(h1_nbars_Xtalk[ibar]);
       h2_nbars_vs_nhits_Xtalk[ibar] = new TH2F(Form("h2_nbars_vs_nhits_bar%d_Xtalk",ibar), "", 8, 0, 8, 4, 0, 4);
@@ -319,6 +341,8 @@ void ctrAnalysisArray::Loop()
 	
 	// === Cross-talk ===
 	int nhits_xtalk = 0;
+	int nhitsLeft_xtalk = 0;
+	int nhitsRight_xtalk = 0;
 	int nbars_xtalk = 0;
 	float energySum_xtalk = 0.;
 	if (calibEnergyRef>100. && calibEnergyRef<600.)//no linearity corrections
@@ -355,9 +379,15 @@ void ctrAnalysisArray::Loop()
 		if( energy[idxbar+2]>-9. )
 		  {
 		    if(idxbar == ibar-1 && At511Peak)
+		      {
 			h1_energy1Left_Xtalk[ibar]->Fill(energy1_xtalk);
+			++nhitsLeft_xtalk;
+		      }
 		    if(idxbar == ibar+1 && At511Peak)
+		      {
 			h1_energy1Right_Xtalk[ibar]->Fill(energy1_xtalk);
+			++nhitsRight_xtalk;
+		      }
 		      ++nhits_xtalk;
 		  }
 
@@ -367,9 +397,15 @@ void ctrAnalysisArray::Loop()
 		if( energy[idxbar+2+N_BARS]>-9. )
 		  {
 		    if(idxbar == ibar-1 && At511Peak)
-		      h1_energy2Left_Xtalk[ibar]->Fill(energy2_xtalk);
+		      {
+			h1_energy2Left_Xtalk[ibar]->Fill(energy2_xtalk);
+			++nhitsLeft_xtalk;
+		      }
 		    if(idxbar == ibar+1 && At511Peak)
-		      h1_energy2Right_Xtalk[ibar]->Fill(energy2_xtalk);
+		      {
+			h1_energy2Right_Xtalk[ibar]->Fill(energy2_xtalk);
+			++nhitsRight_xtalk;
+		      }
 		    ++nhits_xtalk;
 		  }
 #endif
@@ -382,16 +418,19 @@ void ctrAnalysisArray::Loop()
 		if(idxbar == ibar-1)
 		  {
 		    if(At511Peak)
-		      h1_energyLeft_Xtalk[ibar]->Fill(energyBar_xtalk);
+		      {
+			h1_energyLeft_Xtalk[ibar]->Fill(energyBar_xtalk);
+		      }
 		    
 		    h2_energyLeft_vs_energyBar_Xtalk[ibar]->Fill(energyBar,energyBar_xtalk);
 		  }
 		
 		if(idxbar == ibar+1)
 		  {		     
-		    if(At511Peak) 
-		      h1_energyRight_Xtalk[ibar]->Fill(energyBar_xtalk);
-		    
+		    if(At511Peak)
+		      {
+			h1_energyRight_Xtalk[ibar]->Fill(energyBar_xtalk);
+		      }           
 		    h2_energyRight_vs_energyBar_Xtalk[ibar]->Fill(energyBar,energyBar_xtalk);
 		  }
 		energySum_xtalk += energyBar_xtalk;	
@@ -399,7 +438,9 @@ void ctrAnalysisArray::Loop()
 	    
 	    if(At511Peak)
 	      {
-		h1_nhits_Xtalk[ibar]->Fill(nhits_xtalk);           
+		h1_nhits_Xtalk[ibar]->Fill(nhits_xtalk);
+		h1_nhitsLeft_Xtalk[ibar]->Fill(nhitsLeft_xtalk);           
+		h1_nhitsRight_Xtalk[ibar]->Fill(nhitsRight_xtalk);           
 		h1_nbars_Xtalk[ibar]->Fill(nbars_xtalk);           
 		h2_nbars_vs_nhits_Xtalk[ibar]->Fill(nhits_xtalk,nbars_xtalk);
 	      }	  

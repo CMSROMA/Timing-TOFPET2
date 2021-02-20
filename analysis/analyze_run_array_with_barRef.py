@@ -644,6 +644,7 @@ gROOT.ProcessLine('TFile* f = new TFile("%s");'%input_filename_coinc)
 gROOT.ProcessLine('TTree* tree; f->GetObject("data",tree);')
 gROOT.ProcessLine("coincidenceAnalysisArray cAnalysis(tree);")
 gROOT.ProcessLine('cAnalysis.channelMap=(TH1F*)f->Get("channelMap");')
+gROOT.ProcessLine('cAnalysis.LoadCalibrations("data/intercalib.root");')
 gROOT.ProcessLine('cAnalysis.LoadPedestals("%s");'%(opt.outputDir+"/"+"ped_Run"+run+"_ARRAY"+str(str(opt.arrayCode).zfill(6))+".root"))
 gROOT.ProcessLine('cAnalysis.outputFile="%s";'%(opt.outputDir+"/"+"histo_Run"+run+"_ARRAY"+str(str(opt.arrayCode).zfill(6))+".root"))
 gBenchmark.Start( 'coincidenceAnalysis' )
@@ -737,6 +738,7 @@ gROOT.ProcessLine('TFile* f = new TFile("%s");'%input_filename_coinc)
 gROOT.ProcessLine('TTree* tree; f->GetObject("data",tree);')
 gROOT.ProcessLine("ctrAnalysisArray ctrAnalysis(tree);")
 gROOT.ProcessLine('ctrAnalysis.channelMap=(TH1F*)f->Get("channelMap");')
+gROOT.ProcessLine('ctrAnalysis.LoadCalibrations("data/intercalib.root");');
 gROOT.ProcessLine('ctrAnalysis.LoadPedestals("%s");'%(opt.outputDir+"/"+"ped_Run"+run+"_ARRAY"+str(str(opt.arrayCode).zfill(6))+".root"))
 gROOT.ProcessLine('ctrAnalysis.outputFile="%s";'%(opt.outputDir+"/"+"histo_Run"+run+"_ARRAY"+str(str(opt.arrayCode).zfill(6))+".root"))
 gROOT.ProcessLine('ctrAnalysis.ref_511Peak_mean=%f;'%fitResults[('ref',"peak1","mean","value")])
@@ -787,6 +789,8 @@ for barId in range(0,16):
         continue
 
     for h in ['h1_deltaT12_bar','h1_CTR_bar']:
+        if 'deltaT12_bar' in h:
+            histos[("%s%d"%(h,barId))].Rebin(2)
         histos[("%s%d"%(h,barId))].Draw("PE")
         f_gaus = TF1("f_gaus","gaus",
                      histos[("%s%d"%(h,barId))].GetBinCenter(histos[("%s%d"%(h,barId))].GetMaximumBin())-1000.,
@@ -838,7 +842,9 @@ for barId in range(0,16):
     XtalkLeft_median = array( 'd' , [0.] )
     XtalkRight_median = array( 'd' , [0.] )
     histos[("h1_energyLeft_bar%d_Xtalk"%barId)].GetQuantiles(1,XtalkLeft_median,prob)
+    XtalkLeft_median[0]=XtalkLeft_median[0]*(1-float(histos['h1_nhitsLeft_bar%d_Xtalk'%barId].GetBinContent(1))/float(histos['h1_nhitsLeft_bar%d_Xtalk'%barId].GetEntries()))
     histos[("h1_energyRight_bar%d_Xtalk"%barId)].GetQuantiles(1,XtalkRight_median,prob)
+    XtalkRight_median[0]=XtalkRight_median[0]*(1-float(histos['h1_nhitsRight_bar%d_Xtalk'%barId].GetBinContent(1))/float(histos['h1_nhitsRight_bar%d_Xtalk'%barId].GetEntries()))
 
     # correct left and right energy for 511 keV peak position 
     barIdLeft = barId-1
@@ -962,6 +968,12 @@ deltaT12_mean_barCoinc = array( 'd', [ -999. ]*16 )
 err_deltaT12_mean_barCoinc = array( 'd', [ -999. ]*16 )
 deltaT12_sigma_barCoinc = array( 'd', [ -999. ]*16 )
 err_deltaT12_sigma_barCoinc = array( 'd', [ -999. ]*16 )
+
+CTR_mean_barCoinc = array( 'd', [ -999. ]*16 )
+err_CTR_mean_barCoinc = array( 'd', [ -999. ]*16 )
+CTR_sigma_barCoinc = array( 'd', [ -999. ]*16 )
+err_CTR_sigma_barCoinc = array( 'd', [ -999. ]*16 )
+
 #
 XtalkLeft_median_barCoinc = array( 'd', [ -999. ]*16 )
 XtalkRight_median_barCoinc = array( 'd', [ -999. ]*16 )
@@ -996,6 +1008,12 @@ treeOutput.Branch( 'deltaT12_mean_barCoinc', deltaT12_mean_barCoinc, 'deltaT12_m
 treeOutput.Branch( 'err_deltaT12_mean_barCoinc', err_deltaT12_mean_barCoinc, 'err_deltaT12_mean_barCoinc[16]/D' )
 treeOutput.Branch( 'deltaT12_sigma_barCoinc', deltaT12_sigma_barCoinc, 'deltaT12_sigma_barCoinc[16]/D' )
 treeOutput.Branch( 'err_deltaT12_sigma_barCoinc', err_deltaT12_sigma_barCoinc, 'err_deltaT12_sigma_barCoinc[16]/D' )
+
+treeOutput.Branch( 'CTR_mean_barCoinc', CTR_mean_barCoinc, 'CTR_mean_barCoinc[16]/D' )
+treeOutput.Branch( 'err_CTR_mean_barCoinc', err_CTR_mean_barCoinc, 'err_CTR_mean_barCoinc[16]/D' )
+treeOutput.Branch( 'CTR_sigma_barCoinc', CTR_sigma_barCoinc, 'CTR_sigma_barCoinc[16]/D' )
+treeOutput.Branch( 'err_CTR_sigma_barCoinc', err_CTR_sigma_barCoinc, 'err_CTR_sigma_barCoinc[16]/D' )
+
 #
 treeOutput.Branch( 'XtalkLeft_median_barCoinc', XtalkLeft_median_barCoinc, 'XtalkLeft_median_barCoinc[16]/D' )
 treeOutput.Branch( 'XtalkRight_median_barCoinc', XtalkRight_median_barCoinc, 'XtalkRight_median_barCoinc[16]/D' )
@@ -1045,6 +1063,11 @@ for barId in range(0,16):
         err_deltaT12_mean_barCoinc[barId] = fitResults[('barCoinc%d'%barId,"deltaT12_bar","mean","sigma")]
         deltaT12_sigma_barCoinc[barId] = fitResults[('barCoinc%d'%barId,"deltaT12_bar","sigma","value")]
         err_deltaT12_sigma_barCoinc[barId] = fitResults[('barCoinc%d'%barId,"deltaT12_bar","sigma","sigma")]
+
+        CTR_mean_barCoinc[barId] = fitResults[('barCoinc%d'%barId,"CTR_bar","mean","value")]
+        err_CTR_mean_barCoinc[barId] = fitResults[('barCoinc%d'%barId,"CTR_bar","mean","sigma")]
+        CTR_sigma_barCoinc[barId] = fitResults[('barCoinc%d'%barId,"CTR_bar","sigma","value")]
+        err_CTR_sigma_barCoinc[barId] = fitResults[('barCoinc%d'%barId,"CTR_bar","sigma","sigma")]
 
     ## Xtalk
     if ( (barId in lowStat_channels_xtalk) or (barId-1 in dead_channels) or (barId+1 in dead_channels) ) :
