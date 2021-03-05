@@ -31,6 +31,9 @@ parser.add_option("--pedAllChannels", dest="pedAllChannels", default=0,
                   help="Set to 1 to collect pedestals for all channels (default is 0)")
 parser.add_option("-n", "--name", dest="nameLabel",
                   help="label for output files")
+parser.add_option("-t", "--tag", dest="tag",default='',
+                  help="additional tag")
+
 (opt, args) = parser.parse_args()
 if not opt.configFile:   
     parser.error('list of config files not provided')
@@ -109,6 +112,7 @@ def RUN(configArray,runtype,time,ov,ovref,gate,label,enabledCh,thresholds,thresh
 
     print commandRun
 
+
 ### with Airtable
     tags=newlabel.split('_')
     print(tags)
@@ -118,16 +122,19 @@ def RUN(configArray,runtype,time,ov,ovref,gate,label,enabledCh,thresholds,thresh
     if (runtype == 'PHYS'):
         dbCommand += ' --xtal=%s'%tags[2]
     print(dbCommand)
-    insertDBStatus=os.WEXITSTATUS(os.system(dbCommand))
+#    insertDBStatus=os.WEXITSTATUS(os.system(dbCommand))
+    insertDBStatus=subprocess.call(dbCommand,shell=True)
     if (not insertDBStatus==0):
         print('Error writing %s to runDB. Giving up'%tags[0])
         return
 
-    exitStatus=os.WEXITSTATUS(os.system(commandRun))
+#    exitStatus=os.WEXITSTATUS(os.system(commandRun))
+    exitStatus=subprocess.call(commandRun,shell=True)
 
     dbCommandCompleted = ". ~/AutoProcess/setup.sh; python3 ~/AutoProcess/updateRun.py --id=%s --status='%s'"%(tags[0],'DAQ COMPLETED' if exitStatus==0 else 'FAILED')
     print(dbCommandCompleted)
-    insertDBStatus=os.WEXITSTATUS(os.system(dbCommandCompleted))
+#    insertDBStatus=os.WEXITSTATUS(os.system(dbCommandCompleted))
+    insertDBStatus=subprocess.call(dbCommandCompleted,shell=True)
     if (not insertDBStatus==0):
         print('Error writing %s to runDB. Giving up'%tags[0])
         return
@@ -239,55 +246,76 @@ aMover=XYZMover(8820)
 print (aMover.estimatedPosition())
 aMover.lightsOn()
 
+sys.stdout.flush()
+
 if len(cfileNames) != len(names):
     print("Mismatch in number of arrays. Please check that you have specified the correct number of arrays in the config")
     exit(-1)
 
-for iarr,arr in enumerate(cfileNames):
-    print ""
-    print "=== Run daq for array ", iarr
-    print arr
-    if int(names[iarr])==-1:
-        continue
+# Add LSCAN at end if LSCAN is selected
+if (opt.lscan):
+    if (opt.tag):
+        opt.tag = opt.tag + '-LSCAN'
+    else:
+        opt.tag = 'LSCAN'
 
-    # edit dictionary with position of current array
-    dict_Scan_current = copy.deepcopy(dict_Scan) 
-    for kStep, kInfo in dict_Scan.items():   
-        posModifier = dict_Scan[kStep][0]
-        dict_Scan_current[kStep][0] = dict_array_x_y_z[iarr] + posModifier
-        dict_Scan_current[kStep][0] = dict_Scan_current[kStep][0].round(1)
-    #print dict_Scan_current
+try:
+    for iarr,arr in enumerate(cfileNames):
+        print ""
+        print "=== Run daq for array ", iarr
+        print arr
+        if int(names[iarr])==-1:
+            continue
 
-    # run sequence
-    for ov in ov_values:
-        for ovref in ovref_values:
-            for gate in gate_values:
-                for kStep, kInfo in dict_Scan_current.items():
+        # edit dictionary with position of current array
+        dict_Scan_current = copy.deepcopy(dict_Scan) 
+        for kStep, kInfo in dict_Scan.items():   
+            posModifier = dict_Scan[kStep][0]
+            dict_Scan_current[kStep][0] = dict_array_x_y_z[iarr] + posModifier
+            dict_Scan_current[kStep][0] = dict_Scan_current[kStep][0].round(1)
+            #print dict_Scan_current
 
+        # run sequence
+        for ov in ov_values:
+            for ovref in ovref_values:
+                for gate in gate_values:
+                    for kStep, kInfo in dict_Scan_current.items():
 
-                    print "++++ Centering Bar: "+str(kStep)+": X="+str(kInfo[0][0])+" Y="+str(kInfo[0][1])+" Z="+str(kInfo[0][2])+" Channels="+str(kInfo[1])+" +++++"
-                    print aMover.moveAbsoluteXYZ(kInfo[0][0],kInfo[0][1],kInfo[0][2])
-                    if ( aMover.moveAbsoluteXYZ(kInfo[0][0],kInfo[0][1],kInfo[0][2]) is "error"):
-                        print "== Out of range: skipping this position =="
-                        continue
-                    print aMover.estimatedPosition()
-                    print "++++ Done +++++"                    
+                        print "++++ Centering Bar: "+str(kStep)+": X="+str(kInfo[0][0])+" Y="+str(kInfo[0][1])+" Z="+str(kInfo[0][2])+" Channels="+str(kInfo[1])+" +++++"
+                        print aMover.moveAbsoluteXYZ(kInfo[0][0],kInfo[0][1],kInfo[0][2])
+                        if ( aMover.moveAbsoluteXYZ(kInfo[0][0],kInfo[0][1],kInfo[0][2]) is "error"):
+                            print "== Out of range: skipping this position =="
+                            continue
+                        print aMover.estimatedPosition()
+                        print "++++ Done +++++"                    
+                        sys.stdout.flush()
+                        #=== file name
+                        thisname = 'ARRAY'+str(names[iarr]).zfill(6)+"_IARR"+str(iarr)+"_POS"+str(kStep)+"_X"+str(kInfo[0][0])+"_Y"+str(kInfo[0][1])+"_Z"+str(kInfo[0][2])
+                    
 
-                    #=== file name
-                    thisname = 'ARRAY'+str(names[iarr]).zfill(6)+"_IARR"+str(iarr)+"_POS"+str(kStep)+"_X"+str(kInfo[0][0])+"_Y"+str(kInfo[0][1])+"_Z"+str(kInfo[0][2])
-                    print(thisname)
-                    aMover.lightsOff()
-                    time.sleep(5)
-                    #============================================
-                    RUN(arr,"PED",t_ped,ov,ovref,gate,thisname,kInfo[1],"","",1,0,0.)
-                    RUN(arr,"PHYS",t_phys,ov,ovref,gate,thisname,kInfo[1],kInfo[2],kInfo[3],kInfo[4],kInfo[5],t_ped_in_phys) 
-                    RUN(arr,"PED",t_ped,ov,ovref,gate,thisname,kInfo[1],"","",1,0,0.)
-                    #============================================
-                    time.sleep(5)
-                    aMover.lightsOn()
+                        # Add the additional tag (e.g. REF_DAILY)
+                        thisname = thisname + '_%s'%opt.tag
+
+                        print(thisname)
+                        aMover.lightsOff()
+                        sys.stdout.flush()
+                        time.sleep(5)
+                        #============================================
+                        RUN(arr,"PED",t_ped,ov,ovref,gate,thisname,kInfo[1],"","",1,0,0.)
+                        RUN(arr,"PHYS",t_phys,ov,ovref,gate,thisname,kInfo[1],kInfo[2],kInfo[3],kInfo[4],kInfo[5],t_ped_in_phys) 
+                        RUN(arr,"PED",t_ped,ov,ovref,gate,thisname,kInfo[1],"","",1,0,0.)
+                        #============================================
+                        time.sleep(5)
+                        aMover.lightsOn()
+                        sys.stdout.flush()
+
+except KeyboardInterrupt:
+    print("Ctrl+C pressed")
 
 print "Moving back to home..."
 aMover.moveAbsoluteXYZ(0,0,0)
 print aMover.estimatedPosition()
-print (aMover.lightsOn())
+print (aMover.lightsOff())
+
 print "++++ Run completed +++++"                    
+sys.stdout.flush()

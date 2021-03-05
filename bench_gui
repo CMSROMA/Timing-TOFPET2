@@ -68,7 +68,7 @@ class GuiWindow(Gtk.Window):
         self.array_list = Gtk.ListStore(str)
         self.populate_array_list()
         
-        self.array1_label = Gtk.Label(label="Array1 ID:")
+        self.array1_label = Gtk.Label(label="IARR0 ID:")
         self.mainBox.attach(self.array1_label, 0, 3, 1, 1)
         self.array1_entry_combo = Gtk.ComboBox.new_with_model_and_entry(model = self.array_list)
         self.array1_entry_combo.set_entry_text_column(0)
@@ -82,7 +82,7 @@ class GuiWindow(Gtk.Window):
         self.array1_entry.set_completion (self.array1_completion)
         self.mainBox.attach(self.array1_entry_combo,1, 3, 2, 1)
 
-        self.array2_label = Gtk.Label(label="Array2 ID:")
+        self.array2_label = Gtk.Label(label="IARR1 ID:")
         self.mainBox.attach(self.array2_label, 0, 4, 1, 1)
         self.array2_entry_combo = Gtk.ComboBox.new_with_model_and_entry(model = self.array_list)
         self.array2_entry_combo.set_entry_text_column(0)
@@ -96,7 +96,7 @@ class GuiWindow(Gtk.Window):
         self.array2_entry.set_completion (self.array2_completion)
         self.mainBox.attach(self.array2_entry_combo,1, 4, 2, 1)
 
-        self.array3_label = Gtk.Label(label="Array3 ID:")
+        self.array3_label = Gtk.Label(label="IARR2 ID:")
         self.mainBox.attach(self.array3_label, 0, 5, 1, 1)
         self.array3_entry_combo = Gtk.ComboBox.new_with_model_and_entry(model = self.array_list)
         self.array3_entry_combo.set_entry_text_column(0)
@@ -110,7 +110,7 @@ class GuiWindow(Gtk.Window):
         self.array3_entry.set_completion (self.array3_completion)
         self.mainBox.attach(self.array3_entry_combo,1, 5, 2, 1)
 
-        self.array4_label = Gtk.Label(label="Array4 ID:")
+        self.array4_label = Gtk.Label(label="IARR3 ID:")
         self.mainBox.attach(self.array4_label, 0, 6, 1, 1)
         self.array4_entry_combo = Gtk.ComboBox.new_with_model_and_entry(model = self.array_list)
         self.array4_entry_combo.set_entry_text_column(0)
@@ -223,6 +223,7 @@ class GuiWindow(Gtk.Window):
 #            self.stop_daq("Run completed")
 #            return False
         self.label.set_label("Running DAQ: " + str(int(self.counter / 4)))
+        sys.stdout.flush()
 
         if (self.sub_proc.poll() is not None):
             self.sub_proc = None
@@ -288,6 +289,8 @@ class GuiWindow(Gtk.Window):
         self.processWindow.set_title("%s (running)" % runCommand)
 
 #        runCommand="ping -c %d localhost"%int(self.array1_entry.get_text())
+        os.environ["PYTHONUNBUFFERED"] = "1"
+        runCommand="stdbuf -oL "+runCommand
         self.sub_proc = subprocess.Popen(runCommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE,shell=True,bufsize=0,preexec_fn=os.setsid)
 
         flags = fcntl(self.sub_proc.stdout, F_GETFL) # get current p.stdout flags

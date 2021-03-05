@@ -250,17 +250,38 @@ CTR_sigma_RMS = histos['h1_CTR_bar'].GetRMS()
 XT_mean = histos['h1_XT_bar'].GetMean()
 XT_RMS = histos['h1_XT_bar'].GetRMS()
 
-#printing for ELOG
-print "ARRAY" + str(opt.arrayCode.zfill(6))+" RUNS: ", 
-for step in range(0,nFilesInScan):
-    print int(opt.firstRun) + step*3, " - ", 
-print " "
-print "LY_mean="+str("{:10.2f}".format(LY_mean))
-print "LY_RMS="+str("{:10.2f}".format(LY_RMS))
-print "sigmaT_sigma_mean="+str("{:10.1f}".format(sigmaT_sigma_mean))+" ps"
-print "sigmaT_sigma_RMS="+str("{:10.1f}".format(sigmaT_sigma_RMS))+" ps"
-print "CTR_sigma_mean="+str("{:10.1f}".format(CTR_sigma_mean))+" ps"
-print "CTR_sigma_RMS="+str("{:10.1f}".format(CTR_sigma_RMS))+" ps"
-print "XT_mean="+str("{:10.2f}".format(XT_mean))
-print "XT_RMS="+str("{:10.2f}".format(XT_RMS))
+import requests
 
+def logMatterMost(incoming_hook_url,payload):
+    r = requests.post(incoming_hook_url, json=payload)
+    if r.status_code != 200:
+        raise RuntimeError(r.text)
+    else:
+        print(r.text)
+
+mattermost_hook=os.environ['WEB_HOOK']
+
+#printing for ELOG
+payload_text= "ARRAY" + str(opt.arrayCode.zfill(6))+" RUNS: \n"
+for step in range(0,nFilesInScan):
+    payload_text+= str(int(opt.firstRun) + step*3) + " - \n"
+payload_text+= "LY_mean="+str("{:10.2f}\n".format(LY_mean))
+payload_text+= "LY_RMS="+str("{:10.2f}\n".format(LY_RMS))
+payload_text+= "sigmaT_sigma_mean="+str("{:10.1f}".format(sigmaT_sigma_mean))+" ps\n"
+payload_text+= "sigmaT_sigma_RMS="+str("{:10.1f}".format(sigmaT_sigma_RMS))+" ps\n"
+payload_text+= "CTR_sigma_mean="+str("{:10.1f}".format(CTR_sigma_mean))+" ps\n"
+payload_text+= "CTR_sigma_RMS="+str("{:10.1f}".format(CTR_sigma_RMS))+" ps\n"
+payload_text+= "XT_mean="+str("{:10.2f}\n".format(XT_mean))
+payload_text+= "XT_RMS="+str("{:10.2f}\n".format(XT_RMS))
+print payload_text
+
+import socket
+host='10.0.0.100'
+payload_text+= "http://%s/ARRAYS/index.php?match=Run%s"%(host,str(int(opt.firstRun)).zfill(6))
+
+this_payload={
+  "username": "array-bench",
+  "icon_url": "https://mattermost.org/wp-content/uploads/2016/04/icon.png",
+  "text": "#### Summary Run%s\n"%(str(opt.firstRun.zfill(6)))+payload_text
+}
+logMatterMost(mattermost_hook,this_payload)
