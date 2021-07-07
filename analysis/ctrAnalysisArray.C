@@ -51,14 +51,17 @@ void ctrAnalysisArray::getBarEnergy(int ibar,float& energy1, float& energy2)
 
   float barTemp=h1_temp_array_VsTime[i_array]->Interpolate((time[ibar+2]+time[ibar+2+N_BARS])/2/1E12);
   float ped1=pedValue->GetBinContent(channels[ibar+2]*4+tacID[ibar+2]+1)+pedSlope->GetBinContent(channels[ibar+2]*4+tacID[ibar+2]+1)*(tot[ibar+2]/1000-305)/5.;
-  float pedTime1=h1_pedVsTime[(ibar+2)*4+tacID[ibar+2]]->Interpolate(time[ibar+2]/1E12);
+  float pedTime1=energy[ibar+2]>-9 ? h1_pedVsTime[(ibar+2)*4+tacID[ibar+2]]->Interpolate(time[ibar+2]/1E12) : 0.;
+  // float pedTime1=0;
   
   //  energy1 = (energy[ibar+2]-ped1-pedTime1)*(1 + (barTemp-4)*0.018); //temp calibration to be optimised
-  float calibBar= calibMap[i_array] != NULL ? calibMap[i_array]->GetBinContent(ibar+1) : 1.;
- 
+  float calibBar= ((calibMap[i_array] != NULL) && applyCalib) ? calibMap[i_array]->GetBinContent(ibar+1) : 1.;
+   
   energy1 = energy[ibar+2]>-9 ? (energy[ibar+2]-ped1-pedTime1)*calibBar : 0.;
   float ped2=pedValue->GetBinContent(channels[ibar+2+N_BARS]*4+tacID[ibar+2+N_BARS]+1)+pedSlope->GetBinContent(channels[ibar+2+N_BARS]*4+tacID[ibar+2+N_BARS]+1)*(tot[ibar+2+N_BARS]/1000-305)/5.;
-  float pedTime2=h1_pedVsTime[(ibar+2+N_BARS)*4+tacID[ibar+2+N_BARS]]->Interpolate(time[ibar+2+N_BARS]/1E12);
+  //  float pedTime2=h1_pedVsTime[(ibar+2+N_BARS)*4+tacID[ibar+2+N_BARS]]->Interpolate(time[ibar+2+N_BARS]/1E12);
+  float pedTime2=(energy[ibar+2+N_BARS]>-9) ? h1_pedVsTime[(ibar+2+N_BARS)*4+tacID[ibar+2+N_BARS]]->Interpolate(time[ibar+2+N_BARS]/1E12) : 0. ;
+
   //  energy2 = (energy[ibar+2+N_BARS]-ped2-pedTime2)*(1 + (barTemp-4)*0.018);
   energy2 = energy[ibar+2+N_BARS]>-9 ? (energy[ibar+2+N_BARS]-ped2-pedTime2)*calibBar : 0.;
 #endif

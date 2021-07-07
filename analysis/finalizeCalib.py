@@ -32,5 +32,15 @@ for iarr in range(0,4):
     histos['calibFinal_IARR%d'%iarr].Print()
     histos['calibFinal_IARR%d'%iarr].Write()
 
+for iarr in range(0,4):
+    histos['sigmaTuniformity_IARR%d'%iarr]=R.TH1F('sigmaTuniformity_IARR%d'%iarr,'sigmaTuniformity_IARR%d'%iarr,100,120,150)
+
+for iarr in range(0,4):
+    sigmaT=ff.Get("sigmaT_iarr%d"%iarr)
+    for bar in range(1,15):
+        histos['sigmaTuniformity_IARR%d'%iarr].Fill(sigmaT.GetBinContent(bar+1))      
+    histos['sigmaTuniformity_IARR%d'%iarr].Print()
+    histos['sigmaTuniformity_IARR%d'%iarr].Write()
+
 ff.Close()
 c.Close()

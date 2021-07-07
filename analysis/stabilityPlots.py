@@ -21,11 +21,11 @@ runs=[
 #'Run000143'
 
 ####### ARRAY405
-#'Run000179',
-#'Run000191',
-#'Run000203',
-#'Run000215',
-#'Run000227',
+'Run000179',
+'Run000191',
+'Run000203',
+'Run000215',
+'Run000227',
 #'Run000251' #reverse_array
 
 ####### ARRAY406
@@ -53,7 +53,7 @@ runs=[
 #'Run000212',
 #'Run000224',
 #'Run000236',
-'Run000260' #reverse_array
+#'Run000260' #reverse_array
 
 ]
 

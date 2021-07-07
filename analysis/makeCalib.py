@@ -228,10 +228,15 @@ out.Close()
 
 #Write final calibration factor
 histos['intercalib_iarr%s'%opt.iarr]=R.TH1F('intercalib_iarr%s'%opt.iarr,'intercalib_iarr%s'%opt.iarr,16,-0.5,15.5)
+histos['sigmaT_iarr%s'%opt.iarr]=R.TH1F('sigmaT_iarr%s'%opt.iarr,'sigmaT_iarr%s'%opt.iarr,16,-0.5,15.5)
 for b in range(0,16):
     histos['intercalib_iarr%s'%opt.iarr].SetBinContent(b+1,histos['h1_bar%s_LY_calib'%(b)].GetMean())
     histos['intercalib_iarr%s'%opt.iarr].SetBinError(b+1,histos['h1_bar%s_LY_calib'%(b)].GetMeanError())
+    histos['sigmaT_iarr%s'%opt.iarr].SetBinContent(b+1,histos['h1_bar%s_sigmaT'%(b)].GetMean())
+    histos['sigmaT_iarr%s'%opt.iarr].SetBinError(b+1,histos['h1_bar%s_sigmaT'%(b)].GetMeanError())
+
 print("Writing %s/calib_IARR%s.root"%(opt.outputDir,opt.iarr))
 outCalib=R.TFile("%s/calib_IARR%s.root"%(opt.outputDir,opt.iarr),"RECREATE")
 histos['intercalib_iarr%s'%opt.iarr].Write()
+histos['sigmaT_iarr%s'%opt.iarr].Write()
 outCalib.Close()

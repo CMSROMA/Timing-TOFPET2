@@ -382,6 +382,8 @@ parser.add_option("-o", "--output", dest="outputDir",default="/data/TOFPET/LYSOA
 
 parser.add_option("-b", "--arrayCode", dest="arrayCode", default=-99,
                   help="code of the crystal array")
+parser.add_option("-c", "--applyCalib", dest="applyCalib", default=1,
+                  help="apply calibrations")
 
 (opt, args) = parser.parse_args()
 
@@ -644,6 +646,7 @@ gROOT.ProcessLine('TFile* f = new TFile("%s");'%input_filename_coinc)
 gROOT.ProcessLine('TTree* tree; f->GetObject("data",tree);')
 gROOT.ProcessLine("coincidenceAnalysisArray cAnalysis(tree);")
 gROOT.ProcessLine('cAnalysis.channelMap=(TH1F*)f->Get("channelMap");')
+gROOT.ProcessLine('cAnalysis.applyCalib=%d;'%int(opt.applyCalib))
 gROOT.ProcessLine('cAnalysis.LoadCalibrations("data/intercalib.root");')
 gROOT.ProcessLine('cAnalysis.LoadPedestals("%s");'%(opt.outputDir+"/"+"ped_Run"+run+"_ARRAY"+str(str(opt.arrayCode).zfill(6))+".root"))
 gROOT.ProcessLine('cAnalysis.outputFile="%s";'%(opt.outputDir+"/"+"histo_Run"+run+"_ARRAY"+str(str(opt.arrayCode).zfill(6))+".root"))
@@ -738,6 +741,7 @@ gROOT.ProcessLine('TFile* f = new TFile("%s");'%input_filename_coinc)
 gROOT.ProcessLine('TTree* tree; f->GetObject("data",tree);')
 gROOT.ProcessLine("ctrAnalysisArray ctrAnalysis(tree);")
 gROOT.ProcessLine('ctrAnalysis.channelMap=(TH1F*)f->Get("channelMap");')
+gROOT.ProcessLine('ctrAnalysis.applyCalib=%d;'%int(opt.applyCalib))
 gROOT.ProcessLine('ctrAnalysis.LoadCalibrations("data/intercalib.root");');
 gROOT.ProcessLine('ctrAnalysis.LoadPedestals("%s");'%(opt.outputDir+"/"+"ped_Run"+run+"_ARRAY"+str(str(opt.arrayCode).zfill(6))+".root"))
 gROOT.ProcessLine('ctrAnalysis.outputFile="%s";'%(opt.outputDir+"/"+"histo_Run"+run+"_ARRAY"+str(str(opt.arrayCode).zfill(6))+".root"))

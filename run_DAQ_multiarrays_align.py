@@ -235,8 +235,8 @@ for iarr,arr in enumerate(cfileNames):
     print ""
     print "=== Run daq for array ", iarr
     print arr
-    #if iarr != 0:
-    #    continue
+    #    if iarr != 0:
+    #        continue
     #if iarr==0 or iarr==1:
     #    continue
 

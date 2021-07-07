@@ -53,6 +53,8 @@ public :
    TH1F*           channelMap;
    TH1F*           calibMap[N_ARRAYS];
 
+   bool            applyCalib;
+
    TTree          *fChain;   //!pointer to the analyzed TTree or TChain
    Int_t           fCurrent; //!current Tree number in a TChain
 

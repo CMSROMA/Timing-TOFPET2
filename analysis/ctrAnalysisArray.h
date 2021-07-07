@@ -53,6 +53,7 @@ class ctrAnalysisArray
 
    TH1F*           channelMap;
    TH1F*           calibMap[N_ARRAYS];
+   bool            applyCalib;
 
    TProfile*       h1_pedVsTime[1000*4];
    TProfile*       h1_temp_array_VsTime[N_ARRAYS];
