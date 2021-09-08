@@ -8,6 +8,50 @@ cmake .
 make
 ```
 
+# TOFPET Calibration
+Switch on TOFPET and wait until system is stable
+./start_gui
+daq comm server = GBE
+ON 
+Working dir = es. /home/cmsdaq/Workspace/TOFPET/Timing-TOFPET2/data/calib/1bar_4arrays_5degreeSet_2021_09_08 --> ENTER --> YES to create new dir
+System Configuration --> DETECT --> YES
+
+Edit config.ini (section asic_parameter):
+```
+global.disc_lsb_t1 = 60
+global.disc_lsb_t2 = 60 
+channel.min_intg_time = 34
+channel.max_intg_time = 34
+global.v_att_diff_bias_ig=56
+channel.att=3
+channel.fe_delay=16
+channel.trigger_mode_2_t=0
+channel.trigger_mode_2_q=0
+channel.trigger_mode_2_e=2
+channel.trigger_mode_2_b=4
+```
+This is the cut&paste of the config_current.ini.
+--> SAVE
+
+SiPM Bias Settings:
+```
+PreBDV = 46.40 
+BDV = 51.40
+OV = 8.00
+```
+These are the values for SiPM arrays
+--> SAVE
+--> Edit (to change the HV 7 channel where single bar is connected 
+```
+0       0       7       0.75    45.6    50.60   8 )
+```
+
+ASIC Calibration: 
+Discriminator, TDC, QCD flagged.
+Start Calibration
+wait for 1-2 hours untile completed.
+
+
 # Alignment
 
 Edit config_main_array_0,1,2,3.txt and run_DAQ_multiarrays_align.py as needed
