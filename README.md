@@ -51,6 +51,18 @@ Discriminator, TDC, QCD flagged.
 Start Calibration
 wait for 1-2 hours untile completed.
 
+daq comm server OFF
+Close the GUI.
+
+Edit the 4 configuration files for each array:
+config_main_array_0.txt  , config_main_array_1.txt , config_main_array_2.txt , 
+config_main_array_3.txt
+```
+CALIB_DIR /home/cmsdaq/Workspace/TOFPET/Timing-TOFPET2/data/calib/1bar_4arrays_5degreeSet_2021_09_08
+```
+where the path corresponds to the new folder just created.
+
+Ready to take data.
 
 # Alignment
 
