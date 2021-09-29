@@ -14,7 +14,7 @@ MAX_INTG_TIME 34
 
 #Calibration
 RUN_CALIB 0
-CALIB_DIR /home/cmsdaq/Workspace/TOFPET/Timing-TOFPET2/data/calib/1bar_4arrays_5degreeSet_2021_09_08
+CALIB_DIR /home/cmsdaq/Workspace/TOFPET/Timing-TOFPET2/data/calib/1bar_4arrays_5degreeSet_2021_06_30
 #CALIB_DIR /home/cmsdaq/Workspace/TOFPET/Timing-TOFPET2/data/calib/1bar_4arrays_5degreeSet_2021_08_02
 #CALIB_DIR /home/cmsdaq/Workspace/TOFPET/Timing-TOFPET2/data/calib/test_1bar_1array_5degree_2021_26_01
 #CALIB_DIR /home/cmsdaq/Workspace/TOFPET/Timing-TOFPET2/data/calib/test_1bar_1array_5degree_2020_12_10
@@ -45,7 +45,7 @@ TIME 300
 #TIME 1
 OUTPUT_DIR /data/cmsdaq/LYSOMULTIARRAYNEWLAB4ARRAYS/
 #OUTPUT_DIR output/Pedestal
-OUTPUT_LABEL Run003292_2021-09-09-12-20-18_ARRAY000405_IARR0_POS0_X70.7_Y44.0_Z23.0_TEST
+OUTPUT_LABEL Run003616_2021-09-29-12-50-25_ARRAY000405_IARR0_POS0_X70.7_Y44.0_Z23.0_REFDAILY
 #OUTPUT_LABEL PedestalTest13_2ch_100000delay
 
 #Channels
