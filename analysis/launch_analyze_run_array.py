@@ -85,21 +85,26 @@ for event in range (0,treeResults.GetEntries()):
     treeResults.GetEntry(event)
 
     for b in range(1,15):
+        if (treeResults.peak1_mean_barCoinc[b]<=0 or treeResults.deltaT12_sigma_barCoinc[b]<=0):
+            continue
         histos['h1_LY_bar'].Fill(treeResults.peak1_mean_barCoinc[b])
         histos['h1_sigmaT_bar'].Fill(treeResults.deltaT12_sigma_barCoinc[b]/2.)
         histos['h1_CTR_bar'].Fill(treeResults.CTR_sigma_barCoinc[b])
         histos['h1_XT_bar'].Fill(treeResults.Xtalk_median_barCoinc[b])
 
+    ib=0
     for b in range(0,16):
-        histos['LY_vs_bar'].SetPoint(b,b,treeResults.peak1_mean_barCoinc[b])
-        histos['LY_vs_bar'].SetPointError(b,0.5,treeResults.err_peak1_mean_barCoinc[b])
-        histos['sigmaT_vs_bar'].SetPoint(b,b,treeResults.deltaT12_sigma_barCoinc[b]/2.)
-        histos['sigmaT_vs_bar'].SetPointError(b,0.5,treeResults.err_deltaT12_sigma_barCoinc[b]/2.)
-        histos['CTR_vs_bar'].SetPoint(b,b,treeResults.CTR_sigma_barCoinc[b])
-        histos['CTR_vs_bar'].SetPointError(b,0.5,treeResults.err_CTR_sigma_barCoinc[b])
-        histos['XT_vs_bar'].SetPoint(b,b,treeResults.Xtalk_median_barCoinc[b])
-        histos['XT_vs_bar'].SetPointError(b,0.5,0.01)
-
+        if (treeResults.peak1_mean_barCoinc[b]<=0 or treeResults.deltaT12_sigma_barCoinc[b]<=0):
+            continue
+        histos['LY_vs_bar'].SetPoint(ib,b,treeResults.peak1_mean_barCoinc[b])
+        histos['LY_vs_bar'].SetPointError(ib,0.5,treeResults.err_peak1_mean_barCoinc[b])
+        histos['sigmaT_vs_bar'].SetPoint(ib,b,treeResults.deltaT12_sigma_barCoinc[b]/2.)
+        histos['sigmaT_vs_bar'].SetPointError(ib,0.5,treeResults.err_deltaT12_sigma_barCoinc[b]/2.)
+        histos['CTR_vs_bar'].SetPoint(ib,b,treeResults.CTR_sigma_barCoinc[b])
+        histos['CTR_vs_bar'].SetPointError(ib,0.5,treeResults.err_CTR_sigma_barCoinc[b])
+        histos['XT_vs_bar'].SetPoint(ib,b,treeResults.Xtalk_median_barCoinc[b])
+        histos['XT_vs_bar'].SetPointError(ib,0.5,0.01)
+        ib+=1
 ##########################################
 
 mergedLabel = str(opt.outputDir)+"/"+"tree_"+"FirstRun" + str(opt.firstRun.zfill(6)) + "_LastRun" + str((int(opt.firstRun)+(nFilesInScan-1)*3)).zfill(6) + "_ARRAY" + str(opt.arrayCode.zfill(6))

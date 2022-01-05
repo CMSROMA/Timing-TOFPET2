@@ -27,6 +27,8 @@ parser.add_option("-o", "--outFolder", dest="outputFolder",
                   help="output directory")
 parser.add_option("-l", "--lscan", dest="lscan",action="store_true",default=False,
                   help="longitudinal scan")
+parser.add_option("-s", "--thscan", dest="thscan",action="store_true",default=False,
+                  help="th1 scan")
 parser.add_option("--pedAllChannels", dest="pedAllChannels", default=0, 
                   help="Set to 1 to collect pedestals for all channels (default is 0)")
 parser.add_option("-n", "--name", dest="nameLabel",
@@ -230,6 +232,20 @@ if (opt.lscan):
     -7: [np.array([0, -28, 0]),channelList,energyThrList,t1ThrList,nloops,sleep],
 
     }
+elif (opt.thscan):
+    dict_Scan = {
+    #T1 THRESHOLD SCAN
+    0: [np.array([0, 0, 0]),channelList,energyThrList,"35_35_15_15_15_15_15_15_15_15_15_15_15_15_15_15_15_15_15_15_15_15_15_15_15_15_15_15_15_15_15_15_15_15",nloops,sleep],
+    1: [np.array([0, 0, 0]),channelList,energyThrList,"35_35_20_20_20_20_20_20_20_20_20_20_20_20_20_20_20_20_20_20_20_20_20_20_20_20_20_20_20_20_20_20_20_20",nloops,sleep],
+   2: [np.array([0, 0, 0]),channelList,energyThrList,"35_35_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25_25",nloops,sleep],
+   3: [np.array([0, 0, 0]),channelList,energyThrList,"35_35_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30_30",nloops,sleep],
+    4: [np.array([0, 0, 0]),channelList,energyThrList,"35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35_35",nloops,sleep],
+    5: [np.array([0, 0, 0]),channelList,energyThrList,"35_35_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40",nloops,sleep],
+    6: [np.array([0, 0, 0]),channelList,energyThrList,"35_35_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45_45",nloops,sleep],
+    7: [np.array([0, 0, 0]),channelList,energyThrList,"35_35_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50_50",nloops,sleep],
+    9: [np.array([0, 0, 0]),channelList,energyThrList,"35_35_55_55_55_55_55_55_55_55_55_55_55_55_55_55_55_55_55_55_55_55_55_55_55_55_55_55_55_55_55_55_55_55",nloops,sleep],
+    10: [np.array([0, 0, 0]),channelList,energyThrList,"35_35_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60_60",nloops,sleep],
+    }
 else:
     dict_Scan = {
     #DEFAULT SINGLE RUN
@@ -258,6 +274,12 @@ if (opt.lscan):
         opt.tag = opt.tag + '-LSCAN'
     else:
         opt.tag = 'LSCAN'
+
+if (opt.thscan):
+    if (opt.tag):
+        opt.tag = opt.tag + '-THSCAN'
+    else:
+        opt.tag = 'THSCAN'
 
 try:
     for iarr,arr in enumerate(cfileNames):

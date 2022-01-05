@@ -45,7 +45,7 @@ TIME 0.3
 #TIME 1
 OUTPUT_DIR /data/cmsdaq/LYSOMULTIARRAYNEWLAB4ARRAYS/
 #OUTPUT_DIR output/Pedestal
-OUTPUT_LABEL Run003611_2021-09-29-12-12-06_ARRAY000407_IARR2_POS0_X216.1_Y138.3_Z23.0_REFDAILY
+OUTPUT_LABEL Run005035_2022-01-04-14-13-36_ARRAY000407_IARR2_POS0_X216.1_Y138.3_Z23.0_REFDAILY
 #OUTPUT_LABEL PedestalTest13_2ch_100000delay
 
 #Channels
@@ -87,7 +87,6 @@ CH 28   13    51.40  7.00  10        45     15       15       15       xx       
 CH 29   13    51.40  7.00  10        48     15       15       15       xx           xx            -1   -1   -1    LYSO_bar11
 CH 30   13    51.40  7.00  10        40     15       15       15       xx           xx            -1   -1   -1    LYSO_bar12
 CH 31   13    51.40  7.00  10        39     15       15       15       xx           xx            -1   -1   -1    LYSO_bar13
-CH 32   13    51.40  7.00  10        35     15       15       15       xx           xx            -1   -1   -1    LYSO_bar14
 CH 32   13    51.40  7.00  10        35     15       15       15       xx           xx            -1   -1   -1    LYSO_bar14
 CH 33   13    51.40  7.00  10        33     15       15       15       xx           xx            -1   -1   -1    LYSO_bar15
 # Note on VBR: Different CHs can be connected to the same NHV. If different values of VBR are provided only the first one is set for a given NHV. 

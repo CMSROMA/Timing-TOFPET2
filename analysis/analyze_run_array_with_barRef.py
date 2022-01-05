@@ -194,26 +194,42 @@ def fitSpectrum(histo,function,xmin,xmax,canvas,fitres,label,code,run,outputDIR)
     histo.Draw("PE")
     goodChi2 = 0.
     previousChi2overNdf = -99.
-    while goodChi2==0.:
+    maxIter=10
+    while goodChi2==0. and maxIter>0:
+        maxIter-=1
         histo.Fit(function.GetName(),"LR+0N","",xmin,min(peak*2.4,xmax))
+        if (function.GetNDF()<=0):
+            continue
         print function.GetChisquare(), function.GetNDF(), function.GetChisquare()/function.GetNDF()
         if abs(function.GetChisquare()/function.GetNDF()-previousChi2overNdf)<0.01*previousChi2overNdf:
             histo.Fit(function.GetName(),"LR+","",xmin,min(peak*2.4,xmax))
             canvas.Update()
             goodChi2 = 1.
         previousChi2overNdf = function.GetChisquare()/function.GetNDF()
-    print function.GetChisquare(), function.GetNDF(), function.GetChisquare()/function.GetNDF()
 
-    fitres[(label,"peak1","mean","value")]=function.GetParameter(10)
-    fitres[(label,"peak1","mean","sigma")]=function.GetParError(10)
-    fitres[(label,"peak1","sigma","value")]=function.GetParameter(11)
-    fitres[(label,"peak1","sigma","sigma")]=function.GetParError(11)
-    fitres[(label,"peak2","mean","value")]=function.GetParameter(4)
-    fitres[(label,"peak2","mean","sigma")]=function.GetParError(4)
-    fitres[(label,"peak2","sigma","value")]=function.GetParameter(5)
-    fitres[(label,"peak2","sigma","sigma")]=function.GetParError(5)
-    fitres[(label,"backpeak","mean","value")]=function.GetParameter(15)
-    fitres[(label,"backpeak","mean","sigma")]=function.GetParError(15)
+    if goodChi2:
+        print function.GetChisquare(), function.GetNDF(), function.GetChisquare()/function.GetNDF()
+        fitres[(label,"peak1","mean","value")]=function.GetParameter(10)
+        fitres[(label,"peak1","mean","sigma")]=function.GetParError(10)
+        fitres[(label,"peak1","sigma","value")]=function.GetParameter(11)
+        fitres[(label,"peak1","sigma","sigma")]=function.GetParError(11)
+        fitres[(label,"peak2","mean","value")]=function.GetParameter(4)
+        fitres[(label,"peak2","mean","sigma")]=function.GetParError(4)
+        fitres[(label,"peak2","sigma","value")]=function.GetParameter(5)
+        fitres[(label,"peak2","sigma","sigma")]=function.GetParError(5)
+        fitres[(label,"backpeak","mean","value")]=function.GetParameter(15)
+        fitres[(label,"backpeak","mean","sigma")]=function.GetParError(15)
+    else:
+        fitres[(label,"peak1","mean","value")]=-999
+        fitres[(label,"peak1","mean","sigma")]=-999
+        fitres[(label,"peak1","sigma","value")]=-999
+        fitres[(label,"peak1","sigma","sigma")]=-999
+        fitres[(label,"peak2","mean","value")]=-999
+        fitres[(label,"peak2","mean","sigma")]=-999
+        fitres[(label,"peak2","sigma","value")]=-999
+        fitres[(label,"peak2","sigma","sigma")]=-999
+        fitres[(label,"backpeak","mean","value")]=-999
+        fitres[(label,"backpeak","mean","sigma")]=-999
 
     f1_bkg = TF1("f1_bkg",function,xmin,min(peak*2.4,xmax),19)
     f1_bkg.SetLineColor(kGreen+1)
@@ -252,7 +268,8 @@ def fitSpectrum(histo,function,xmin,xmax,canvas,fitres,label,code,run,outputDIR)
 
 def fitSpectrum_coinc(histo,function,xmin,xmax,canvas,fitres,label,code,barId,run,outputDIR):
 
-    histo.GetXaxis().SetRange(15,100)
+    #histo.GetXaxis().SetRange(15,100)
+    histo.GetXaxis().SetRange(15,130) #Francesco 5 Jan. 2022
     spectrum = TSpectrum(10)
     nfound = spectrum.Search(histo , 3 ,"new",0.25)
     xpeaks = spectrum.GetPositionX()
@@ -286,20 +303,31 @@ def fitSpectrum_coinc(histo,function,xmin,xmax,canvas,fitres,label,code,barId,ru
     histo.Draw("PE")
     goodChi2 = 0.
     previousChi2overNdf = -99.
-    while goodChi2==0.:
+    maxIter=10
+    while goodChi2==0. and maxIter>0:
+        maxIter-=1
         histo.Fit(function.GetName(),"LR+0N","",xmin,min(peak*1.6,xmax))
+        if (function.GetNDF()<=0):
+            continue
         print function.GetChisquare(), function.GetNDF(), function.GetChisquare()/function.GetNDF()
         if abs(function.GetChisquare()/function.GetNDF()-previousChi2overNdf)<0.01*previousChi2overNdf:
             histo.Fit(function.GetName(),"LR+","",xmin,min(peak*1.6,xmax))
             canvas.Update()
             goodChi2 = 1.
         previousChi2overNdf = function.GetChisquare()/function.GetNDF()
-    print function.GetChisquare(), function.GetNDF(), function.GetChisquare()/function.GetNDF()
+    
+    if goodChi2:
+        print function.GetChisquare(), function.GetNDF(), function.GetChisquare()/function.GetNDF()
 
-    fitres[(label,"peak1","mean","value")]=function.GetParameter(7)
-    fitres[(label,"peak1","mean","sigma")]=function.GetParError(7)
-    fitres[(label,"peak1","sigma","value")]=function.GetParameter(8)
-    fitres[(label,"peak1","sigma","sigma")]=function.GetParError(8)
+        fitres[(label,"peak1","mean","value")]=function.GetParameter(7)
+        fitres[(label,"peak1","mean","sigma")]=function.GetParError(7)
+        fitres[(label,"peak1","sigma","value")]=function.GetParameter(8)
+        fitres[(label,"peak1","sigma","sigma")]=function.GetParError(8)
+    else:
+        fitres[(label,"peak1","mean","value")]=-999
+        fitres[(label,"peak1","mean","sigma")]=-999
+        fitres[(label,"peak1","sigma","value")]=-999
+        fitres[(label,"peak1","sigma","sigma")]=-999
 
     f1_bkg = TF1("f1_bkg",function,xmin,min(peak*1.6,xmax),10)
     f1_bkg.SetLineColor(kGreen+1)
@@ -719,13 +747,16 @@ fTot_bar_coinc.SetNpx(1000)
 
 for barId in range(0,16):
 
-    if (histos['h1_energyTot_bar_coinc%d'%barId].GetEntries()<50):
+    if (histos['h1_energyTot_bar_coinc%d'%barId].GetEntries()<100):
         print "ERROR: Too few events ("+ str(histos['h1_energyTot_bar_coinc%d'%barId].GetEntries()) +") in histogram "+histos['h1_energyTot_bar_coinc%d'%barId].GetName()
         print "Skip bar..."
         dead_channels.append(barId)
         continue
     
     fitSpectrum_coinc(histos['h1_energyTot_bar_coinc%d'%barId],fTot_bar_coinc,minEnergy_coinc,maxEnergy_coinc,c1_energy,fitResults,'barCoinc%d'%barId,opt.arrayCode,barId,opt.run,opt.outputDir)
+    if fitResults[('barCoinc%d'%barId,"peak1","mean","value")]==-999:
+        print "Bad fit..."
+        dead_channels.append(barId)
     histos['h1_energyTot_bar_coinc%d'%barId].Write()
 
 tfileoutput.Close()

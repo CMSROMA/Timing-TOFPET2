@@ -85,7 +85,6 @@ CH 17   4     51.40  7.00  2         32     15       15       15       xx       
 #CH 30   5     51.40  7.00  2         40     15       15       15       xx           xx            -1   -1   -1    LYSO_bar12
 #CH 31   5     51.40  7.00  2         39     15       15       15       xx           xx            -1   -1   -1    LYSO_bar13
 #CH 32   5     51.40  7.00  2         35     15       15       15       xx           xx            -1   -1   -1    LYSO_bar14
-#CH 32   5     51.40  7.00  2         35     15       15       15       xx           xx            -1   -1   -1    LYSO_bar14
 #CH 33   5     51.40  7.00  2         33     15       15       15       xx           xx            -1   -1   -1    LYSO_bar15
 # Note on VBR: Different CHs can be connected to the same NHV. If different values of VBR are provided only the first one is set for a given NHV. 
 #Note: Source position -
