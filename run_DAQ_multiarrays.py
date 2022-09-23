@@ -165,6 +165,7 @@ t1ThrList = "35_35_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_40_4
 #
 t_ped = 0.3 #s
 t_phys = 300 #s
+#ov_values = [8,4] #V
 ov_values = [8] #V
 ovref_values = [8] #V
 gate_values = [34] # # MIN_INTG_TIME/MAX_INTG_TIME 34 = (34 x 4 - 78) x 5 ns = 290ns (for values in range 32...127). Check TOFPET2C ASIC guide.
@@ -221,14 +222,14 @@ if (opt.lscan):
     3: [np.array([0, 12, 0]),channelList,energyThrList,t1ThrList,nloops,sleep],
     4: [np.array([0, 16, 0]),channelList,energyThrList,t1ThrList,nloops,sleep],
     5: [np.array([0, 20, 0]),channelList,energyThrList,t1ThrList,nloops,sleep],
-    6: [np.array([0, 20, 0]),channelList,energyThrList,t1ThrList,nloops,sleep],
+    6: [np.array([0, 24, 0]),channelList,energyThrList,t1ThrList,nloops,sleep],
     7: [np.array([0, 28, 0]),channelList,energyThrList,t1ThrList,nloops,sleep],
     -1: [np.array([0, -4, 0]),channelList,energyThrList,t1ThrList,nloops,sleep],
     -2: [np.array([0, -8, 0]),channelList,energyThrList,t1ThrList,nloops,sleep],
     -3: [np.array([0, -12, 0]),channelList,energyThrList,t1ThrList,nloops,sleep],
     -4: [np.array([0, -16, 0]),channelList,energyThrList,t1ThrList,nloops,sleep],
     -5: [np.array([0, -20, 0]),channelList,energyThrList,t1ThrList,nloops,sleep],
-    -6: [np.array([0, -20, 0]),channelList,energyThrList,t1ThrList,nloops,sleep],
+    -6: [np.array([0, -24, 0]),channelList,energyThrList,t1ThrList,nloops,sleep],
     -7: [np.array([0, -28, 0]),channelList,energyThrList,t1ThrList,nloops,sleep],
 
     }
