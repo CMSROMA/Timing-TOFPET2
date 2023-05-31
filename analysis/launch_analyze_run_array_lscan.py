@@ -21,6 +21,12 @@ parser = optparse.OptionParser(usage)
 parser.add_option("-r", "--firstRun", dest="firstRun",
                   help="first run number of the position scan")
 
+parser.add_option("-n", "--nruns", dest="nruns", default=15,
+                  help="number of runs in the scan")
+
+parser.add_option("-p", "--positions", dest="positions", default='0,1,2,3,4,5,6,7,-2,-7,-6,-5,-4,-3,-1',
+                  help="number of runs in the scan")
+
 parser.add_option("-i", "--input", dest="inputDir",default="/data/TOFPET/LYSOARRAYS",
                   help="input directory")
 
@@ -43,18 +49,19 @@ if not opt.outputDir:
 
 #------------------------------------------------
 
-nFilesInScan = 14
+nFilesInScan = opt.nruns
 
 #maybe this can be passed from command line 
-pos = [ 0, 1, 2, 3, 4, 5, 6, 7, -2, -6, -5, -4, -3, -7]#,-1 ]
-
+#pos = [ 0, 1, 2, 3, 4, 5, 6, 7, -2, -7, -6, -5, -4, -3,-1 ]
+pos = [ int(i) for i in opt.positions.split(',') ]
+print("positions: "+str(pos))
 
 summaryFile = str(opt.outputDir)+"/"+"summary_"+"FirstRun" + str(opt.firstRun.zfill(6)) + "_LastRun" + str((int(opt.firstRun)+(nFilesInScan-1)*3)).zfill(6) + "_ARRAY" + str(opt.arrayCode.zfill(6))+".root"
 
 #### Analysis Summary #####
 histos={}
 
-for v in [ 'LY','sigmaT','CTR','XT']:
+for v in [ 'Norm', 'LY', 'LY_sipm1','LY_sipm2','sigmaT','CTR','XT']:
     histos['%s_vs_pos'%v]=TGraphErrors()
     histos['%s_vs_pos'%v].SetName('%s_vs_bar'%v)
 
@@ -141,8 +148,8 @@ for hh in ['Norm','LY','sigmaT','CTR','XT']:
         l.SetTextSize(0.035)
         l.SetFillColor(0)
         l.SetBorderSize(0)
-        histos['%s_vs_pos'%hh].GetYaxis().SetLimits(0.9,1.1)
-        histos['%s_vs_pos'%hh].GetYaxis().SetRangeUser(0.9,1.1)
+        histos['%s_vs_pos'%hh].GetYaxis().SetLimits(0.94,1.1)
+        histos['%s_vs_pos'%hh].GetYaxis().SetRangeUser(0.94,1.1)
         l.AddEntry(histos['%s_vs_pos'%hh],'Energy Tot','PL')
         for sipm in [1,2]:
             histos['%s_sipm%d_vs_pos'%(hh,sipm)].SetMarkerStyle(23+sipm)
