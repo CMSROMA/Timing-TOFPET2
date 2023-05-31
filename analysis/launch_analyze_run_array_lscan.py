@@ -54,7 +54,7 @@ nFilesInScan = opt.nruns
 #maybe this can be passed from command line 
 #pos = [ 0, 1, 2, 3, 4, 5, 6, 7, -2, -7, -6, -5, -4, -3,-1 ]
 pos = [ int(i) for i in opt.positions.split(',') ]
-print("positions: "+str(pos))
+print("positions: "+str(sorted({ int(opt.firstRun)+i*3:pos[i] for i in range(len(pos))}.items())))
 
 summaryFile = str(opt.outputDir)+"/"+"summary_"+"FirstRun" + str(opt.firstRun.zfill(6)) + "_LastRun" + str((int(opt.firstRun)+(nFilesInScan-1)*3)).zfill(6) + "_ARRAY" + str(opt.arrayCode.zfill(6))+".root"
 
